@@ -16,7 +16,9 @@ public class Chronotimer {
 			channels[i] = new Channel();
 		ourTimer = new Timer();
 	}
-	
+	/**
+	 * Puts the Chronotimer back to a default and cleared state
+	 */
 	public void reset(){
 		//isPower = false;
 		currentRun = null;
@@ -24,12 +26,16 @@ public class Chronotimer {
 			channels[i] = new Channel();
 		ourTimer = new Timer();
 	}
-	
+	/**
+	 * Creates a new run only if there isn't already a run active
+	 */
 	public void newRun(){
 		if(currentRun != null) System.out.println("Must be starting a new run by ending one first or after initial power on");
 		currentRun = new Run();
 	}
-	
+	/**
+	 * Clears the current run, newRun() can now be called
+	 */
 	public void endRun(){
 		currentRun = null;
 	}
@@ -49,7 +55,12 @@ public class Chronotimer {
 	public boolean getIsPower(){
 		return this.isPower;
 	}
-	
+	/**
+	 * Adds a Racer to the current race
+	 * Power must be on
+	 * There must be an active Run
+	 * @param bibNumber - Number given to the Racer
+	 */
 	public void addRacer(int bibNumber){
 		if(!getIsPower()){
 			System.out.println("Power must be enabled to add racer to run");
@@ -61,7 +72,12 @@ public class Chronotimer {
 		}
 		currentRun.addRacer(bibNumber);
 	}
-	
+	/**
+	 * Toggles the state of the param channelNumber
+	 * Enabled->Disabled
+	 * Disabled->Enabled
+	 * @param channelNumber Which channel is being changed
+	 */
 	public void toggleChannel(int channelNumber){
 		if(!getIsPower()){
 			System.out.println("Power must be enabled to add racer to run");
@@ -69,11 +85,19 @@ public class Chronotimer {
 		}
 		channels[channelNumber-1].toggle();
 	}
-	
+	/**
+	 * Gets the param's isEnabled Value and returns it
+	 * @param channelNumber 
+	 * @return The boolean value of the given channel
+	 */
 	public boolean getChannel(int channelNumber){
 		return channels[channelNumber-1].isEnabled();
 	}
-	
+	/**
+	 * Connects a sensor to a given channel
+	 * @param channelNumber Which channel is being connected to
+	 * @param sensorType <GATE,EYE,TRIP>
+	 */
 	public void setConnect(int channelNumber, String sensorType){
 		if(!getIsPower()){
 			System.out.println("Power must be enabled to add racer to run");
@@ -81,8 +105,13 @@ public class Chronotimer {
 		}
 		channels[channelNumber-1].setConnect(sensorType);
 	}
-	public String getConnect(int channelNumber){
-		return channels[channelNumber-1].getConnect();
+	/**
+	 * Gets the SensoreType of the channel
+	 * @param channelNumber
+	 * @return <GATE,EYE,TRIP>
+	 */
+	public String getSensorType(int channelNumber){
+		return channels[channelNumber-1].getSensorType();
 	}
 	/**
 	 * channelNumber==even then end time

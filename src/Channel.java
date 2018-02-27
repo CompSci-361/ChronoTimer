@@ -17,7 +17,7 @@ public class Channel {
 		sensorType = sensor;
 	}
 	
-	public String getConnect(){
+	public String getSensorType(){
 		return sensorType;
 	}
 }
