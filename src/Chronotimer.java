@@ -138,31 +138,59 @@ public class Chronotimer {
 			currentRun.setRacerStartTime();
 		}
 	}
+	/**
+	 * Sets the time of the timer system
+	 * @param hours
+	 * @param minutes
+	 * @param seconds
+	 */
 	public void setTime(int hours, int minutes, double seconds) {
 		ourTimer.setTime(hours, minutes, seconds);
 	}
+	/**
+	 * Gets the current system time from ourTimer
+	 * @return
+	 */
 	public String getTime(){
 		return ourTimer.formatTime(ourTimer.getSystemTime());
 	}
+	/**
+	 * Gives a runner from our currentRun a DNF
+	 */
 	public void dnf() {
 		currentRun.giveDnf();
 	}
+	/**
+	 * Cancels a race from the run and returns them to the queue
+	 */
 	public void cancel() {
 		currentRun.cancel();
 	}
-	
+	/**
+	 * Prints the entire run
+	 * Will only print Racers that have a finish time
+	 * --Might want to change it to print all Racers in the system
+	 */
 	public void print(){
 		Printer.printRun(currentRun);
 	}
-	
+	/**
+	 * Since the raceType is only IND, Start is always just the same as Trig channel 1
+	 */
 	public void start(){
 		triggerChannel(1);
 	}
-	
+	/**
+	 * Since the raceType is only IND, Finish is always just the smae as Trig channel 2
+	 */
 	public void finish(){
 		triggerChannel(2);
 	}
-	
+	/**
+	 * Sets the raceType
+	 * Power needs to be on
+	 * @param event So far can only be "IND"
+	 */
 	public void setRaceType(String event){
 		if(!getIsPower()){
 			System.out.println("Power must be enabled to add racer to run");
