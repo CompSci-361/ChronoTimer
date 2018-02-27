@@ -1,15 +1,17 @@
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.ArrayDeque;
+import java.util.Deque;
+//import java.util.LinkedList;
+//import java.util.Queue;
 
 public class Run {
-	private Queue<Racer> waitQueue;
-	private Queue<Racer> runningQueue;
-	private Queue<Racer> finishQueue;
+	private Deque<Racer> waitQueue;
+	private Deque<Racer> runningQueue;
+	private Deque<Racer> endQueue;
 	
 	public Run(){
-		this.waitQueue = new LinkedList<Racer>();
-		this.runningQueue = new LinkedList<Racer>();
-		this.finishQueue = new LinkedList<Racer>();
+		this.waitQueue = new ArrayDeque<Racer>();
+		this.runningQueue = new ArrayDeque<Racer>();
+		this.endQueue = new ArrayDeque<Racer>();
 	}
 	
 	/**
@@ -24,13 +26,33 @@ public class Run {
 	
 	/**
 	 * 
-	 * @param start
+	 * 
 	 */
 	public void setRacerStartTime(){
 		Racer headWait = waitQueue.poll();
 		headWait.setStartTime();
+		runningQueue.add(headWait);
 	}
-	
+	/**
+	 * 
+	 */
+	public void setRacerEndTime() {
+		Racer headRunning = runningQueue.poll();
+		headRunning.setEndTime();
+		endQueue.add(headRunning);
+	}
+	/**
+	 * 
+	 */
+	public void giveDnf() {
+		Racer headRunning = runningQueue.poll();
+		headRunning.setDnf();
+		endQueue.add(headRunning);
+	}
+	public void cancel() {
+		Racer headRunning = runningQueue.poll();
+		waitQueue.addFirst(headRunning);
+	}
 	
 	
 

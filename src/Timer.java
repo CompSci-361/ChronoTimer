@@ -1,23 +1,35 @@
 
 public class Timer {
-	
+	//Milliseconds
+	double oldSystemTime;
+	double setTime;
+
+	public Timer() {
+		setTime=0.0;
+		oldSystemTime=0.0;
+	}
 	/**
 	 * 
 	 * @param startTime
 	 * @param endTime
 	 * @return
 	 */
-	public static double calculateTime(double startTime, double endTime){
+	public double calculateTime(double startTime, double endTime){
 		return endTime - startTime;
 	}
 	
 	/**
 	 * 
-	 * @return
+	 * @return system current time in milliseconds
 	 */
-	public static double getSystemTime(){
+	public double getSystemTime(){
 		//TODO
-		return 0.0;
+		return System.currentTimeMillis()-oldSystemTime+setTime;
+	//	return (System.currentTimeMillis()-oldSystemTime+hours*3600000+minutes*60000+seconds*1000);
+	}
+	public void setTime(int hours, int minutes, double seconds) {
+		setTime=hours*3600000+minutes*60000+seconds*1000;
+		oldSystemTime = System.currentTimeMillis();
 	}
 	
 	

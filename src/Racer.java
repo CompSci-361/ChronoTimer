@@ -10,11 +10,17 @@ public class Racer {
 	}
 	
 	public void setStartTime(){
-		this.startTime = Timer.getSystemTime();
+		this.startTime = Chronotimer.ourTimer.getSystemTime();
 	}
 	
 	public void setEndTime(){
-		this.endTime = Timer.getSystemTime();
+		this.endTime = Chronotimer.ourTimer.getSystemTime();
+	}
+	/**
+	 * This is for giving a racer a DNF end time
+	 */
+	public void setDnf() {
+		this.endTime = -1;
 	}
 	
 	public double getStartTime(){
@@ -26,7 +32,7 @@ public class Racer {
 	}
 	
 	public double getTotalTime(){
-		return Timer.calculateTime(startTime, endTime);
+		return Chronotimer.ourTimer.calculateTime(startTime, endTime);
 	}
 	
 	@Override

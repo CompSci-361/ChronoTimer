@@ -3,20 +3,22 @@ public class Chronotimer {
 	
 	private Run currentRun;
 	private boolean isEnabled;
-	private boolean[] channels;
+	private Channel[] channels;
+	public static Timer ourTimer;
 
 	public Chronotimer(){
 		isEnabled = false;
 		currentRun = null;
-		channels = new boolean [8];
-		
+		channels = new Channel [8];
+		ourTimer = new Timer();
 		//TODO
 	}
 	
 	public void reset(){
 		isEnabled = false;
 		currentRun = null;
-		channels = new boolean [8];
+		channels = new Channel [8];
+		ourTimer = new Timer();
 		//TODO is the same as constructor
 	}
 	
@@ -46,10 +48,37 @@ public class Chronotimer {
 		currentRun.addRacer(bibNumber);
 	}
 	
-	public void enableChannel(int channelNumber){
-		channels[channelNumber-1] = true;
+	public void toggleChannel(int channelNumber){
+//		channels[channelNumber-1] = true;
+		channels[channelNumber].toggle();
 	}
-		
+	/**
+	 * channelNumber==even then end time
+	 * channelNumber==odd then start time
+	 * @param channelNumber
+	 */
+	public void triggerChannel(int channelNumber) {
+		if(!getIsEnabled()) throw new IllegalStateException("Power must be enabled to add racer to run");
+		if(channels[channelNumber].isEnabled()!=true) {
+			System.out.println("Channel "+ channelNumber + " not enabled");
+			throw new IllegalStateException("Channel "+ channelNumber + " not enabled");
+		}
+		if(channelNumber % 2 == 0) {
+			currentRun.setRacerEndTime();
+		}
+		else {
+			currentRun.setRacerStartTime();
+		}
+	}
+	public void setTime(int hours, int minutes, double seconds) {
+		ourTimer.setTime(hours, minutes, seconds);
+	}
+	public void dnf() {
+		currentRun.giveDnf();
+	}
+	public void cancel() {
+		currentRun.cancel();
+	}
 	
 	
 	
