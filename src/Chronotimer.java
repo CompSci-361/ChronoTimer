@@ -2,55 +2,87 @@
 public class Chronotimer {
 	
 	private Run currentRun;
-	private boolean isEnabled;
+	private String raceType;
+	private boolean isPower;
 	private Channel[] channels;
+	
 	public static Timer ourTimer;
 
 	public Chronotimer(){
-		isEnabled = false;
+		isPower = false;
 		currentRun = null;
-		channels = new Channel [8];
+		channels = new Channel[8];
+		for(int i = 0; i < 8; i++)
+			channels[i] = new Channel();
 		ourTimer = new Timer();
-		//TODO
 	}
 	
 	public void reset(){
-		isEnabled = false;
+		//isPower = false;
 		currentRun = null;
-		channels = new Channel [8];
+		for(int i = 0; i < 8; i++)
+			channels[i] = new Channel();
 		ourTimer = new Timer();
-		//TODO is the same as constructor
 	}
 	
 	public void newRun(){
+		if(currentRun != null) System.out.println("Must be starting a new run by ending one first or after initial power on");
 		currentRun = new Run();
+	}
+	
+	public void endRun(){
+		currentRun = null;
 	}
 	
 	/**
 	 * Set the state of Power to ON/OFF
 	 * @param isEnabled toggle the power, True for Enabled, False for Disabled
 	 */
-	public void setIsEnabled(boolean isEnabled){
-		this.isEnabled = isEnabled;
+	public void togglePower(){
+		this.isPower = !isPower;
 	}
 	
 	/**
 	 * Get the state of Power 
 	 * @return return the state of Power: ON/OFF
 	 */
-	public boolean getIsEnabled(){
-		return this.isEnabled;
+	public boolean getIsPower(){
+		return this.isPower;
 	}
 	
 	public void addRacer(int bibNumber){
-		if(!getIsEnabled()) throw new IllegalStateException("Power must be enabled to add racer to run");
-		if(currentRun == null) throw new NullPointerException("Current run must not be null");
+		if(!getIsPower()){
+			System.out.println("Power must be enabled to add racer to run");
+			return;
+		}
+		if(currentRun == null){
+			System.out.println("Current run must not be null");
+			return;
+		}
 		currentRun.addRacer(bibNumber);
 	}
 	
 	public void toggleChannel(int channelNumber){
-//		channels[channelNumber-1] = true;
-		channels[channelNumber].toggle();
+		if(!getIsPower()){
+			System.out.println("Power must be enabled to add racer to run");
+			return;
+		}
+		channels[channelNumber-1].toggle();
+	}
+	
+	public boolean getChannel(int channelNumber){
+		return channels[channelNumber-1].isEnabled();
+	}
+	
+	public void setConnect(int channelNumber, String sensorType){
+		if(!getIsPower()){
+			System.out.println("Power must be enabled to add racer to run");
+			return;
+		}
+		channels[channelNumber-1].setConnect(sensorType);
+	}
+	public String getConnect(int channelNumber){
+		return channels[channelNumber-1].getConnect();
 	}
 	/**
 	 * channelNumber==even then end time
@@ -58,10 +90,17 @@ public class Chronotimer {
 	 * @param channelNumber
 	 */
 	public void triggerChannel(int channelNumber) {
-		if(!getIsEnabled()) throw new IllegalStateException("Power must be enabled to add racer to run");
-		if(channels[channelNumber].isEnabled()!=true) {
+		if(!getIsPower()){
+			System.out.println("Power must be enabled to add racer to run");
+			return;
+		}
+		if(channels[channelNumber-1].isEnabled()!=true) {
 			System.out.println("Channel "+ channelNumber + " not enabled");
-			throw new IllegalStateException("Channel "+ channelNumber + " not enabled");
+			return;
+		}
+		if(currentRun == null){
+			System.out.println("Current Run must not be null");
+			return;
 		}
 		if(channelNumber % 2 == 0) {
 			currentRun.setRacerEndTime();
@@ -73,6 +112,9 @@ public class Chronotimer {
 	public void setTime(int hours, int minutes, double seconds) {
 		ourTimer.setTime(hours, minutes, seconds);
 	}
+	public String getTime(){
+		return ourTimer.formatTime(ourTimer.getSystemTime());
+	}
 	public void dnf() {
 		currentRun.giveDnf();
 	}
@@ -80,6 +122,31 @@ public class Chronotimer {
 		currentRun.cancel();
 	}
 	
+	public void print(){
+		Printer.printRun(currentRun);
+	}
+	
+	public void start(){
+		triggerChannel(1);
+	}
+	
+	public void finish(){
+		triggerChannel(2);
+	}
+	
+	public void setRaceType(String event){
+		if(!getIsPower()){
+			System.out.println("Power must be enabled to add racer to run");
+			return;
+		}
+		this.raceType = event;
+		
+		switch(event){
+			case "IND":{
+				
+			}
+		}
+	}
 	
 	
 }

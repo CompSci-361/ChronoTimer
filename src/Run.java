@@ -20,7 +20,10 @@ public class Run {
 	 */
 	public void addRacer(int bibNumber){
 		Racer racer = new Racer(bibNumber);
-		if(waitQueue.contains(racer)) throw new IllegalArgumentException("Cannot have more than one racer with the same bib number");
+		if(waitQueue.contains(racer)){
+			System.out.println("Cannot have more than one racer with the same bib number");
+			return;
+		}
 		waitQueue.add(racer);
 	}
 	
@@ -54,6 +57,15 @@ public class Run {
 		waitQueue.addFirst(headRunning);
 	}
 	
+	@Override
+	public String toString(){
+		String str= "";
+		Object[] printArray = endQueue.toArray();
+		for(int i = 0; i < printArray.length; i++){
+			str += printArray[i].toString() + "\n";
+		}
+		return str;
+	}
 	
 
 }

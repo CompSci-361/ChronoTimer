@@ -5,15 +5,15 @@ public class Printer {
 	 * Print individual race
 	 * @param racer
 	 */
-	public void printRace(Racer racer){
-		
+	public static void printRace(Racer racer){
+		System.out.println(racer.toString());
 	}
 	
 	/**
 	 * Print all races run
 	 * @param run
 	 */
-	public void printRun(Run run){
-		
+	public static void printRun(Run run){
+		System.out.println(run.toString());
 	}
 }

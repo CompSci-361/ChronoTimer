@@ -43,6 +43,12 @@ public class Racer {
 		return this.bibNumber == racer.bibNumber;	
 	}
 	
+	@Override
+	public String toString(){
+		return "Racer " + this.bibNumber + ": Start Time = " + Chronotimer.ourTimer.formatTime(this.startTime)
+				+ " End Time = " + Chronotimer.ourTimer.formatTime(this.endTime);
+	}
+	
 	
 	
 }
