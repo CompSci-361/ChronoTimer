@@ -11,12 +11,17 @@ public class Simulator {
 		@SuppressWarnings("resource")
 		Scanner stdin = new Scanner(System.in);
 		/*
-		 * POWER - Toggles the power EXIT - Exits the simulator RESET - Resets
-		 * the chronotimer TIME - <int:int:double> DNF - Gives a runner the DNF
-		 * event CANCEL - Cancels a runner TOG - toggles that channel TRIG -
-		 * triggers that channel START - TRIG on channel 1 FINISH - TRIG on
-		 * channel 2
-		 * 
+		 * POWER - Toggles the power 
+		 * EXIT - Exits the simulator 
+		 * RESET - Resets the chronotimer 
+		 * TIME - <int:int:double> 
+		 * DNF - Gives a runner the DNF event 
+		 * CANCEL - Cancels a runner 
+		 * TOG - toggles that channel 
+		 * TRIG -triggers that channel 
+		 * START - TRIG on channel 1 
+		 * FINISH - TRIG on channel 2
+		 * Is broken into reading from a file and reading from the command line
 		 */
 		System.out.println("Would you like to read from a file [y,n]: ");
 
@@ -88,7 +93,14 @@ public class Simulator {
 		}
 
 	}
-
+	/**
+	 * Only should be called in the Simulator
+	 * Based on the value of parameters, will execute different commands
+	 * @param time time of command, only used for reading from file
+	 * @param cmd - The Command
+	 * @param param - The Parameter of the Command
+	 * @param extra - Extra needs to be used when reading in an extra long command, like COMM
+	 */
 	public static void processCommands(String time, String cmd, String param, String extra) {
 		switch (cmd) {
 			case "POWER": {
@@ -129,7 +141,7 @@ public class Simulator {
 			}
 			case "CONN":{
 				chrono.setConnect(Integer.parseInt(extra), param);
-				System.out.println(chrono.getConnect(Integer.parseInt(extra)) + " is connected to channel " + extra);
+				System.out.println(chrono.getSensorType(Integer.parseInt(extra)) + " is connected to channel " + extra);
 				break;
 			}
 			case "TRIG": {

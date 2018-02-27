@@ -7,17 +7,30 @@ public class Channel {
 		state = false;
 		sensorType = null;
 	}
+	/**
+	 * Toggles the channel
+	 */
 	public void toggle() {
 		state = !state;
 	}
+	/**
+	 * 
+	 * @return the state of the channel
+	 */
 	public boolean isEnabled() {
 		return state;
 	}
+	/**
+	 * Connects the param to this channel by setting the sensorType to <GATE,EYE,TRIP>
+	 * @param sensor
+	 */
 	public void setConnect(String sensor){
 		sensorType = sensor;
 	}
-	
-	public String getConnect(){
+	/**
+	 * @return The type of sensor connected to this channel, can be null if not connected
+	 */
+	public String getSensorType(){
 		return sensorType;
 	}
 }

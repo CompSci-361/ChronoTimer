@@ -11,6 +11,8 @@ public class Printer {
 	
 	/**
 	 * Print all races run
+	 * Only prints finished Racers
+	 * --Might want to change to print all Racers
 	 * @param run
 	 */
 	public static void printRun(Run run){
