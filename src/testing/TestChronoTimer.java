@@ -6,7 +6,7 @@ import core.Chronotimer;
 
 public class TestChronoTimer {
 	@Test
-	public void testChrono1(){
+	public void testChrono1() {
 		//unit test version of chrono1.txt
 		Chronotimer chronotimer = new Chronotimer();
 		
@@ -51,4 +51,26 @@ public class TestChronoTimer {
 		//"EXIT"
 	}
 
+	@Test
+	public void testChrono2() {
+		//unit test version of chrono2.txt
+		Chronotimer chronotimer = new Chronotimer();
+		
+		//"POWER"
+		assertEquals(false, chronotimer.getIsPower());
+		chronotimer.togglePower();
+		assertEquals(true, chronotimer.getIsPower());
+		
+		//"POWER"
+		assertEquals(true, chronotimer.getIsPower());
+		chronotimer.togglePower();
+		assertEquals(false, chronotimer.getIsPower());
+		
+		//"POWER"
+		assertEquals(false, chronotimer.getIsPower());
+		chronotimer.togglePower();
+		assertEquals(true, chronotimer.getIsPower());
+
+		
+	}
 }
