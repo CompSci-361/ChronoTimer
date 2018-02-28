@@ -79,8 +79,52 @@ public class Run {
 		return str;
 	}
 	
-
+	/**
+	 * Gets an array of all the racers that have finished.
+	 * @return an array of all the racers that have finished.
+	 */
 	public Racer[] getFinishedRacers() {
 		return endQueue.toArray(new Racer[0]);
+	}
+	
+	/**
+	 * Gets the current racer who is running.
+	 * @return the current racer who is running.
+	 */
+	public Racer getCurrentRunningRacer() {
+		return runningQueue.peek();
+	}
+	
+	public boolean containsRacerBibNumberInWaitQueue(int bibNumber) {
+		//a long name, i know.
+		
+		//there is a better way to do this but don't have enough time.
+		for(Racer racer : waitQueue.toArray(new Racer[0])) {
+			if (racer.getBibNumber() == bibNumber) return true;
+		}
+		
+		return false;
+	}
+	
+	public boolean containsRacerBibNumberInRunningQueue(int bibNumber) {
+		//a long name, i know.
+		
+		//there is a better way to do this but don't have enough time.
+		for(Racer racer : runningQueue.toArray(new Racer[0])) {
+			if (racer.getBibNumber() == bibNumber) return true;
+		}
+		
+		return false;
+	}
+	
+	public boolean containsRacerBibNumberInEndQueue(int bibNumber) {
+		//a long name, i know.
+		
+		//there is a better way to do this but don't have enough time.
+		for(Racer racer : endQueue.toArray(new Racer[0])) {
+			if (racer.getBibNumber() == bibNumber) return true;
+		}
+		
+		return false;
 	}
 }
