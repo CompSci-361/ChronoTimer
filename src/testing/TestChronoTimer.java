@@ -1,4 +1,7 @@
+package testing;
 import org.junit.Test;
+
+import core.Chronotimer;
 
 public class TestChronoTimer {
 	

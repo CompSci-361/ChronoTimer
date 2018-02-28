@@ -1,8 +1,12 @@
+package simulation;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Scanner;
+
+import core.Chronotimer;
 
 public class Simulator {
 	static Chronotimer chrono = new Chronotimer();
