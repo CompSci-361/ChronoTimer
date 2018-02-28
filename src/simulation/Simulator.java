@@ -139,7 +139,7 @@ public class Simulator {
 			}
 			case "TOG": {
 				chrono.toggleChannel(Integer.parseInt(param));
-				boolean value = chrono.getChannel(Integer.parseInt(param));
+				boolean value = chrono.getChannelIsEnabled(Integer.parseInt(param));
 				System.out.println("Channel " + param + " is " + (value ? "enabled" : "disabled"));
 				break;
 			}

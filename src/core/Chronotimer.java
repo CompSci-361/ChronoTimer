@@ -91,7 +91,7 @@ public class Chronotimer {
 	 * @param channelNumber 
 	 * @return The boolean value of the given channel
 	 */
-	public boolean getChannel(int channelNumber){
+	public boolean getChannelIsEnabled(int channelNumber){
 		return channels[channelNumber-1].isEnabled();
 	}
 	/**
