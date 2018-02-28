@@ -3,7 +3,7 @@ package core;
 public class Chronotimer {
 	
 	private Run currentRun;
-	private String raceType;
+	private RaceType raceType;
 	private boolean isPower;
 	private Channel[] channels;
 	
@@ -192,7 +192,7 @@ public class Chronotimer {
 	 * Power needs to be on
 	 * @param event So far can only be "IND"
 	 */
-	public void setRaceType(String event){
+	public void setRaceType(RaceType event){
 		if(!getIsPoweredOn()){
 			System.out.println("Power must be enabled to add racer to run");
 			return;
@@ -200,14 +200,24 @@ public class Chronotimer {
 		this.raceType = event;
 		
 		switch(event){
-			case "IND":{
+			case IND:{
 				
 			}
 		}
 	}
 	
-	/*
+	/**
+	 * Gets the current Race Type.
+	 * @return the race type.
+	 */
+	
+	public RaceType getRaceType() {
+		return this.raceType;
+	}
+	
+	/**
 	 * Returns the current run (if any). Otherwise, returns null.
+	 * @return the current run or null.
 	 */
 	public Run getCurrentRun() {
 		return currentRun;

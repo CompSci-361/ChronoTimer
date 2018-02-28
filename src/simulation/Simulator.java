@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.Scanner;
 
 import core.Chronotimer;
+import core.RaceType;
 import core.SensorType;
 
 public class Simulator {
@@ -169,7 +170,7 @@ public class Simulator {
 				break;
 			}
 			case "EVENT":{
-				chrono.setRaceType(param);
+				chrono.setRaceType(RaceType.valueOf(param));
 				break;
 			}
 			case "NUM":{
