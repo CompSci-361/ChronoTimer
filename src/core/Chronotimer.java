@@ -53,7 +53,7 @@ public class Chronotimer {
 	 * Get the state of Power 
 	 * @return return the state of Power: ON/OFF
 	 */
-	public boolean getIsPower(){
+	public boolean getIsPoweredOn(){
 		return this.isPower;
 	}
 	/**
@@ -63,7 +63,7 @@ public class Chronotimer {
 	 * @param bibNumber - Number given to the Racer
 	 */
 	public void addRacer(int bibNumber){
-		if(!getIsPower()){
+		if(!getIsPoweredOn()){
 			System.out.println("Power must be enabled to add racer to run");
 			return;
 		}
@@ -80,7 +80,7 @@ public class Chronotimer {
 	 * @param channelNumber Which channel is being changed
 	 */
 	public void toggleChannel(int channelNumber){
-		if(!getIsPower()){
+		if(!getIsPoweredOn()){
 			System.out.println("Power must be enabled to add racer to run");
 			return;
 		}
@@ -100,7 +100,7 @@ public class Chronotimer {
 	 * @param sensorType <GATE,EYE,TRIP>
 	 */
 	public void setConnect(int channelNumber, String sensorType){
-		if(!getIsPower()){
+		if(!getIsPoweredOn()){
 			System.out.println("Power must be enabled to add racer to run");
 			return;
 		}
@@ -120,7 +120,7 @@ public class Chronotimer {
 	 * @param channelNumber
 	 */
 	public void triggerChannel(int channelNumber) {
-		if(!getIsPower()){
+		if(!getIsPoweredOn()){
 			System.out.println("Power must be enabled to add racer to run");
 			return;
 		}
@@ -193,7 +193,7 @@ public class Chronotimer {
 	 * @param event So far can only be "IND"
 	 */
 	public void setRaceType(String event){
-		if(!getIsPower()){
+		if(!getIsPoweredOn()){
 			System.out.println("Power must be enabled to add racer to run");
 			return;
 		}

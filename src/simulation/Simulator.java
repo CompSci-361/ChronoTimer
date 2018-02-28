@@ -109,7 +109,7 @@ public class Simulator {
 		switch (cmd) {
 			case "POWER": {
 				chrono.togglePower();
-				boolean value = chrono.getIsPower();
+				boolean value = chrono.getIsPoweredOn();
 				System.out.println("Power is " + (value ? "enabled" : "disabled"));
 				break;
 			}
