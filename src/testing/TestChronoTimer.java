@@ -165,7 +165,59 @@ public class TestChronoTimer {
 		assertEquals(false, chronotimer.getIsPoweredOn());
 		chronotimer.togglePower();
 		assertEquals(true, chronotimer.getIsPoweredOn());
+		
+		//"EVENT IND"
+		assertEquals(null, chronotimer.getRaceType());
+		chronotimer.setRaceType(RaceType.IND);
+		assertEquals(RaceType.IND, chronotimer.getRaceType());
+		
+		//"NEWRUN"
+		assertEquals(null, chronotimer.getCurrentRun());
+		chronotimer.newRun();
+		assertNotEquals(null, chronotimer.getCurrentRun());
+		
+		//"TOG" - Toggle Channels 1 and 2
+		assertEquals(false, chronotimer.getChannelIsEnabled(1));
+		chronotimer.toggleChannel(1);
+		assertEquals(true, chronotimer.getChannelIsEnabled(1));
+		
+		assertEquals(false, chronotimer.getChannelIsEnabled(2));
+		chronotimer.toggleChannel(2);
+		assertEquals(true, chronotimer.getChannelIsEnabled(2));	
 
+		//"NUM" - Adds racer 234 and 315
+		assertEquals(false, chronotimer.getCurrentRun().containsRacerBibNumberInWaitQueue(234));
+		assertEquals(false, chronotimer.getCurrentRun().containsRacerBibNumberInWaitQueue(315));
+		chronotimer.addRacer(234);
+		chronotimer.addRacer(315);
+		assertEquals(true, chronotimer.getCurrentRun().containsRacerBibNumberInWaitQueue(234));
+		assertEquals(true, chronotimer.getCurrentRun().containsRacerBibNumberInWaitQueue(315));
+		
+		//"TRIG" Start
+		assertEquals(false, chronotimer.getCurrentRun().containsRacerBibNumberInRunningQueue(234));
+		assertEquals(false, chronotimer.getCurrentRun().containsRacerBibNumberInRunningQueue(315));
+		chronotimer.triggerChannel(1);
+		chronotimer.triggerChannel(3);
+		assertEquals(true, chronotimer.getCurrentRun().containsRacerBibNumberInRunningQueue(234));
+		assertEquals(true, chronotimer.getCurrentRun().containsRacerBibNumberInRunningQueue(315));
+		
+		//"TRIG" End
+		assertEquals(false, chronotimer.getCurrentRun().containsRacerBibNumberInEndQueue(234));
+		assertEquals(false, chronotimer.getCurrentRun().containsRacerBibNumberInEndQueue(315));
+		chronotimer.triggerChannel(2);
+		chronotimer.triggerChannel(4);
+		assertEquals(true, chronotimer.getCurrentRun().containsRacerBibNumberInEndQueue(234));
+		assertEquals(true, chronotimer.getCurrentRun().containsRacerBibNumberInEndQueue(315));
+		
+		//"PRINT"
+		// TODO
+		chronotimer.print();
+		
+		//"ENDRUN"
+		assertNotEquals(null, chronotimer.getCurrentRun());
+		chronotimer.endRun();
+		assertEquals(null, chronotimer.getCurrentRun());
+		
 		
 	}
 }
