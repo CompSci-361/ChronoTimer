@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.util.Scanner;
 
 import core.Chronotimer;
+import core.RaceType;
+import core.SensorType;
 
 public class Simulator {
 	static Chronotimer chrono = new Chronotimer();
@@ -109,7 +111,7 @@ public class Simulator {
 		switch (cmd) {
 			case "POWER": {
 				chrono.togglePower();
-				boolean value = chrono.getIsPower();
+				boolean value = chrono.getIsPoweredOn();
 				System.out.println("Power is " + (value ? "enabled" : "disabled"));
 				break;
 			}
@@ -139,12 +141,12 @@ public class Simulator {
 			}
 			case "TOG": {
 				chrono.toggleChannel(Integer.parseInt(param));
-				boolean value = chrono.getChannel(Integer.parseInt(param));
+				boolean value = chrono.getChannelIsEnabled(Integer.parseInt(param));
 				System.out.println("Channel " + param + " is " + (value ? "enabled" : "disabled"));
 				break;
 			}
 			case "CONN":{
-				chrono.setConnect(Integer.parseInt(extra), param);
+				chrono.setConnect(Integer.parseInt(extra), SensorType.valueOf(param));
 				System.out.println(chrono.getSensorType(Integer.parseInt(extra)) + " is connected to channel " + extra);
 				break;
 			}
@@ -168,7 +170,7 @@ public class Simulator {
 				break;
 			}
 			case "EVENT":{
-				chrono.setRaceType(param);
+				chrono.setRaceType(RaceType.valueOf(param));
 				break;
 			}
 			case "NUM":{

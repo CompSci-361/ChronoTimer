@@ -2,7 +2,7 @@ package core;
 
 public class Channel {
 	private boolean state;
-	private String sensorType;
+	private SensorType sensorType;
 	
 	public Channel() {
 		state = false;
@@ -25,13 +25,13 @@ public class Channel {
 	 * Connects the param to this channel by setting the sensorType to <GATE,EYE,TRIP>
 	 * @param sensor
 	 */
-	public void setConnect(String sensor){
+	public void setConnect(SensorType sensor){
 		sensorType = sensor;
 	}
 	/**
 	 * @return The type of sensor connected to this channel, can be null if not connected
 	 */
-	public String getSensorType(){
+	public SensorType getSensorType(){
 		return sensorType;
 	}
 }
