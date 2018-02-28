@@ -99,7 +99,7 @@ public class Chronotimer {
 	 * @param channelNumber Which channel is being connected to
 	 * @param sensorType <GATE,EYE,TRIP>
 	 */
-	public void setConnect(int channelNumber, String sensorType){
+	public void setConnect(int channelNumber, SensorType sensorType){
 		if(!getIsPoweredOn()){
 			System.out.println("Power must be enabled to add racer to run");
 			return;
@@ -111,7 +111,7 @@ public class Chronotimer {
 	 * @param channelNumber
 	 * @return <GATE,EYE,TRIP>
 	 */
-	public String getSensorType(int channelNumber){
+	public SensorType getSensorType(int channelNumber){
 		return channels[channelNumber-1].getSensorType();
 	}
 	/**

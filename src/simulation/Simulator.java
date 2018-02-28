@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.Scanner;
 
 import core.Chronotimer;
+import core.SensorType;
 
 public class Simulator {
 	static Chronotimer chrono = new Chronotimer();
@@ -144,7 +145,7 @@ public class Simulator {
 				break;
 			}
 			case "CONN":{
-				chrono.setConnect(Integer.parseInt(extra), param);
+				chrono.setConnect(Integer.parseInt(extra), SensorType.valueOf(param));
 				System.out.println(chrono.getSensorType(Integer.parseInt(extra)) + " is connected to channel " + extra);
 				break;
 			}
