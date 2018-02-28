@@ -218,6 +218,81 @@ public class TestChronoTimer {
 		chronotimer.endRun();
 		assertEquals(null, chronotimer.getCurrentRun());
 		
+		/*
+		 * Testing second run while power is still on
+		 */
 		
+		//"POWER"
+		assertEquals(true, chronotimer.getIsPoweredOn());
+		
+		//"NEWRUN"
+		assertEquals(null, chronotimer.getCurrentRun());
+		chronotimer.newRun();
+		assertNotEquals(null, chronotimer.getCurrentRun());
+		
+		//"EVENT IND"
+		assertEquals(null, chronotimer.getRaceType());
+		chronotimer.setRaceType(RaceType.IND);
+		assertEquals(RaceType.IND, chronotimer.getRaceType());
+
+		//"NUM" - Adds racers
+		assertEquals(false, chronotimer.getCurrentRun().containsRacerBibNumberInWaitQueue(167));
+		assertEquals(false, chronotimer.getCurrentRun().containsRacerBibNumberInWaitQueue(166));
+		assertEquals(false, chronotimer.getCurrentRun().containsRacerBibNumberInWaitQueue(200));
+		assertEquals(false, chronotimer.getCurrentRun().containsRacerBibNumberInWaitQueue(201));
+		chronotimer.addRacer(167);
+		chronotimer.addRacer(166);
+		chronotimer.addRacer(200);
+		chronotimer.addRacer(201);
+		assertEquals(true, chronotimer.getCurrentRun().containsRacerBibNumberInWaitQueue(167));
+		assertEquals(true, chronotimer.getCurrentRun().containsRacerBibNumberInWaitQueue(166));
+		assertEquals(true, chronotimer.getCurrentRun().containsRacerBibNumberInWaitQueue(200));
+		assertEquals(true, chronotimer.getCurrentRun().containsRacerBibNumberInWaitQueue(201));
+		
+		//"TRIG" Start
+		// TODO how do we know which racer triggers which???
+		assertEquals(false, chronotimer.getCurrentRun().containsRacerBibNumberInRunningQueue(167));
+		assertEquals(false, chronotimer.getCurrentRun().containsRacerBibNumberInRunningQueue(166));
+		chronotimer.triggerChannel(1);
+		chronotimer.triggerChannel(1);
+		assertEquals(true, chronotimer.getCurrentRun().containsRacerBibNumberInRunningQueue(167));
+		assertEquals(true, chronotimer.getCurrentRun().containsRacerBibNumberInRunningQueue(166));
+		
+		//"TRIG" End
+		assertEquals(false, chronotimer.getCurrentRun().containsRacerBibNumberInEndQueue(167));
+		assertEquals(false, chronotimer.getCurrentRun().containsRacerBibNumberInEndQueue(166));
+		chronotimer.triggerChannel(2);
+		chronotimer.triggerChannel(2);
+		assertEquals(true, chronotimer.getCurrentRun().containsRacerBibNumberInEndQueue(167));
+		assertEquals(true, chronotimer.getCurrentRun().containsRacerBibNumberInEndQueue(166));
+		
+		// TODO how do we test TRIG 4?
+		
+		//"PRINT"
+		// TODO
+		chronotimer.print();
+		
+		//"POWER"
+		assertEquals(true, chronotimer.getIsPoweredOn());
+		chronotimer.togglePower();
+		assertEquals(false, chronotimer.getIsPoweredOn());
+		
+		//"POWER"
+		assertEquals(false, chronotimer.getIsPoweredOn());
+		chronotimer.togglePower();
+		assertEquals(true, chronotimer.getIsPoweredOn());
+		
+		//"NEWRUN"
+		// TODO note that the previous run was never ended !!
+		assertEquals(null, chronotimer.getCurrentRun());
+		chronotimer.newRun();
+		assertNotEquals(null, chronotimer.getCurrentRun());
+		
+		//"POWER"
+		assertEquals(true, chronotimer.getIsPoweredOn());
+		chronotimer.togglePower();
+		assertEquals(false, chronotimer.getIsPoweredOn());
+		
+		//"EXIT"
 	}
 }
