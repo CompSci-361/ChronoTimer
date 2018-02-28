@@ -80,4 +80,7 @@ public class Run {
 	}
 	
 
+	public Racer[] getFinishedRacers() {
+		return endQueue.toArray(new Racer[0]);
+	}
 }
