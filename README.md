@@ -1,3 +1,5 @@
-# Sprint1
+# Chronotimer
 
-This sprint implements a chronotimer and simulator to track Individual races. 
+## Sprint1
+
+This sprint implements a chronotimer and simulator to track individual races. 
