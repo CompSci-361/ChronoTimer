@@ -1,3 +1,4 @@
+package core;
 
 public class Channel {
 	private boolean state;
