@@ -38,6 +38,7 @@ public class Chronotimer {
 	 * Clears the current run, newRun() can now be called
 	 */
 	public void endRun(){
+		//should this call currentRun.cancel?
 		currentRun = null;
 	}
 	
