@@ -40,6 +40,15 @@ public class TestChronoTimer {
 		assertEquals(false, chronotimer.getChannel(2));
 		chronotimer.toggleChannel(2);
 		assertEquals(true, chronotimer.getChannel(2));
+		
+		//todo: handle the "trig 1" * commands
+		
+		//"POWER"
+		assertEquals(true, chronotimer.getIsPower());
+		chronotimer.togglePower();
+		assertEquals(false, chronotimer.getIsPower());
+		
+		//"EXIT"
 	}
 
 }
