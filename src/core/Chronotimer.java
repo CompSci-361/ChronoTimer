@@ -206,5 +206,11 @@ public class Chronotimer {
 		}
 	}
 	
+	/*
+	 * Returns the current run (if any). Otherwise, returns null.
+	 */
+	public Run getCurrentRun() {
+		return currentRun;
+	}
 	
 }
