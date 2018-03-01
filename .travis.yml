@@ -7,4 +7,6 @@ notifications:
 before_script:
   - sudo apt-get install ant-optional
 
-script: ant TestChronoTimer -lib ./lib/junit.jar
+script: 
+  - ant TestChronoTimer -lib ./lib/junit.jar
+  - ant junitreport
