@@ -110,7 +110,7 @@
 
    <!--<taskdef resource="testngtasks" classpathref="testng.class.path"/>
     <target name="testng-test" description="run all testng tests" depends="compile">
-        <!-- Debug output
+         Debug output
                 <property name="test.class.path" refid="test.class.path"/>
                 <echo message="${test.class.path}"/>
         
