@@ -4,3 +4,8 @@ jdk:
 notifications:
   webhooks: https://discordapp.com/api/webhooks/418510885695258654/sTc7ATIEjvUGPr_JUvmpvrFMaRFdf1lUknnflwoUlyTesNdyaiKAT0DzuKqhbtU4Xs5W
   email: false
+
+before_script:
+  - sudo apt-get install ant-optional
+
+script: ant test -lib ./lib/junit.jar
