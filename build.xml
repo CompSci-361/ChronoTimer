@@ -59,8 +59,9 @@
     </target>
     <target name="TestChronoTimer">
         <mkdir dir="${junit.output.dir}"/>
-        <junit fork="yes" printsummary="withOutAndErr">
+        <junit fork="yes" printsummary="withOutAndErr" haltonfailure="yes">
             <formatter type="xml"/>
+        	<formatter type="plain" usefile="false" />
             <test name="testing.TestChronoTimer" todir="${junit.output.dir}"/>
             <jvmarg line="-ea"/>
             <classpath refid="ChronoTimer.classpath"/>
