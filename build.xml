@@ -86,7 +86,7 @@
         </javac>
     </target>
 
-    <target name="junit-test" description="run all junit tests" depends="compile">
+    <target name="test" description="run all junit tests" depends="compile">
         <!-- Debug output
                 <property name="test.class.path" refid="test.class.path"/>
                 <echo message="${test.class.path}"/>
