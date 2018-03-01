@@ -86,7 +86,7 @@
         </javac>
     </target>
 
-    <target name="test" description="run all junit tests" depends="compile">
+    <target name="junit-test" description="run all junit tests" depends="compile">
         <!-- Debug output
                 <property name="test.class.path" refid="test.class.path"/>
                 <echo message="${test.class.path}"/>
@@ -108,16 +108,16 @@
         </junitreport>
     </target>
 
-    <taskdef resource="testngtasks" classpathref="testng.class.path"/>
+   <!--<taskdef resource="testngtasks" classpathref="testng.class.path"/>
     <target name="testng-test" description="run all testng tests" depends="compile">
         <!-- Debug output
                 <property name="test.class.path" refid="test.class.path"/>
                 <echo message="${test.class.path}"/>
-        -->
+        
         <testng classpathref="test.class.path" outputDir="${testng.out}" haltOnFailure="${haltonfailure}" verbose="2" parallel="methods" threadcount="50">
             <classfileset dir="${out}/test/${ant.project.name}" includes="**/*.class"/>
         </testng>
-    </target>
+    </target>-->
 
     <target name="exploded" description="create exploded deployment" depends="testng-test">
         <copy todir="${exploded.classes}">
