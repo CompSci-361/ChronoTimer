@@ -4,6 +4,9 @@
     <property name="version" value="1.6"/>
     <property name="haltonfailure" value="no"/>
 
+    <property name="java.target" value="1.8" />
+    <property name="java.source" value="1.8" />
+
     <property name="out" value="out"/>
 
     <property name="production.src" value="src"/>
