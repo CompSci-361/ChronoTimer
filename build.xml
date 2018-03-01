@@ -43,7 +43,7 @@
         <classpath>
           <path refid="classpath.test" />
           <pathelement location="${test.build.dir}"/>
-          <pathelement location="${test.build.dir}"/>
+          <pathelement location="${test.src.dir}"/>
         </classpath>
         <formatter type="brief" usefile="false" />
         <batchtest>
