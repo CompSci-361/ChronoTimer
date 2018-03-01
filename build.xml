@@ -39,7 +39,7 @@
         <pathelement location="${test.classes}"/>
         <pathelement location="${test.resources}"/>
         <fileset dir="${test.lib}">
-            <include name="**/junit*.jar"/>
+            <include name="lib/junit*.jar"/>
             <include name="**/*test*.jar"/>
         </fileset>
     </path>
@@ -93,7 +93,7 @@
             <formatter type="xml"/>
             <batchtest fork="yes" todir="${junit.out}">
                 <fileset dir="${test.src}">
-                    <include name="**/*Test.java"/>
+                    <include name="**/*Test*.java"/>
                 </fileset>
             </batchtest>
         </junit>
