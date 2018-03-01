@@ -1,6 +1,4 @@
 <!-- https://blog.codecentric.de/en/2012/05/travis-ci-or-how-continuous-integration-will-become-fun-again/ -->
-
-<?xml version="1.0"?>   
 <project name="java-junit-template-project" default="test" basedir=".">
   <property name="main.build.dir" value="build/main" />  
   <property name="main.src.dir" value="src" />
