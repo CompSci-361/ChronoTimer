@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="ChronoTimer" basedir="." default="package">
     <!-- https://stackoverflow.com/a/6423028 -->
-    <property name="version" value="1.6"/>
+    <property name="version" value="1.8"/>
     <property name="haltonfailure" value="no"/>
 
     <property name="java.target" value="1.8" />
