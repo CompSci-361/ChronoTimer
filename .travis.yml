@@ -1,8 +1,7 @@
 language: java
 jdk:
-  - oraclejdk9
+  - oraclejdk8
 notifications:
-  webhooks: https://discordapp.com/api/webhooks/418510885695258654/sTc7ATIEjvUGPr_JUvmpvrFMaRFdf1lUknnflwoUlyTesNdyaiKAT0DzuKqhbtU4Xs5W
   email: false
 
 before_script:
