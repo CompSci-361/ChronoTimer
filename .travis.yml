@@ -8,4 +8,4 @@ notifications:
 before_script:
   - sudo apt-get install ant-optional
 
-script: ant test -lib ./lib/junit.jar
+script: ant junit-test -lib ./lib/junit.jar
