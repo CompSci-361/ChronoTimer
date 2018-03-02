@@ -16,6 +16,7 @@ public class Chronotimer {
 		for(int i = 0; i < 8; i++)
 			channels[i] = new Channel();
 		ourTimer = new Timer();
+		raceType = RaceType.None;
 	}
 	/**
 	 * Puts the Chronotimer back to a default and cleared state
@@ -26,6 +27,7 @@ public class Chronotimer {
 		for(int i = 0; i < 8; i++)
 			channels[i] = new Channel();
 		ourTimer = new Timer();
+		raceType = RaceType.None;
 	}
 	/**
 	 * Creates a new run only if there isn't already a run active
