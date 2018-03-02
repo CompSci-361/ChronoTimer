@@ -42,6 +42,15 @@ public class Chronotimer {
 		case IND:
 			currentRun = new IndRun();
 			break;
+		case PARIND:
+			currentRun = new ParIndRun();
+			break;
+		case GRP:
+			currentRun = new GrpRun();
+			break;
+		case PARGRP:
+			currentRun = new ParGrpRun();
+			break;
 		}
 	}
 	/**
