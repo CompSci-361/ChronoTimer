@@ -11,7 +11,7 @@ public class Timer {
 	 */
 	public Timer() {
 		setTime=0.0;
-		oldSystemTime=0.0;
+		oldSystemTime=System.currentTimeMillis();
 	}
 	/**
 	 * 
