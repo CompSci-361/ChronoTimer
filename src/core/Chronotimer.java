@@ -34,7 +34,15 @@ public class Chronotimer {
 	 */
 	public void newRun(){
 		if(currentRun != null) System.out.println("Must be starting a new run by ending one first or after initial power on");
-		currentRun = new Run();
+		switch(raceType) {
+		case None:
+			//throw an exception?
+			System.out.println("A race type must be selected first!");
+			return;
+		case IND:
+			currentRun = new IndRun();
+			break;
+		}
 	}
 	/**
 	 * Clears the current run, newRun() can now be called
