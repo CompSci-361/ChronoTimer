@@ -29,12 +29,24 @@ public class Chronotimer {
 		ourTimer = new Timer();
 		raceType = RaceType.None;
 	}
+	
 	/**
 	 * Creates a new run only if there isn't already a run active
 	 */
 	public void newRun(){
 		if(currentRun != null) System.out.println("Must be starting a new run by ending one first or after initial power on");
-		switch(raceType) {
+		setRunBasedOnRaceType(raceType);
+	}
+	/**
+	 * Creates a new run only if there isn't already a run active
+	 */
+	public void newRun(RaceType selectedType){
+		if(currentRun != null) System.out.println("Must be starting a new run by ending one first or after initial power on");
+		setRunBasedOnRaceType(selectedType);
+	}
+	
+	private void setRunBasedOnRaceType(RaceType selectedType) {
+		switch(selectedType) {
 		case None:
 			//throw an exception?
 			System.out.println("A race type must be selected first!");
