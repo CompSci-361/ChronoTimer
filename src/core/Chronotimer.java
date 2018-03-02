@@ -16,6 +16,7 @@ public class Chronotimer {
 		for(int i = 0; i < 8; i++)
 			channels[i] = new Channel();
 		ourTimer = new Timer();
+		raceType = RaceType.None;
 	}
 	/**
 	 * Puts the Chronotimer back to a default and cleared state
@@ -26,13 +27,43 @@ public class Chronotimer {
 		for(int i = 0; i < 8; i++)
 			channels[i] = new Channel();
 		ourTimer = new Timer();
+		raceType = RaceType.None;
 	}
+	
 	/**
 	 * Creates a new run only if there isn't already a run active
 	 */
 	public void newRun(){
 		if(currentRun != null) System.out.println("Must be starting a new run by ending one first or after initial power on");
-		currentRun = new Run();
+		setRunBasedOnRaceType(raceType);
+	}
+	/**
+	 * Creates a new run only if there isn't already a run active
+	 */
+	public void newRun(RaceType selectedType){
+		if(currentRun != null) System.out.println("Must be starting a new run by ending one first or after initial power on");
+		setRunBasedOnRaceType(selectedType);
+	}
+	
+	private void setRunBasedOnRaceType(RaceType selectedType) {
+		switch(selectedType) {
+		case None:
+			//throw an exception?
+			System.out.println("A race type must be selected first!");
+			return;
+		case IND:
+			currentRun = new IndRun();
+			break;
+		case PARIND:
+			currentRun = new ParIndRun();
+			break;
+		case GRP:
+			currentRun = new GrpRun();
+			break;
+		case PARGRP:
+			currentRun = new ParGrpRun();
+			break;
+		}
 	}
 	/**
 	 * Clears the current run, newRun() can now be called
