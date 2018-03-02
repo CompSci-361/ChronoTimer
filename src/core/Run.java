@@ -4,10 +4,10 @@ import java.util.Deque;
 //import java.util.LinkedList;
 //import java.util.Queue;
 
-public class Run {
-	private Deque<Racer> waitQueue;
-	private Deque<Racer> runningQueue;
-	private Deque<Racer> endQueue;
+public abstract class Run {
+	protected Deque<Racer> waitQueue;
+	protected Deque<Racer> runningQueue;
+	protected Deque<Racer> endQueue;
 	
 	public Run(){
 		this.waitQueue = new ArrayDeque<Racer>();
@@ -20,50 +20,27 @@ public class Run {
 	 * Cannot add a racer if a racer with the same bibNumber already Exists
 	 * @param bibNumber
 	 */
-	public void addRacer(int bibNumber){
-		Racer racer = new Racer(bibNumber);
-		if(waitQueue.contains(racer)||runningQueue.contains(racer)||endQueue.contains(racer)){
-			System.out.println("Cannot have more than one racer with the same bib number");
-			return;
-		}
-		waitQueue.add(racer);
-	}
+	public abstract void addRacer(int bibNumber);
 	
 	/**
 	 * Gives start time to the first Racer in the queue
 	 * Adds them to the running queue indicating that the racer still needs an endtime
 	 */
-	public void setRacerStartTime(){
-		Racer headWait = waitQueue.poll();
-		headWait.setStartTime();
-		runningQueue.add(headWait);
-	}
+	public abstract void setRacerStartTime();
 	/**
 	 * Gives end time  to the first Racer in the running queue
 	 * Adds the Racer to the endQueue indicating that the Racer is complete and finished
 	 */
-	public void setRacerEndTime() {
-		Racer headRunning = runningQueue.poll();
-		headRunning.setEndTime();
-		endQueue.add(headRunning);
-	}
+	public abstract void setRacerEndTime();
 	/**
 	 * Sets the end time of a Racer that is running to DNF(-1)
 	 */
-	public void giveDnf() {
-		Racer headRunning = runningQueue.poll();
-		headRunning.setDnf();
-		endQueue.add(headRunning);
-	}
+	public abstract void giveDnf();
 	/**
 	 * Takes the first Racer out of the running queue and places them at the front of the waitQueue
 	 * Clears that Racers start time 
 	 */
-	public void cancel() {
-		Racer headRunning = runningQueue.poll();
-		headRunning.clearStartTime();
-		waitQueue.addFirst(headRunning);
-	}
+	public abstract void cancel();
 	/**
 	 * Appends all finished Racers' times in the format:
 	 * Racer XX1 : Start Time = Hours:Min:Seconds : End Time = Hours:Min:Seconds \n
