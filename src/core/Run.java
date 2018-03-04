@@ -127,4 +127,18 @@ public class Run {
 		
 		return false;
 	}
+	
+	public void swap(){
+		if(runningQueue.size() < 2)
+			System.out.println("Running queue does not have enough racers to swap them.");
+		else{
+			Racer oldFirst = runningQueue.pop();
+			Racer newFirst = runningQueue.pop();
+			
+			//switch the current racer in first with the second racer 
+			//but make sure they're still at the head of the queue
+			runningQueue.addFirst(oldFirst);
+			runningQueue.addFirst(newFirst);
+		}
+	}
 }

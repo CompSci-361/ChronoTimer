@@ -224,4 +224,8 @@ public class Chronotimer {
 		return currentRun;
 	}
 	
+	public void swap(){
+		currentRun.swap();
+	}
+	
 }
