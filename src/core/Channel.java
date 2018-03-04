@@ -28,6 +28,10 @@ public class Channel {
 	public void setConnect(SensorType sensor){
 		sensorType = sensor;
 	}
+	
+	public void setDisconnect(){
+		sensorType = SensorType.NONE;
+	}
 	/**
 	 * @return The type of sensor connected to this channel, can be null if not connected
 	 */
