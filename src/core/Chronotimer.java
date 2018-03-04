@@ -104,12 +104,6 @@ public class Chronotimer {
 			return;
 		}
 		this.raceType = event;
-		
-		switch(event){
-			case IND:{
-				
-			}
-		}
 	}
 	
 	/**
