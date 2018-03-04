@@ -104,7 +104,7 @@ public class Simulator {
 	 * Based on the value of parameters, will execute different commands
 	 * @param time time of command, only used for reading from file
 	 * @param cmd - The Command
-	 * @param param - The Parameter of the Command
+	 * @param param - The Parameter of the Command, further specifications
 	 * @param extra - Extra needs to be used when reading in an extra long command, like COMM
 	 */
 	public static void processCommands(String time, String cmd, String param, String extra) {
@@ -148,6 +148,11 @@ public class Simulator {
 			case "CONN":{
 				chrono.setConnect(Integer.parseInt(extra), SensorType.valueOf(param));
 				System.out.println(chrono.getSensorType(Integer.parseInt(extra)) + " is connected to channel " + extra);
+				break;
+			}
+			case "DISC":{
+				chrono.setDisconnect(Integer.parseInt(param));
+				System.out.println(chrono.getSensorType(Integer.parseInt(param)) + " is connected to channel " + param);
 				break;
 			}
 			case "TRIG": {

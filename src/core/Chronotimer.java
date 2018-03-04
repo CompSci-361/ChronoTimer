@@ -138,6 +138,14 @@ public class Chronotimer {
 		}
 		channels[channelNumber-1].setConnect(sensorType);
 	}
+	
+	public void setDisconnect(int channelNumber){
+		if(!getIsPoweredOn()){
+			System.out.println("Power must be enabled to add racer to run");
+			return;
+		}
+		channels[channelNumber-1].setDisconnect();
+	}
 	/**
 	 * Gets the SensoreType of the channel
 	 * @param channelNumber
