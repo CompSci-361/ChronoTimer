@@ -46,15 +46,6 @@ public abstract class Run {
 	 * Racer XX1 : Start Time = Hours:Min:Seconds : End Time = Hours:Min:Seconds \n
 	 * Racer XX2 : Start Time = Hours:Min:Seconds : End Time = Hours:Min:Seconds \n
 	 */
-	@Override
-	public String toString(){
-		String str= "";
-		Object[] printArray = endQueue.toArray();
-		for(int i = 0; i < printArray.length; i++){
-			str += printArray[i].toString() + "\n";
-		}
-		return str;
-	}
 	
 	/**
 	 * Gets an array of all the racers that have finished.
@@ -117,5 +108,15 @@ public abstract class Run {
 			runningQueue.addFirst(oldFirst);
 			runningQueue.addFirst(newFirst);
 		}
+	}
+	
+	@Override
+	public String toString(){
+		String str= "";
+		Object[] printArray = endQueue.toArray();
+		for(int i = 0; i < printArray.length; i++){
+			str += printArray[i].toString() + "\n";
+		}
+		return str;
 	}
 }
