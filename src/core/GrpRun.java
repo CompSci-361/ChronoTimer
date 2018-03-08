@@ -46,4 +46,34 @@ public class GrpRun extends Run {
 		//todo
 		return;
 	}
+	@Override
+	public Racer[] getFinishedRacers() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public Racer[] getCurrentRunningRacers() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public boolean containsRacerBibNumberInWaitQueue(int bibNumber) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	@Override
+	public boolean containsRacerBibNumberInRunningQueue(int bibNumber) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	@Override
+	public boolean containsRacerBibNumberInEndQueue(int bibNumber) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
