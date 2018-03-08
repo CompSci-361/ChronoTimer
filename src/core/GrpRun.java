@@ -16,7 +16,7 @@ public class GrpRun extends Run {
 	 * Adds them to the running queue indicating that the racer still needs an endtime
 	 */
 	@Override
-	public void setRacerStartTime(){
+	public void setRacerStartTime(int triggerNumber){
 		//todo
 		return;
 	}
@@ -25,7 +25,7 @@ public class GrpRun extends Run {
 	 * Adds the Racer to the endQueue indicating that the Racer is complete and finished
 	 */
 	@Override
-	public void setRacerEndTime() {
+	public void setRacerEndTime(int triggerNumber) {
 		//todo
 		return;
 	}

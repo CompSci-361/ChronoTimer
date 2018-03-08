@@ -16,7 +16,7 @@ public class Chronotimer {
 		for(int i = 0; i < 8; i++)
 			channels[i] = new Channel();
 		ourTimer = new Timer();
-		raceType = RaceType.None;
+		raceType = RaceType.IND;
 	}
 	
 	/**
@@ -212,10 +212,10 @@ public class Chronotimer {
 			return;
 		}
 		if(channelNumber % 2 == 0) {
-			currentRun.setRacerEndTime();
+			currentRun.setRacerEndTime(channelNumber);
 		}
 		else {
-			currentRun.setRacerStartTime();
+			currentRun.setRacerStartTime(channelNumber);
 		}
 	}
 	
@@ -269,7 +269,10 @@ public class Chronotimer {
 	 * Swaps the two racers at the start of the running queue
 	 */
 	public void swap(){
-		currentRun.swap();
+		if(currentRun instanceof IndRun)
+			((IndRun) currentRun).swap();
+		else
+			System.out.println("Swap is only used for IndRun");
 	}
 	
 	/**
