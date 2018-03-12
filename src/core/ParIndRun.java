@@ -70,32 +70,54 @@ public class ParIndRun extends Run {
 	
 	@Override
 	public Racer[] getFinishedRacers() {
-		// TODO Auto-generated method stub
-		return null;
+		return endQueue.toArray(new Racer[0]);
 	}
 	@Override
 	public Racer[] getCurrentRunningRacers() {
-		// TODO Auto-generated method stub
-		return null;
+		Racer [] first = run1.runningQueue.toArray(new Racer[0]);
+		Racer [] second = run2.runningQueue.toArray(new Racer[0]);
+		
+		Racer [] newArray = new Racer[first.length+second.length];
+		System.arraycopy(first, 0, newArray, 0, first.length);
+		System.arraycopy(second, 0, newArray, first.length, second.length );
+		
+		return newArray;
 	}
 	@Override
 	public boolean containsRacerBibNumberInWaitQueue(int bibNumber) {
-		// TODO Auto-generated method stub
+		for(Racer racer : run1.waitQueue.toArray(new Racer[0])) {
+			if (racer.getBibNumber() == bibNumber) return true;
+		}
+		for(Racer racer : run2.waitQueue.toArray(new Racer[0])){
+			if (racer.getBibNumber() == bibNumber) return true;
+		}
 		return false;
 	}
 	@Override
 	public boolean containsRacerBibNumberInRunningQueue(int bibNumber) {
-		// TODO Auto-generated method stub
+		for(Racer racer : run1.runningQueue.toArray(new Racer[0])) {
+			if (racer.getBibNumber() == bibNumber) return true;
+		}
+		for(Racer racer : run2.runningQueue.toArray(new Racer[0])){
+			if (racer.getBibNumber() == bibNumber) return true;
+		}
 		return false;
 	}
 	@Override
 	public boolean containsRacerBibNumberInEndQueue(int bibNumber) {
-		// TODO Auto-generated method stub
+		for(Racer racer : endQueue.toArray(new Racer[0])) {
+			if (racer.getBibNumber() == bibNumber) return true;
+		}
+		
 		return false;
 	}
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return null;
+		String str= "";
+		Object[] printArray = endQueue.toArray();
+		for(int i = 0; i < printArray.length; i++){
+			str += printArray[i].toString() + "\n";
+		}
+		return str;
 	}
 }
