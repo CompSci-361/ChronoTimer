@@ -43,10 +43,10 @@ public class ParIndRun extends Run {
 	 */
 	@Override
 	public void setRacerEndTime(int triggerNumber) {
-		if(triggerNumber == 1){
+		if(triggerNumber == 2){
 			run1.setRacerEndTime(triggerNumber);
 		}
-		else if(triggerNumber == 3){
+		else if(triggerNumber == 4){
 			run2.setRacerEndTime(triggerNumber);
 		}
 	}
