@@ -68,6 +68,8 @@ public abstract class Run {
 	 */
 	public abstract Racer[] getCurrentRunningRacers();
 	
+	public abstract Racer[] getCurrentWaitingRacers();
+	
 	public abstract boolean containsRacerBibNumberInWaitQueue(int bibNumber);
 	
 	public abstract boolean containsRacerBibNumberInRunningQueue(int bibNumber);

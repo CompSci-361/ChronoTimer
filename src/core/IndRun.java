@@ -140,4 +140,10 @@ public class IndRun extends Run {
 		}
 		return str;
 	}
+
+	@Override
+	public Racer[] getCurrentWaitingRacers() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

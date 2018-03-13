@@ -76,4 +76,9 @@ public class GrpRun extends Run {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	@Override
+	public Racer[] getCurrentWaitingRacers() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

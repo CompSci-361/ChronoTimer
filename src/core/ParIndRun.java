@@ -5,6 +5,11 @@ public class ParIndRun extends Run {
 	private IndRun run1;
 	private IndRun run2;
 	
+	public ParIndRun(){
+		run1 = new IndRun();
+		run2 = new IndRun();
+	}
+	
 	/**
 	 * Adds a racer with the param as the attribute
 	 * Cannot add a racer if a racer with the same bibNumber already Exists
@@ -83,6 +88,19 @@ public class ParIndRun extends Run {
 		
 		return newArray;
 	}
+	
+	@Override
+	public Racer[] getCurrentWaitingRacers() {
+		Racer [] first = run1.waitQueue.toArray(new Racer[0]);
+		Racer [] second = run2.waitQueue.toArray(new Racer[0]);
+		
+		Racer [] newArray = new Racer[first.length+second.length];
+		System.arraycopy(first, 0, newArray, 0, first.length);
+		System.arraycopy(second, 0, newArray, first.length, second.length );
+		
+		return newArray;
+	}
+	
 	@Override
 	public boolean containsRacerBibNumberInWaitQueue(int bibNumber) {
 		for(Racer racer : run1.waitQueue.toArray(new Racer[0])) {
