@@ -97,6 +97,11 @@ public class IndRun extends Run {
 		return runningQueue.toArray(new Racer[0]);
 	}
 	
+	@Override
+	public Racer[] getCurrentWaitingRacers() {
+		return waitQueue.toArray(new Racer[0]);
+	}
+	
 	public boolean containsRacerBibNumberInWaitQueue(int bibNumber) {
 		//a long name, i know.
 		
@@ -141,9 +146,4 @@ public class IndRun extends Run {
 		return str;
 	}
 
-	@Override
-	public Racer[] getCurrentWaitingRacers() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }
