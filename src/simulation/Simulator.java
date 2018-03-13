@@ -182,8 +182,9 @@ public class Simulator {
 				chrono.addRacer(Integer.parseInt(param));
 				System.out.println("Current racers in wait queue are: ");
 				for(int i = 0; i < chrono.getCurrentRun().getCurrentWaitingRacers().length; i++){
-					System.out.print(chrono.getCurrentRun().getCurrentWaitingRacers()[i].toString() + " ");
+					System.out.print("Racer" + chrono.getCurrentRun().getCurrentWaitingRacers()[i].getBibNumber() + " ");
 				}
+				System.out.println();
 				break;
 			}
 			case "START": {
