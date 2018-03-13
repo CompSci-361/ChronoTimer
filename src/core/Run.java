@@ -5,14 +5,20 @@ import java.util.Deque;
 //import java.util.Queue;
 
 public abstract class Run {
-	protected Deque<Racer> waitQueue;
-	protected Deque<Racer> runningQueue;
+	protected int runNumber;
 	protected Deque<Racer> endQueue;
 	
 	public Run(){
-		this.waitQueue = new ArrayDeque<Racer>();
-		this.runningQueue = new ArrayDeque<Racer>();
+		this.runNumber = 1;
 		this.endQueue = new ArrayDeque<Racer>();
+	}
+	
+	public void setRunNumber(){
+		++this.runNumber;
+	}
+	
+	public int getRunNumber(){
+		return this.runNumber;
 	}
 	
 	/**
@@ -25,13 +31,15 @@ public abstract class Run {
 	/**
 	 * Gives start time to the first Racer in the queue
 	 * Adds them to the running queue indicating that the racer still needs an endtime
+	 * @param triggerNumber TODO
 	 */
-	public abstract void setRacerStartTime();
+	public abstract void setRacerStartTime(int triggerNumber);
 	/**
 	 * Gives end time  to the first Racer in the running queue
 	 * Adds the Racer to the endQueue indicating that the Racer is complete and finished
+	 * @param triggerNumber TODO
 	 */
-	public abstract void setRacerEndTime();
+	public abstract void setRacerEndTime(int triggerNumber);
 	/**
 	 * Sets the end time of a Racer that is running to DNF(-1)
 	 */
@@ -41,6 +49,7 @@ public abstract class Run {
 	 * Clears that Racers start time 
 	 */
 	public abstract void cancel();
+	
 	/**
 	 * Appends all finished Racers' times in the format:
 	 * Racer XX1 : Start Time = Hours:Min:Seconds : End Time = Hours:Min:Seconds \n
@@ -51,72 +60,22 @@ public abstract class Run {
 	 * Gets an array of all the racers that have finished.
 	 * @return an array of all the racers that have finished.
 	 */
-	public Racer[] getFinishedRacers() {
-		return endQueue.toArray(new Racer[0]);
-	}
+	public abstract Racer[] getFinishedRacers();
 	
 	/**
 	 * Gets the current racer who is running.
 	 * @return the current racer who is running.
 	 */
-	public Racer getCurrentRunningRacer() {
-		return runningQueue.peek();
-	}
+	public abstract Racer[] getCurrentRunningRacers();
 	
-	public boolean containsRacerBibNumberInWaitQueue(int bibNumber) {
-		//a long name, i know.
-		
-		//there is a better way to do this but don't have enough time.
-		for(Racer racer : waitQueue.toArray(new Racer[0])) {
-			if (racer.getBibNumber() == bibNumber) return true;
-		}
-		
-		return false;
-	}
+	public abstract Racer[] getCurrentWaitingRacers();
 	
-	public boolean containsRacerBibNumberInRunningQueue(int bibNumber) {
-		//a long name, i know.
-		
-		//there is a better way to do this but don't have enough time.
-		for(Racer racer : runningQueue.toArray(new Racer[0])) {
-			if (racer.getBibNumber() == bibNumber) return true;
-		}
-		
-		return false;
-	}
+	public abstract boolean containsRacerBibNumberInWaitQueue(int bibNumber);
 	
-	public boolean containsRacerBibNumberInEndQueue(int bibNumber) {
-		//a long name, i know.
-		
-		//there is a better way to do this but don't have enough time.
-		for(Racer racer : endQueue.toArray(new Racer[0])) {
-			if (racer.getBibNumber() == bibNumber) return true;
-		}
-		
-		return false;
-	}
+	public abstract boolean containsRacerBibNumberInRunningQueue(int bibNumber);
 	
-	public void swap(){
-		if(runningQueue.size() < 2)
-			System.out.println("Running queue does not have enough racers to swap them.");
-		else{
-			Racer oldFirst = runningQueue.pop();
-			Racer newFirst = runningQueue.pop();
-			
-			//switch the current racer in first with the second racer 
-			//but make sure they're still at the head of the queue
-			runningQueue.addFirst(oldFirst);
-			runningQueue.addFirst(newFirst);
-		}
-	}
-	
-	@Override
-	public String toString(){
-		String str= "";
-		Object[] printArray = endQueue.toArray();
-		for(int i = 0; i < printArray.length; i++){
-			str += printArray[i].toString() + "\n";
-		}
-		return str;
-	}
+	public abstract boolean containsRacerBibNumberInEndQueue(int bibNumber);
+		
+	public abstract String toString();
+
 }

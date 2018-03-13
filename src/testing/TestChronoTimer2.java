@@ -29,7 +29,7 @@ public class TestChronoTimer2 {
 		
 		chronotimer.swap();
 		
-		assertEquals(11, chronotimer.getCurrentRun().getCurrentRunningRacer().getBibNumber());
+		assertEquals(11, chronotimer.getCurrentRun().getCurrentRunningRacers()[0].getBibNumber());
 	}
 	
 	@Test
@@ -55,19 +55,18 @@ public class TestChronoTimer2 {
 		
 		chronotimer.swap();
 		
-		assertEquals(11, chronotimer.getCurrentRun().getCurrentRunningRacer().getBibNumber());
+		assertEquals(11, chronotimer.getCurrentRun().getCurrentRunningRacers()[0].getBibNumber());
 		
 		chronotimer.triggerChannel(2);
 		chronotimer.triggerChannel(2);
 		
 		chronotimer.swap();
 		
-		assertEquals(13, chronotimer.getCurrentRun().getCurrentRunningRacer().getBibNumber());
+		assertEquals(13, chronotimer.getCurrentRun().getCurrentRunningRacers()[0].getBibNumber());
 		
 		chronotimer.triggerChannel(2);
 		chronotimer.triggerChannel(2);
 		
-		assertEquals(null, chronotimer.getCurrentRun().getCurrentRunningRacer());
-
+		assertEquals(0, chronotimer.getCurrentRun().getCurrentRunningRacers().length);
 	}
 }

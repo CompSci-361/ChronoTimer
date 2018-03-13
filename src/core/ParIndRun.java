@@ -1,6 +1,15 @@
 package core;
 
 public class ParIndRun extends Run {
+	
+	private IndRun run1;
+	private IndRun run2;
+	
+	public ParIndRun(){
+		run1 = new IndRun();
+		run2 = new IndRun();
+	}
+	
 	/**
 	 * Adds a racer with the param as the attribute
 	 * Cannot add a racer if a racer with the same bibNumber already Exists
@@ -8,34 +17,45 @@ public class ParIndRun extends Run {
 	 */
 	@Override
 	public void addRacer(int bibNumber){
-		//todo
-		return;
+		if(run1.waitQueue.size() < run2.waitQueue.size()){
+			run1.addRacer(bibNumber);
+		}
+		else{
+			run2.addRacer(bibNumber);
+		}
 	}
 	/**
 	 * Gives start time to the first Racer in the queue
 	 * Adds them to the running queue indicating that the racer still needs an endtime
 	 */
 	@Override
-	public void setRacerStartTime(){
-		//todo
-		return;
+	public void setRacerStartTime(int triggerNumber){
+		if(triggerNumber == 1){
+			run1.setRacerStartTime(triggerNumber);
+		}
+		else if(triggerNumber == 3){
+			run2.setRacerStartTime(triggerNumber);
+		}
 	}
 	/**
 	 * Gives end time  to the first Racer in the running queue
 	 * Adds the Racer to the endQueue indicating that the Racer is complete and finished
 	 */
 	@Override
-	public void setRacerEndTime() {
-		//todo
-		return;
+	public void setRacerEndTime(int triggerNumber) {
+		if(triggerNumber == 2){
+			run1.setRacerEndTime(triggerNumber);
+		}
+		else if(triggerNumber == 4){
+			run2.setRacerEndTime(triggerNumber);
+		}
 	}
 	/**
 	 * Sets the end time of a Racer that is running to DNF(-1)
 	 */
 	@Override
 	public void giveDnf() {
-		//todo
-		return;
+		compareRun(run1, run2).cancel();
 	}
 	/**
 	 * Takes the first Racer out of the running queue and places them at the front of the waitQueue
@@ -43,7 +63,79 @@ public class ParIndRun extends Run {
 	 */
 	@Override
 	public void cancel() {
-		//todo
-		return;
+		compareRun(run1, run2).cancel();
+	}
+	
+	private Run compareRun(Run run1, Run run2){
+		if(run1.getCurrentRunningRacers()[0].getStartTime() < run2.getCurrentRunningRacers()[0].getStartTime())
+			return run1;
+		else
+			return run2;
+	}
+	
+	@Override
+	public Racer[] getFinishedRacers() {
+		return endQueue.toArray(new Racer[0]);
+	}
+	@Override
+	public Racer[] getCurrentRunningRacers() {
+		Racer [] first = run1.runningQueue.toArray(new Racer[0]);
+		Racer [] second = run2.runningQueue.toArray(new Racer[0]);
+		
+		Racer [] newArray = new Racer[first.length+second.length];
+		System.arraycopy(first, 0, newArray, 0, first.length);
+		System.arraycopy(second, 0, newArray, first.length, second.length );
+		
+		return newArray;
+	}
+	
+	@Override
+	public Racer[] getCurrentWaitingRacers() {
+		Racer [] first = run1.waitQueue.toArray(new Racer[0]);
+		Racer [] second = run2.waitQueue.toArray(new Racer[0]);
+		
+		Racer [] newArray = new Racer[first.length+second.length];
+		System.arraycopy(first, 0, newArray, 0, first.length);
+		System.arraycopy(second, 0, newArray, first.length, second.length );
+		
+		return newArray;
+	}
+	
+	@Override
+	public boolean containsRacerBibNumberInWaitQueue(int bibNumber) {
+		for(Racer racer : run1.waitQueue.toArray(new Racer[0])) {
+			if (racer.getBibNumber() == bibNumber) return true;
+		}
+		for(Racer racer : run2.waitQueue.toArray(new Racer[0])){
+			if (racer.getBibNumber() == bibNumber) return true;
+		}
+		return false;
+	}
+	@Override
+	public boolean containsRacerBibNumberInRunningQueue(int bibNumber) {
+		for(Racer racer : run1.runningQueue.toArray(new Racer[0])) {
+			if (racer.getBibNumber() == bibNumber) return true;
+		}
+		for(Racer racer : run2.runningQueue.toArray(new Racer[0])){
+			if (racer.getBibNumber() == bibNumber) return true;
+		}
+		return false;
+	}
+	@Override
+	public boolean containsRacerBibNumberInEndQueue(int bibNumber) {
+		for(Racer racer : endQueue.toArray(new Racer[0])) {
+			if (racer.getBibNumber() == bibNumber) return true;
+		}
+		
+		return false;
+	}
+	@Override
+	public String toString() {
+		String str= "";
+		Object[] printArray = endQueue.toArray();
+		for(int i = 0; i < printArray.length; i++){
+			str += printArray[i].toString() + "\n";
+		}
+		return str;
 	}
 }

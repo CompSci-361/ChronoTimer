@@ -166,7 +166,7 @@ public class Simulator {
 				break;
 			}
 			case "NEWRUN":{
-				System.out.println("New Run selected.");
+				System.out.println("New Run selected is " + chrono.getRaceType());
 				chrono.newRun();
 				break;
 			}
@@ -180,6 +180,11 @@ public class Simulator {
 			}
 			case "NUM":{
 				chrono.addRacer(Integer.parseInt(param));
+				System.out.println("Current racers in wait queue are: ");
+				for(int i = 0; i < chrono.getCurrentRun().getCurrentWaitingRacers().length; i++){
+					System.out.print("Racer" + chrono.getCurrentRun().getCurrentWaitingRacers()[i].getBibNumber() + " ");
+				}
+				System.out.println();
 				break;
 			}
 			case "START": {
@@ -190,6 +195,10 @@ public class Simulator {
 			case "FINISH": {
 				chrono.finish();
 				System.out.println("Trigger Channel " + 2);
+				break;
+			}
+			case "EXPORT":{
+				//TODO
 				break;
 			}
 		}

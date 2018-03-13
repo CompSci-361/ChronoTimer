@@ -132,7 +132,7 @@ public class TestChronoTimer {
 		Run currentRun = chronotimer.getCurrentRun();
 		
 		System.out.println("Checking for no racers...");
-		assertEquals(null, currentRun.getCurrentRunningRacer());
+		assertEquals(null, currentRun.getCurrentRunningRacers());
 		
 		int racerOneBib = 111;
 		
@@ -161,7 +161,7 @@ public class TestChronoTimer {
 
 		System.out.println("Starting run... (Triggered channel 1)");
 		chronotimer.start(); //start the run - equivalent to triggerChannel(1)
-		assertNotEquals(null, currentRun.getCurrentRunningRacer());
+		assertNotEquals(null, currentRun.getCurrentRunningRacers());
 
 		
 		//ensure that the racer is in the "running" queue
