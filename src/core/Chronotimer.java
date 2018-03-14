@@ -1,5 +1,17 @@
 package core;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.attribute.FileAttribute;
+
+import com.google.gson.Gson;
+
 public class Chronotimer {
 	
 	private Run currentRun;
@@ -149,6 +161,37 @@ public class Chronotimer {
 	 */
 	public void endRun(){
 		//should this call currentRun.cancel?
+		
+		if (currentRun != null) {
+			
+			//make the "exports" folder
+			try {
+				Files.createDirectories(Paths.get("exports"));
+			} catch (Exception ex) {
+				
+			}
+			
+			//serialize the current run to json
+			Gson g = new Gson();
+			String json = g.toJson(currentRun);
+			
+			//write the json to "/exports/RUN###.json" (relative path)
+			FileWriter fileWriter;
+			try {
+				fileWriter = new FileWriter("exports/RUN" + currentRun.getRunNumber() + ".json"); //can be changed to .txt but .json is technically correct
+				BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+				
+				bufferedWriter.append(json);
+				
+				bufferedWriter.flush();
+				bufferedWriter.close();
+				fileWriter.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
 		currentRun = null;
 	}
 	
