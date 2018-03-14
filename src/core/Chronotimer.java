@@ -299,23 +299,6 @@ public class Chronotimer {
 		return ourTimer.formatTime(ourTimer.getSystemTime());
 	}
 	
-	/**
-	 * Adds a Racer to the current race
-	 * Power must be on
-	 * There must be an active Run
-	 * @param bibNumber - Number given to the Racer
-	 */
-	public void addRacer(int bibNumber){
-		if(!getIsPoweredOn()){
-			System.out.println("Power must be enabled to add racer to run");
-			return;
-		}
-		if(isRun == false){
-			System.out.println("Current run must not be null");
-			return;
-		}
-		currentRun.addRacer(bibNumber);
-	}
 	
 	/**
 	 * Gives a runner from our currentRun a DNF
