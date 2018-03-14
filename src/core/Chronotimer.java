@@ -241,11 +241,11 @@ public class Chronotimer {
 		currentRun = null;
 	}
 	
-	public void exportRun(int runNumber) {
+	public void exportRun(int requestedRunNumber) {
 		Iterator<Run> runIter = runHistory.iterator();
 		while (runIter.hasNext()) {
 			Run next = runIter.next();
-			if (next.getRunNumber() == runNumber) {
+			if (next.getRunNumber() == requestedRunNumber) {
 				exportRun(next);
 				break;
 			}
