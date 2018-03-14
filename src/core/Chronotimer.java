@@ -246,7 +246,7 @@ public class Chronotimer {
 			//write the json to "/exports/RUN###.json" (relative path)
 			FileWriter fileWriter;
 			try {
-				fileWriter = new FileWriter("exports/RUN" + currentRun.getRunNumber() + ".json"); //can be changed to .txt but .json is technically correct
+				fileWriter = new FileWriter("exports/RUN" + this.runNumber + ".json"); //can be changed to .txt but .json is technically correct
 				BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
 				
 				bufferedWriter.append(json);
