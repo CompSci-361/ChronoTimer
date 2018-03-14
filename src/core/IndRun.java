@@ -12,6 +12,11 @@ public class IndRun extends Run {
 		this.waitQueue = new ArrayDeque<Racer>();
 		this.runningQueue = new ArrayDeque<Racer>();
 	}
+	public IndRun(int runNum){
+		this.waitQueue = new ArrayDeque<Racer>();
+		this.runningQueue = new ArrayDeque<Racer>();
+		this.runNumber = runNum;
+	}
 	
 	/**
 	 * Adds a racer with the param as the attribute

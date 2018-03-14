@@ -172,9 +172,9 @@ public class Chronotimer {
 	 */
 	public void newRun(RaceType selectedType){
 		if(currentRun == null) System.out.println("Must be starting a new run by ending one first or after initial power on");
-		setRunBasedOnRaceType(selectedType);
-		++runNumber;	
-		currentRun.setRunNumber(runNumber);
+		++runNumber;
+		setRunBasedOnRaceType(selectedType);	
+		//currentRun.setRunNumber(runNumber);
 	}
 	
 	/**
@@ -206,16 +206,16 @@ public class Chronotimer {
 			System.out.println("A race type must be selected first!");
 			return;
 		case IND:
-			currentRun = new IndRun();
+			currentRun = new IndRun(runNumber);
 			break;
 		case PARIND:
-			currentRun = new ParIndRun();
+			currentRun = new ParIndRun(runNumber);
 			break;
 		case GRP:
-			currentRun = new GrpRun();
+			currentRun = new GrpRun(runNumber);
 			break;
 		case PARGRP:
-			currentRun = new ParGrpRun();
+			currentRun = new ParGrpRun(runNumber);
 			break;
 		}
 	}
