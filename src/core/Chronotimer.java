@@ -5,7 +5,9 @@ public class Chronotimer {
 	private Run currentRun;
 	private RaceType raceType;
 	private boolean isPower;
+	private boolean isRun;
 	private Channel[] channels;
+	private int runNumber;
 	
 	public static Timer ourTimer;
 
@@ -17,23 +19,31 @@ public class Chronotimer {
 			channels[i] = new Channel();
 		ourTimer = new Timer();
 		raceType = RaceType.IND;
+		runNumber = 0;
 	}
 	
 	/**
 	 * Puts the Chronotimer back to a default and cleared state
+	 * except it doesn't  hange the information needed for the Gson files
 	 */
 	public void reset(){
 		currentRun = null;
 		for(int i = 0; i < 8; i++)
 			channels[i] = new Channel();
 		ourTimer = new Timer();
-		raceType = RaceType.None;
+		raceType = RaceType.IND;
+		//runNumber = 0;
 	}
 	
 	/**
 	 * Set the state of Power to ON/OFF
+	 * Resets Everything
 	 */
 	public void togglePower(){
+		if(isPower == true) {
+			reset();
+			runNumber = 0;
+		}
 		this.isPower = !isPower;
 	}
 	
@@ -43,6 +53,9 @@ public class Chronotimer {
 	 */
 	public boolean getIsPoweredOn(){
 		return this.isPower;
+	}
+	public int getRunNumber() {
+		return runNumber;
 	}
 	
 	/**
@@ -82,15 +95,19 @@ public class Chronotimer {
 	 * Creates a new run only if there isn't already a run active
 	 */
 	public void newRun(){
-		if(currentRun != null) System.out.println("Must be starting a new run by ending one first or after initial power on");
+		if(isRun == false) System.out.println("Must be starting a new run by ending one first or after initial power on");
 		setRunBasedOnRaceType(raceType);
+		isRun = true;
+		++runNumber;
 	}
 	/**
 	 * Creates a new run only if there isn't already a run active
 	 */
 	public void newRun(RaceType selectedType){
-		if(currentRun != null) System.out.println("Must be starting a new run by ending one first or after initial power on");
+		if(isRun == false) System.out.println("Must be starting a new run by ending one first or after initial power on");
 		setRunBasedOnRaceType(selectedType);
+		isRun = true;
+		++runNumber;
 	}
 	
 	/**
@@ -149,7 +166,13 @@ public class Chronotimer {
 	 */
 	public void endRun(){
 		//should this call currentRun.cancel?
-		currentRun = null;
+		//TODO
+		//Send to GSON file first and then set to null
+		if(isRun == false) {
+			System.out.println("Can't end an unstarted run");
+			return;
+		}
+		isRun = false;
 	}
 	
 	/**
@@ -163,7 +186,7 @@ public class Chronotimer {
 			System.out.println("Power must be enabled to add racer to run");
 			return;
 		}
-		if(currentRun == null){
+		if(isRun == false){
 			System.out.println("Current run must not be null");
 			return;
 		}
@@ -207,14 +230,16 @@ public class Chronotimer {
 			System.out.println("Channel "+ channelNumber + " not enabled");
 			return;
 		}
-		if(currentRun == null){
+		if(isRun == false){
 			System.out.println("Current Run must not be null");
 			return;
 		}
 		if(channelNumber % 2 == 0) {
+			//if Even Channel
 			currentRun.setRacerEndTime(channelNumber);
 		}
 		else {
+			//if an odd channel
 			currentRun.setRacerStartTime(channelNumber);
 		}
 	}

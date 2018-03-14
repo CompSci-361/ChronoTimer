@@ -34,6 +34,10 @@ public class IndRun extends Run {
 	@Override
 	public void setRacerStartTime(int triggerNumber){
 		Racer headWait = waitQueue.poll();
+		if(headWait == null) {
+			System.out.println("No waiting racers");
+			return;
+		}
 		headWait.setStartTime();
 		runningQueue.add(headWait);
 	}
@@ -44,6 +48,10 @@ public class IndRun extends Run {
 	@Override
 	public void setRacerEndTime(int triggerNumber) {
 		Racer headRunning = runningQueue.poll();
+		if(headRunning == null) {
+			System.out.println("No currently running racers");
+			return;
+		}
 		headRunning.setEndTime();
 		endQueue.add(headRunning);
 	}
