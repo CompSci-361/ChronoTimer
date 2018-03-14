@@ -227,7 +227,7 @@ public class Chronotimer {
 		isRun = false;
 	}
 	
-	public boolean getIsRun(){
+	public boolean getIsRunning(){
 		return this.isRun;
 	}
 	
