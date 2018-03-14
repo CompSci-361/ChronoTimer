@@ -303,6 +303,7 @@ public class Chronotimer {
 			return;
 		}
 		isRun = false;
+		currentRun.addRacer(bibNumber);
 	}
 	
 	public boolean getIsRunning(){
