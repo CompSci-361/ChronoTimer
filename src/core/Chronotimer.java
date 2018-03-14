@@ -264,7 +264,7 @@ public class Chronotimer {
 			
 			//serialize the current run to json
 			Gson g = new Gson();
-			String json = g.toJson(currentRun);
+			String json = g.toJson(specifiedRun);
 			
 			//write the json to "/exports/RUN###.json" (relative path)
 			FileWriter fileWriter;
