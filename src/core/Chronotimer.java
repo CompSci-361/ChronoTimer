@@ -9,6 +9,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.attribute.FileAttribute;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 import com.google.gson.Gson;
 
@@ -20,6 +22,7 @@ public class Chronotimer {
 	private boolean isRun;
 	private Channel[] channels;
 	private int runNumber;
+	private ArrayList<Run> runHistory;
 	
 	public static Timer ourTimer;
 
@@ -32,6 +35,7 @@ public class Chronotimer {
 		ourTimer = new Timer();
 		raceType = RaceType.IND;
 		runNumber = 0;
+		runHistory = new ArrayList<Run>();
 	}
 	
 	/**
@@ -162,7 +166,8 @@ public class Chronotimer {
 		if(isRun == false) System.out.println("Must be starting a new run by ending one first or after initial power on");
 		setRunBasedOnRaceType(raceType);
 		isRun = true;
-		++runNumber;
+		++runNumber;		
+		currentRun.setRunNumber(runNumber);
 	}
 	/**
 	 * Creates a new run only if there isn't already a run active
@@ -171,7 +176,8 @@ public class Chronotimer {
 		if(isRun == false) System.out.println("Must be starting a new run by ending one first or after initial power on");
 		setRunBasedOnRaceType(selectedType);
 		isRun = true;
-		++runNumber;
+		++runNumber;	
+		currentRun.setRunNumber(runNumber);
 	}
 	
 	/**
@@ -231,6 +237,26 @@ public class Chronotimer {
 	public void endRun(){
 		//should this call currentRun.cancel
 		if (currentRun != null) {
+			if (!runHistory.contains(currentRun)) {
+				runHistory.add(currentRun);
+			}
+		}
+		currentRun = null;
+	}
+	
+	public void exportRun(int runNumber) {
+		Iterator<Run> runIter = runHistory.iterator();
+		while (runIter.hasNext()) {
+			Run next = runIter.next();
+			if (next.getRunNumber() == runNumber) {
+				exportRun(next);
+				break;
+			}
+		}
+	}
+	
+	public void exportRun(Run specifiedRun) {
+		if (specifiedRun != null) {
 			
 			//make the "exports" folder
 			try {
@@ -246,7 +272,7 @@ public class Chronotimer {
 			//write the json to "/exports/RUN###.json" (relative path)
 			FileWriter fileWriter;
 			try {
-				fileWriter = new FileWriter("exports/RUN" + this.runNumber + ".json"); //can be changed to .txt but .json is technically correct
+				fileWriter = new FileWriter("exports/RUN" + specifiedRun.getRunNumber() + ".json"); //can be changed to .txt but .json is technically correct
 				BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
 				
 				bufferedWriter.append(json);
@@ -259,8 +285,6 @@ public class Chronotimer {
 				e.printStackTrace();
 			}
 		}
-		
-		currentRun = null;
 	}
 	
 	/**

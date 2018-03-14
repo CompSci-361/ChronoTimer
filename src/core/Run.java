@@ -6,9 +6,18 @@ import java.util.Deque;
 
 public abstract class Run {
 	protected Deque<Racer> endQueue;
+	protected int runNumber;
 	
 	public Run(){
 			this.endQueue = new ArrayDeque<Racer>();
+	}
+	
+	public void setRunNumber(int number) {
+		runNumber = number;
+	}
+	
+	public int getRunNumber() {
+		return runNumber;
 	}
 	
 	/**
