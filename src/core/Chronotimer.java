@@ -372,7 +372,9 @@ public class Chronotimer {
 	 * --Might want to change it to print all Racers in the system
 	 */
 	public void print(){
-		Printer.printRun(currentRun);
+		if (currentRun != null) {
+			Printer.printRun(currentRun);
+		}
 	}
 	
 }
