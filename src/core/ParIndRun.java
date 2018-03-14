@@ -75,13 +75,18 @@ public class ParIndRun extends Run {
 	
 	@Override
 	public Racer[] getFinishedRacers() {
-		return endQueue.toArray(new Racer[0]);
+		Racer [] first = run1.getFinishedRacers();
+		Racer [] second = run2.getFinishedRacers();
+		Racer [] newArray = new Racer[first.length+second.length];
+		System.arraycopy(first, 0, newArray, 0, first.length);
+		System.arraycopy(second, 0, newArray, first.length, second.length );
+		
+		return newArray;
 	}
 	@Override
 	public Racer[] getCurrentRunningRacers() {
 		Racer [] first = run1.runningQueue.toArray(new Racer[0]);
 		Racer [] second = run2.runningQueue.toArray(new Racer[0]);
-		
 		Racer [] newArray = new Racer[first.length+second.length];
 		System.arraycopy(first, 0, newArray, 0, first.length);
 		System.arraycopy(second, 0, newArray, first.length, second.length );
@@ -132,7 +137,7 @@ public class ParIndRun extends Run {
 	@Override
 	public String toString() {
 		String str= "";
-		Object[] printArray = endQueue.toArray();
+		Racer[] printArray = getFinishedRacers();
 		for(int i = 0; i < printArray.length; i++){
 			str += printArray[i].toString() + "\n";
 		}

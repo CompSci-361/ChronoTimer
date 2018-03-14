@@ -5,20 +5,10 @@ import java.util.Deque;
 //import java.util.Queue;
 
 public abstract class Run {
-	protected int runNumber;
 	protected Deque<Racer> endQueue;
 	
 	public Run(){
-		this.runNumber = 1;
-		this.endQueue = new ArrayDeque<Racer>();
-	}
-	
-	public void setRunNumber(){
-		++this.runNumber;
-	}
-	
-	public int getRunNumber(){
-		return this.runNumber;
+			this.endQueue = new ArrayDeque<Racer>();
 	}
 	
 	/**
