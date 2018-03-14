@@ -61,6 +61,10 @@ public class IndRun extends Run {
 	@Override
 	public void giveDnf() {
 		Racer headRunning = runningQueue.poll();
+		if(headRunning == null) {
+			System.out.println("No currently running racers");
+			return;
+		}
 		headRunning.setDnf();
 		endQueue.add(headRunning);
 	}
@@ -71,10 +75,16 @@ public class IndRun extends Run {
 	@Override
 	public void cancel() {
 		Racer headRunning = runningQueue.poll();
+		if(headRunning == null) {
+			System.out.println("No currently running racers");
+			return;
+		}
 		headRunning.clearStartTime();
 		waitQueue.addFirst(headRunning);
 	}
-	
+	/**
+	 * Changes the first two runners in the running queue
+	 */
 	public void swap(){
 		if(runningQueue.size() < 2)
 			System.out.println("Running queue does not have enough racers to swap them.");
@@ -98,18 +108,22 @@ public class IndRun extends Run {
 	}
 	
 	/**
-	 * Gets the current racer who is running.
-	 * @return the current racer who is running.
+	 * Gets the current racers who is running.
+	 * @return the current racers who is running.
 	 */
 	public Racer[] getCurrentRunningRacers() {
 		return runningQueue.toArray(new Racer[0]);
 	}
-	
+	/**
+	 * @return the waiting racers array
+	 */
 	@Override
 	public Racer[] getCurrentWaitingRacers() {
 		return waitQueue.toArray(new Racer[0]);
 	}
-	
+	/**
+	 * @return true if the racer is in wait queue
+	 */
 	public boolean containsRacerBibNumberInWaitQueue(int bibNumber) {
 		//a long name, i know.
 		
@@ -120,7 +134,9 @@ public class IndRun extends Run {
 		
 		return false;
 	}
-	
+	/**
+	 * @return true if the racer is in the runnng queue
+	 */
 	public boolean containsRacerBibNumberInRunningQueue(int bibNumber) {
 		//a long name, i know.
 		
@@ -132,6 +148,9 @@ public class IndRun extends Run {
 		return false;
 	}
 	
+	/**
+	 * @return true if racer is in the end queue
+	 */
 	public boolean containsRacerBibNumberInEndQueue(int bibNumber) {
 		//a long name, i know.
 		

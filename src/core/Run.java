@@ -57,13 +57,28 @@ public abstract class Run {
 	 * @return the current racer who is running.
 	 */
 	public abstract Racer[] getCurrentRunningRacers();
-	
+	/**
+	 * Creates an array of all the current running racers
+	 * @return array of the waiting racers
+	 */
 	public abstract Racer[] getCurrentWaitingRacers();
-	
+	/**
+	 * 
+	 * @param bibNumber
+	 * @return true if racer is waiting
+	 */
 	public abstract boolean containsRacerBibNumberInWaitQueue(int bibNumber);
-	
+	/**
+	 * 
+	 * @param bibNumber
+	 * @return true if racer is running
+	 */
 	public abstract boolean containsRacerBibNumberInRunningQueue(int bibNumber);
-	
+	/**
+	 * 
+	 * @param bibNumber
+	 * @return true if racer has finished already
+	 */
 	public abstract boolean containsRacerBibNumberInEndQueue(int bibNumber);
 		
 	public abstract String toString();
