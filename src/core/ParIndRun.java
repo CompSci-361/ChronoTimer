@@ -65,23 +65,35 @@ public class ParIndRun extends Run {
 	public void cancel() {
 		compareRun(run1, run2).cancel();
 	}
-	
-	@Override
+
+  @Override
 	public void clear(int bibNumber) {
 		Racer racer = new Racer(bibNumber);
 		run1.waitQueue.remove(racer);
 		run2.waitQueue.remove(racer);
 	}
-	
+  
+	/**
+	 * Returns whichever run started first
+	 * This is used when deciding which racer should get canceled or dnf'd
+	 * @param run1 
+	 * @param run2
+	 * @return
+	 */
+
 	private Run compareRun(Run run1, Run run2){
 		if(run1.getCurrentRunningRacers()[0].getStartTime() < run2.getCurrentRunningRacers()[0].getStartTime())
 			return run1;
 		else
 			return run2;
 	}
-	
-	@Override
-	public Racer[] getFinishedRacers() {
+	/**
+	 * merges the finished queue of run1 and run2 into what this.endQueue should be equal to
+	 * Currently we have to calculate this queue everytime it is called
+	 * Instead of calling this.endQueue calcEndQueue() needs to be called instead
+	 * @return
+	 */
+	private Racer[] calcEndQueue() {
 		Racer [] first = run1.getFinishedRacers();
 		Racer [] second = run2.getFinishedRacers();
 		Racer [] newArray = new Racer[first.length+second.length];
@@ -90,17 +102,13 @@ public class ParIndRun extends Run {
 		
 		return newArray;
 	}
-	@Override
-	public Racer[] getCurrentRunningRacers() {
-		Racer [] first = run1.runningQueue.toArray(new Racer[0]);
-		Racer [] second = run2.runningQueue.toArray(new Racer[0]);
-		Racer [] newArray = new Racer[first.length+second.length];
-		System.arraycopy(first, 0, newArray, 0, first.length);
-		System.arraycopy(second, 0, newArray, first.length, second.length );
-		
-		return newArray;
-	}
 	
+	/**
+	 * run1 waiting racers with run2 waiting racers concatenated onto the end
+	 * this essentially represents the correct endQueue
+	 * @return a Racer[] array which is the concatenation of
+	 * 	run1 and run2
+	 */
 	@Override
 	public Racer[] getCurrentWaitingRacers() {
 		Racer [] first = run1.waitQueue.toArray(new Racer[0]);
@@ -113,6 +121,35 @@ public class ParIndRun extends Run {
 		return newArray;
 	}
 	
+	
+	/**run1 running racers with run2 running racers concatenated onto the end
+	 * this essentially represents the correct endQueue
+	 * @return a Racer[] array which is the concatenation of
+	 * 	run1 and run2
+	 */
+	@Override
+	public Racer[] getCurrentRunningRacers() {
+		Racer [] first = run1.runningQueue.toArray(new Racer[0]);
+		Racer [] second = run2.runningQueue.toArray(new Racer[0]);
+		Racer [] newArray = new Racer[first.length+second.length];
+		System.arraycopy(first, 0, newArray, 0, first.length);
+		System.arraycopy(second, 0, newArray, first.length, second.length );
+		
+		return newArray;
+	}
+	
+	@Override
+	/**run1 finished racers with run2 finished racers concatenated onto the end
+	 * this essentially represents the correct endQueue
+	 * @return a Racer[] array which is the concatenation of
+	 * 	run1 and run2
+	 */
+	public Racer[] getFinishedRacers() {
+		return calcEndQueue();
+	}
+	/**
+	 * True if the racer is in the wait queue of either run
+	 */
 	@Override
 	public boolean containsRacerBibNumberInWaitQueue(int bibNumber) {
 		for(Racer racer : run1.waitQueue.toArray(new Racer[0])) {
@@ -123,6 +160,9 @@ public class ParIndRun extends Run {
 		}
 		return false;
 	}
+	/**
+	 * True if the racer is in the running queue 
+	 */
 	@Override
 	public boolean containsRacerBibNumberInRunningQueue(int bibNumber) {
 		for(Racer racer : run1.runningQueue.toArray(new Racer[0])) {
@@ -133,9 +173,12 @@ public class ParIndRun extends Run {
 		}
 		return false;
 	}
+	/**
+	 * True if racer is in the end queue
+	 */
 	@Override
 	public boolean containsRacerBibNumberInEndQueue(int bibNumber) {
-		for(Racer racer : endQueue.toArray(new Racer[0])) {
+		for(Racer racer : calcEndQueue()) {
 			if (racer.getBibNumber() == bibNumber) return true;
 		}
 		
