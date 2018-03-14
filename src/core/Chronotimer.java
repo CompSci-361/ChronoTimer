@@ -281,6 +281,10 @@ public class Chronotimer {
 		isRun = false;
 	}
 	
+	public boolean getIsRunning(){
+		return this.isRun;
+	}
+	
 	/**
 	 * Sets the time of the timer system
 	 * @param hours
