@@ -19,7 +19,6 @@ public class Chronotimer {
 	private Run currentRun;
 	private RaceType raceType;
 	private boolean isPower;
-	private boolean isRun;
 	private Channel[] channels;
 	private int runNumber;
 	private ArrayList<Run> runHistory;
@@ -108,7 +107,7 @@ public class Chronotimer {
 			System.out.println("Channel "+ channelNumber + " not enabled");
 			return;
 		}
-		if(isRun == false){
+		if(currentRun == null){
 			System.out.println("Current Run must not be null");
 			return;
 		}
@@ -163,9 +162,8 @@ public class Chronotimer {
 	 * Creates a new run only if there isn't already a run active
 	 */
 	public void newRun(){
-		if(isRun == false) System.out.println("Must be starting a new run by ending one first or after initial power on");
+		if(currentRun != null) System.out.println("Must be starting a new run by ending one first or after initial power on");
 		setRunBasedOnRaceType(raceType);
-		isRun = true;
 		++runNumber;		
 		currentRun.setRunNumber(runNumber);
 	}
@@ -173,9 +171,8 @@ public class Chronotimer {
 	 * Creates a new run only if there isn't already a run active
 	 */
 	public void newRun(RaceType selectedType){
-		if(isRun == false) System.out.println("Must be starting a new run by ending one first or after initial power on");
+		if(currentRun == null) System.out.println("Must be starting a new run by ending one first or after initial power on");
 		setRunBasedOnRaceType(selectedType);
-		isRun = true;
 		++runNumber;	
 		currentRun.setRunNumber(runNumber);
 	}
@@ -302,13 +299,9 @@ public class Chronotimer {
 			System.out.println("Current run must not be null");
 			return;
 		}
-		isRun = false;
 		currentRun.addRacer(bibNumber);
 	}
 	
-	public boolean getIsRunning(){
-		return this.isRun;
-	}
 	
 	/**
 	 * Sets the time of the timer system
@@ -375,6 +368,12 @@ public class Chronotimer {
 	public void print(){
 		if (currentRun != null) {
 			Printer.printRun(currentRun);
+		}
+		//if the current run has ended
+		//can't print if there are no runs in the history
+		else {
+			if(runHistory.size()==0) return;
+			Printer.printRun(runHistory.get(runHistory.size()-1));
 		}
 	}
 

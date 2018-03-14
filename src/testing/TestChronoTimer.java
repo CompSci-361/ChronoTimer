@@ -283,7 +283,7 @@ public class TestChronoTimer {
 		//"ENDRUN"
 		assertNotEquals(null, chronotimer.getCurrentRun());
 		chronotimer.endRun();
-		assertEquals(false, chronotimer.getIsRunning());
+		assertEquals(null, chronotimer.getCurrentRun());
 		System.out.println("Run ended");
 		
 		/*
@@ -297,9 +297,9 @@ public class TestChronoTimer {
 		System.out.println("Still powered on");
 		
 		//"NEWRUN"
-		assertEquals(false, chronotimer.getIsRunning());
+		assertEquals(null, chronotimer.getCurrentRun());
 		chronotimer.newRun();
-		assertNotEquals(false, chronotimer.getIsRunning());
+		assertNotEquals(null, chronotimer.getCurrentRun());
 		System.out.println("New run initiated");
 		
 		//"EVENT IND"
