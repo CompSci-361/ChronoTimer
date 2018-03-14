@@ -132,7 +132,7 @@ public class TestChronoTimer {
 		Run currentRun = chronotimer.getCurrentRun();
 		
 		System.out.println("Checking for no racers...");
-		assertEquals(null, currentRun.getCurrentRunningRacers());
+		assertEquals(0, currentRun.getCurrentRunningRacers().length);
 		
 		int racerOneBib = 111;
 		
@@ -219,7 +219,7 @@ public class TestChronoTimer {
 		assertEquals(true, chronotimer.getIsPoweredOn());
 		
 		//"EVENT IND"
-		assertEquals(null, chronotimer.getRaceType());
+		assertEquals(RaceType.IND, chronotimer.getRaceType());
 		chronotimer.setRaceType(RaceType.IND);
 		assertEquals(RaceType.IND, chronotimer.getRaceType());
 		System.out.println("Set race type: IND");
@@ -283,7 +283,7 @@ public class TestChronoTimer {
 		//"ENDRUN"
 		assertNotEquals(null, chronotimer.getCurrentRun());
 		chronotimer.endRun();
-		assertEquals(null, chronotimer.getCurrentRun());
+		assertEquals(false, chronotimer.getIsRunning());
 		System.out.println("Run ended");
 		
 		/*
@@ -297,9 +297,9 @@ public class TestChronoTimer {
 		System.out.println("Still powered on");
 		
 		//"NEWRUN"
-		assertEquals(null, chronotimer.getCurrentRun());
+		assertEquals(false, chronotimer.getIsRunning());
 		chronotimer.newRun();
-		assertNotEquals(null, chronotimer.getCurrentRun());
+		assertNotEquals(false, chronotimer.getIsRunning());
 		System.out.println("New run initiated");
 		
 		//"EVENT IND"

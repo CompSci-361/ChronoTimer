@@ -199,7 +199,12 @@ public class Simulator {
 				break;
 			}
 			case "EXPORT":{
-				//TODO
+				chrono.exportRun(Integer.parseInt(param));
+				break;
+			}
+			case "CLR":{
+				chrono.clear(Integer.parseInt(param));
+				System.out.println("Cleared competitor from start queue.");
 				break;
 			}
 		}

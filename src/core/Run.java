@@ -6,9 +6,18 @@ import java.util.Deque;
 
 public abstract class Run {
 	protected Deque<Racer> endQueue;
+	protected int runNumber;
 	
 	public Run(){
 			this.endQueue = new ArrayDeque<Racer>();
+	}
+	
+	public void setRunNumber(int number) {
+		runNumber = number;
+	}
+	
+	public int getRunNumber() {
+		return runNumber;
 	}
 	
 	/**
@@ -40,11 +49,7 @@ public abstract class Run {
 	 */
 	public abstract void cancel();
 	
-	/**
-	 * Appends all finished Racers' times in the format:
-	 * Racer XX1 : Start Time = Hours:Min:Seconds : End Time = Hours:Min:Seconds \n
-	 * Racer XX2 : Start Time = Hours:Min:Seconds : End Time = Hours:Min:Seconds \n
-	 */
+	public abstract void clear(int bibNumber);
 	
 	/**
 	 * Gets an array of all the racers that have finished.

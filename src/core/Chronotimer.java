@@ -1,5 +1,19 @@
 package core;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.attribute.FileAttribute;
+import java.util.ArrayList;
+import java.util.Iterator;
+
+import com.google.gson.Gson;
+
 public class Chronotimer {
 	
 	private Run currentRun;
@@ -8,6 +22,7 @@ public class Chronotimer {
 	private boolean isRun;
 	private Channel[] channels;
 	private int runNumber;
+	private ArrayList<Run> runHistory;
 	
 	public static Timer ourTimer;
 
@@ -20,6 +35,7 @@ public class Chronotimer {
 		ourTimer = new Timer();
 		raceType = RaceType.IND;
 		runNumber = 0;
+		runHistory = new ArrayList<Run>();
 	}
 	
 	/**
@@ -54,8 +70,56 @@ public class Chronotimer {
 	public boolean getIsPoweredOn(){
 		return this.isPower;
 	}
-	public int getRunNumber() {
-		return runNumber;
+	
+	/**
+	 * Toggles the state of the param channelNumber
+	 * Enabled->Disabled
+	 * Disabled->Enabled
+	 * @param channelNumber Which channel is being changed
+	 */
+	public void toggleChannel(int channelNumber){
+		if(!getIsPoweredOn()){
+			System.out.println("Power must be enabled to add racer to run");
+			return;
+		}
+		channels[channelNumber-1].toggle();
+	}
+	
+	/**
+	 * Gets the param's isEnabled Value and returns it
+	 * @param channelNumber 
+	 * @return The boolean value of the given channel
+	 */
+	public boolean getChannelIsEnabled(int channelNumber){
+		return channels[channelNumber-1].isEnabled();
+	}
+
+	/**
+	 * channelNumber==even then end time
+	 * channelNumber==odd then start time
+	 * @param channelNumber
+	 */
+	public void triggerChannel(int channelNumber) {
+		if(!getIsPoweredOn()){
+			System.out.println("Power must be enabled to add racer to run");
+			return;
+		}
+		if(channels[channelNumber-1].isEnabled()!=true) {
+			System.out.println("Channel "+ channelNumber + " not enabled");
+			return;
+		}
+		if(isRun == false){
+			System.out.println("Current Run must not be null");
+			return;
+		}
+		if(channelNumber % 2 == 0) {
+			//if Even Channel
+			currentRun.setRacerEndTime(channelNumber);
+		}
+		else {
+			//if an odd channel
+			currentRun.setRacerStartTime(channelNumber);
+		}
 	}
 	
 	/**
@@ -91,6 +155,10 @@ public class Chronotimer {
 		return channels[channelNumber-1].getSensorType();
 	}
 	
+	public int getRunNumber() {
+		return runNumber;
+	}
+	
 	/**
 	 * Creates a new run only if there isn't already a run active
 	 */
@@ -98,7 +166,8 @@ public class Chronotimer {
 		if(isRun == false) System.out.println("Must be starting a new run by ending one first or after initial power on");
 		setRunBasedOnRaceType(raceType);
 		isRun = true;
-		++runNumber;
+		++runNumber;		
+		currentRun.setRunNumber(runNumber);
 	}
 	/**
 	 * Creates a new run only if there isn't already a run active
@@ -107,7 +176,8 @@ public class Chronotimer {
 		if(isRun == false) System.out.println("Must be starting a new run by ending one first or after initial power on");
 		setRunBasedOnRaceType(selectedType);
 		isRun = true;
-		++runNumber;
+		++runNumber;	
+		currentRun.setRunNumber(runNumber);
 	}
 	
 	/**
@@ -165,14 +235,56 @@ public class Chronotimer {
 	 * Clears the current run, newRun() can now be called
 	 */
 	public void endRun(){
-		//should this call currentRun.cancel?
-		//TODO
-		//Send to GSON file first and then set to null
-		if(isRun == false) {
-			System.out.println("Can't end an unstarted run");
-			return;
+		//should this call currentRun.cancel
+		if (currentRun != null) {
+			if (!runHistory.contains(currentRun)) {
+				runHistory.add(currentRun);
+			}
 		}
-		isRun = false;
+		currentRun = null;
+	}
+	
+	public void exportRun(int runNumber) {
+		Iterator<Run> runIter = runHistory.iterator();
+		while (runIter.hasNext()) {
+			Run next = runIter.next();
+			if (next.getRunNumber() == runNumber) {
+				exportRun(next);
+				break;
+			}
+		}
+	}
+	
+	public void exportRun(Run specifiedRun) {
+		if (specifiedRun != null) {
+			
+			//make the "exports" folder
+			try {
+				Files.createDirectories(Paths.get("exports"));
+			} catch (Exception ex) {
+				
+			}
+			
+			//serialize the current run to json
+			Gson g = new Gson();
+			String json = g.toJson(currentRun);
+			
+			//write the json to "/exports/RUN###.json" (relative path)
+			FileWriter fileWriter;
+			try {
+				fileWriter = new FileWriter("exports/RUN" + specifiedRun.getRunNumber() + ".json"); //can be changed to .txt but .json is technically correct
+				BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+				
+				bufferedWriter.append(json);
+				
+				bufferedWriter.flush();
+				bufferedWriter.close();
+				fileWriter.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	/**
@@ -186,62 +298,15 @@ public class Chronotimer {
 			System.out.println("Power must be enabled to add racer to run");
 			return;
 		}
-		if(isRun == false){
+		if(currentRun == null){
 			System.out.println("Current run must not be null");
 			return;
 		}
-		currentRun.addRacer(bibNumber);
+		isRun = false;
 	}
 	
-	/**
-	 * Toggles the state of the param channelNumber
-	 * Enabled->Disabled
-	 * Disabled->Enabled
-	 * @param channelNumber Which channel is being changed
-	 */
-	public void toggleChannel(int channelNumber){
-		if(!getIsPoweredOn()){
-			System.out.println("Power must be enabled to add racer to run");
-			return;
-		}
-		channels[channelNumber-1].toggle();
-	}
-	
-	/**
-	 * Gets the param's isEnabled Value and returns it
-	 * @param channelNumber 
-	 * @return The boolean value of the given channel
-	 */
-	public boolean getChannelIsEnabled(int channelNumber){
-		return channels[channelNumber-1].isEnabled();
-	}
-
-	/**
-	 * channelNumber==even then end time
-	 * channelNumber==odd then start time
-	 * @param channelNumber
-	 */
-	public void triggerChannel(int channelNumber) {
-		if(!getIsPoweredOn()){
-			System.out.println("Power must be enabled to add racer to run");
-			return;
-		}
-		if(channels[channelNumber-1].isEnabled()!=true) {
-			System.out.println("Channel "+ channelNumber + " not enabled");
-			return;
-		}
-		if(isRun == false){
-			System.out.println("Current Run must not be null");
-			return;
-		}
-		if(channelNumber % 2 == 0) {
-			//if Even Channel
-			currentRun.setRacerEndTime(channelNumber);
-		}
-		else {
-			//if an odd channel
-			currentRun.setRacerStartTime(channelNumber);
-		}
+	public boolean getIsRunning(){
+		return this.isRun;
 	}
 	
 	/**
@@ -261,6 +326,7 @@ public class Chronotimer {
 	public String getTime(){
 		return ourTimer.formatTime(ourTimer.getSystemTime());
 	}
+	
 	
 	/**
 	 * Gives a runner from our currentRun a DNF
@@ -306,7 +372,13 @@ public class Chronotimer {
 	 * --Might want to change it to print all Racers in the system
 	 */
 	public void print(){
-		Printer.printRun(currentRun);
+		if (currentRun != null) {
+			Printer.printRun(currentRun);
+		}
+	}
+
+	public void clear(int bibNumber) {
+		currentRun.clear(bibNumber);
 	}
 	
 }

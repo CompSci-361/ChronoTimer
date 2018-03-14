@@ -65,6 +65,14 @@ public class ParIndRun extends Run {
 	public void cancel() {
 		compareRun(run1, run2).cancel();
 	}
+
+  @Override
+	public void clear(int bibNumber) {
+		Racer racer = new Racer(bibNumber);
+		run1.waitQueue.remove(racer);
+		run2.waitQueue.remove(racer);
+	}
+  
 	/**
 	 * Returns whichever run started first
 	 * This is used when deciding which racer should get canceled or dnf'd
@@ -72,6 +80,7 @@ public class ParIndRun extends Run {
 	 * @param run2
 	 * @return
 	 */
+
 	private Run compareRun(Run run1, Run run2){
 		if(run1.getCurrentRunningRacers()[0].getStartTime() < run2.getCurrentRunningRacers()[0].getStartTime())
 			return run1;

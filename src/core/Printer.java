@@ -6,7 +6,7 @@ public class Printer {
 	 * Print individual race
 	 * @param racer
 	 */
-	public static void printRace(Racer racer){
+	public static void printRacer(Racer racer){
 		System.out.println(racer.toString());
 	}
 	
