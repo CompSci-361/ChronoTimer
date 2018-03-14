@@ -1,5 +1,17 @@
 package core;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.attribute.FileAttribute;
+
+import com.google.gson.Gson;
+
 public class Chronotimer {
 	
 	private Run currentRun;
@@ -217,11 +229,53 @@ public class Chronotimer {
 	 * Clears the current run, newRun() can now be called
 	 */
 	public void endRun(){
-		//should this call currentRun.cancel?
-		//TODO
-		//Send to GSON file first and then set to null
-		if(isRun == false) {
-			System.out.println("Can't end an unstarted run");
+		//should this call currentRun.cancel
+		if (currentRun != null) {
+			
+			//make the "exports" folder
+			try {
+				Files.createDirectories(Paths.get("exports"));
+			} catch (Exception ex) {
+				
+			}
+			
+			//serialize the current run to json
+			Gson g = new Gson();
+			String json = g.toJson(currentRun);
+			
+			//write the json to "/exports/RUN###.json" (relative path)
+			FileWriter fileWriter;
+			try {
+				fileWriter = new FileWriter("exports/RUN" + this.runNumber + ".json"); //can be changed to .txt but .json is technically correct
+				BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+				
+				bufferedWriter.append(json);
+				
+				bufferedWriter.flush();
+				bufferedWriter.close();
+				fileWriter.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		currentRun = null;
+	}
+	
+	/**
+	 * Adds a Racer to the current race
+	 * Power must be on
+	 * There must be an active Run
+	 * @param bibNumber - Number given to the Racer
+	 */
+	public void addRacer(int bibNumber){
+		if(!getIsPoweredOn()){
+			System.out.println("Power must be enabled to add racer to run");
+			return;
+		}
+		if(currentRun == null){
+			System.out.println("Current run must not be null");
 			return;
 		}
 		isRun = false;
@@ -245,23 +299,6 @@ public class Chronotimer {
 		return ourTimer.formatTime(ourTimer.getSystemTime());
 	}
 	
-	/**
-	 * Adds a Racer to the current race
-	 * Power must be on
-	 * There must be an active Run
-	 * @param bibNumber - Number given to the Racer
-	 */
-	public void addRacer(int bibNumber){
-		if(!getIsPoweredOn()){
-			System.out.println("Power must be enabled to add racer to run");
-			return;
-		}
-		if(isRun == false){
-			System.out.println("Current run must not be null");
-			return;
-		}
-		currentRun.addRacer(bibNumber);
-	}
 	
 	/**
 	 * Gives a runner from our currentRun a DNF
