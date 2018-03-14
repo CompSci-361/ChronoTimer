@@ -199,7 +199,7 @@ public class Simulator {
 				break;
 			}
 			case "EXPORT":{
-				//TODO
+				chrono.exportRun(Integer.parseInt(param));
 				break;
 			}
 			case "CLR":{
