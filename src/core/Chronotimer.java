@@ -46,6 +46,24 @@ public class Chronotimer {
 	}
 	
 	/**
+	 * Sets the time of the timer system
+	 * @param hours
+	 * @param minutes
+	 * @param seconds
+	 */
+	public void setTime(int hours, int minutes, double seconds) {
+		ourTimer.setTime(hours, minutes, seconds);
+	}
+	
+	/**
+	 * Gets the current system time from ourTimer
+	 * @return
+	 */
+	public String getTime(){
+		return ourTimer.formatTime(ourTimer.getSystemTime());
+	}
+	
+	/**
 	 * Connects a sensor to a given channel
 	 * @param channelNumber Which channel is being connected to
 	 * @param sensorType <GATE,EYE,TRIP>
@@ -76,21 +94,6 @@ public class Chronotimer {
 	 */
 	public SensorType getSensorType(int channelNumber){
 		return channels[channelNumber-1].getSensorType();
-	}
-	
-	/**
-	 * Creates a new run only if there isn't already a run active
-	 */
-	public void newRun(){
-		if(currentRun != null) System.out.println("Must be starting a new run by ending one first or after initial power on");
-		setRunBasedOnRaceType(raceType);
-	}
-	/**
-	 * Creates a new run only if there isn't already a run active
-	 */
-	public void newRun(RaceType selectedType){
-		if(currentRun != null) System.out.println("Must be starting a new run by ending one first or after initial power on");
-		setRunBasedOnRaceType(selectedType);
 	}
 	
 	/**
@@ -137,6 +140,21 @@ public class Chronotimer {
 	}
 	
 	/**
+	 * Creates a new run only if there isn't already a run active
+	 */
+	public void newRun(){
+		if(currentRun != null) System.out.println("Must be starting a new run by ending one first or after initial power on");
+		setRunBasedOnRaceType(raceType);
+	}
+	/**
+	 * Creates a new run only if there isn't already a run active
+	 */
+	public void newRun(RaceType selectedType){
+		if(currentRun != null) System.out.println("Must be starting a new run by ending one first or after initial power on");
+		setRunBasedOnRaceType(selectedType);
+	}
+	
+	/**
 	 * Returns the current run (if any). Otherwise, returns null.
 	 * @return the current run or null.
 	 */
@@ -151,6 +169,8 @@ public class Chronotimer {
 		//should this call currentRun.cancel?
 		currentRun = null;
 	}
+	
+	
 	
 	/**
 	 * Adds a Racer to the current race
@@ -217,24 +237,6 @@ public class Chronotimer {
 		else {
 			currentRun.setRacerStartTime(channelNumber);
 		}
-	}
-	
-	/**
-	 * Sets the time of the timer system
-	 * @param hours
-	 * @param minutes
-	 * @param seconds
-	 */
-	public void setTime(int hours, int minutes, double seconds) {
-		ourTimer.setTime(hours, minutes, seconds);
-	}
-	
-	/**
-	 * Gets the current system time from ourTimer
-	 * @return
-	 */
-	public String getTime(){
-		return ourTimer.formatTime(ourTimer.getSystemTime());
 	}
 	
 	/**
