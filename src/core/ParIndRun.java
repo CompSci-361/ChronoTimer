@@ -66,6 +66,13 @@ public class ParIndRun extends Run {
 		compareRun(run1, run2).cancel();
 	}
 	
+	@Override
+	public void clear(int bibNumber) {
+		Racer racer = new Racer(bibNumber);
+		run1.waitQueue.remove(racer);
+		run2.waitQueue.remove(racer);
+	}
+	
 	private Run compareRun(Run run1, Run run2){
 		if(run1.getCurrentRunningRacers()[0].getStartTime() < run2.getCurrentRunningRacers()[0].getStartTime())
 			return run1;

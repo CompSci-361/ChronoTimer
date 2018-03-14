@@ -81,4 +81,9 @@ public class ParGrpRun extends Run {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	@Override
+	public void clear(int bibNumber) {
+		// TODO Auto-generated method stub
+		
+	}
 }

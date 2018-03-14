@@ -202,6 +202,11 @@ public class Simulator {
 				//TODO
 				break;
 			}
+			case "CLR":{
+				chrono.clear(Integer.parseInt(param));
+				System.out.println("Cleared competitor from start queue.");
+				break;
+			}
 		}
 	}
 }

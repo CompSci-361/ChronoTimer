@@ -89,6 +89,12 @@ public class IndRun extends Run {
 		}
 	}
 	
+	@Override
+	public void clear(int bibNumber) {
+		Racer racer = new Racer(bibNumber);
+		waitQueue.remove(racer);
+	}
+	
 	/**
 	 * Gets an array of all the racers that have finished.
 	 * @return an array of all the racers that have finished.
@@ -142,7 +148,6 @@ public class IndRun extends Run {
 		
 		return false;
 	}
-	
 	
 	@Override
 	public String toString(){

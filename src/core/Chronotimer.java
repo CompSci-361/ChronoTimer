@@ -350,5 +350,9 @@ public class Chronotimer {
 	public void print(){
 		Printer.printRun(currentRun);
 	}
+
+	public void clear(int bibNumber) {
+		currentRun.clear(bibNumber);
+	}
 	
 }
