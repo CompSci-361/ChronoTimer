@@ -166,8 +166,8 @@ public class Simulator {
 				break;
 			}
 			case "NEWRUN":{
-				System.out.println("New Run selected is " + chrono.getRaceType());
 				chrono.newRun();
+				System.out.println("New Run selected. Run number is : "+ chrono.getRunNumber());
 				break;
 			}
 			case "ENDRUN":{
@@ -176,6 +176,7 @@ public class Simulator {
 			}
 			case "EVENT":{
 				chrono.setRaceType(RaceType.valueOf(param));
+				System.out.println("RaceType selected is : "+ chrono.getRaceType());
 				break;
 			}
 			case "NUM":{
