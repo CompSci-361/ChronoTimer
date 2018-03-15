@@ -10,7 +10,11 @@ public class TestChronoTimer3 {
 	public void testParInd() {
 		System.out.println("---Test2---");
 		
-		//unit test version of chrono3.txt
+		/*
+		 * Unit tests that reflect some of the outputs
+		 * of chrono3.txt
+		 */
+		
 		Chronotimer chronotimer = new Chronotimer();
 		
 		//"POWER"
@@ -19,11 +23,23 @@ public class TestChronoTimer3 {
 		chronotimer.togglePower();
 		assertEquals(true, chronotimer.getIsPoweredOn());
 		
-		//"POWER"
-		System.out.println("Turning off power...");
-		assertEquals(true, chronotimer.getIsPoweredOn());
-		chronotimer.togglePower();
-		assertEquals(false, chronotimer.getIsPoweredOn());
+		//"TIME"
+		System.out.println("Setting time...");
+		chronotimer.setTime(12, 1, 30);
+		assertEquals("12:01:30.0", chronotimer.getTime());
+		
+		//"EVENT IND"
+		assertEquals(RaceType.IND, chronotimer.getRaceType());
+		chronotimer.setRaceType(RaceType.PARIND);
+		assertEquals(RaceType.PARIND, chronotimer.getRaceType());
+		System.out.println("Set race type: PARIND");
+				
+		//"NEWRUN"
+		assertEquals(null, chronotimer.getCurrentRun());
+		chronotimer.newRun();
+		assertNotEquals(null, chronotimer.getCurrentRun());
+		System.out.println("New run initiated");		
+		
 		
 		//"POWER"
 		System.out.println("Turning on power...");
