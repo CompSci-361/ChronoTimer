@@ -2,11 +2,16 @@ package testing;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
 
-import core.Chronotimer;
-import core.RaceType;
+import org.junit.Test;
+
+import core.*;
+
 
 public class TestChronoTimer3 {
+	
+	@Test
 	public void testParInd() {
 		System.out.println("---Test ParInd---");
 		
@@ -26,7 +31,7 @@ public class TestChronoTimer3 {
 		//"TIME"
 		System.out.println("Setting time...");
 		chronotimer.setTime(12, 1, 30);
-		assertEquals("12:01:30.0", chronotimer.getTime());
+		assertEquals("12:1:30.0", chronotimer.getTime());
 		
 		//"EVENT IND"
 		assertEquals(RaceType.IND, chronotimer.getRaceType());
@@ -41,12 +46,6 @@ public class TestChronoTimer3 {
 		System.out.println("New run initiated");		
 		
 		System.out.println("First run test beginning...");
-		
-		//"NEWRUN"
-		assertEquals(null, chronotimer.getCurrentRun());
-		chronotimer.newRun();
-		assertNotEquals(null, chronotimer.getCurrentRun());
-		System.out.println("New run initiated");
 		
 		//"TOG" - Toggle Channels 1 - 4
 		assertEquals(false, chronotimer.getChannelIsEnabled(1));
@@ -88,29 +87,29 @@ public class TestChronoTimer3 {
 		System.out.println("Added racer (711)");
 		
 		//"TRIG" Start
-		//TODO: I genuinely don't know how to test the triggers
-		//Assistance would be nice
-		assertEquals(false, chronotimer.getCurrentRun().containsRacerBibNumberInRunningQueue(234));
-		assertEquals(false, chronotimer.getCurrentRun().containsRacerBibNumberInRunningQueue(315));
+		assertEquals(false, chronotimer.getCurrentRun().containsRacerBibNumberInRunningQueue(272));
+		assertEquals(false, chronotimer.getCurrentRun().containsRacerBibNumberInRunningQueue(111));
 		chronotimer.triggerChannel(1);
 		chronotimer.triggerChannel(3);
-		assertEquals(true, chronotimer.getCurrentRun().containsRacerBibNumberInRunningQueue(234));
-		System.out.println("Triggered channel 1");
-		System.out.println("Triggered channel 3");
+		assertEquals(true, chronotimer.getCurrentRun().containsRacerBibNumberInRunningQueue(272));
+		assertEquals(true, chronotimer.getCurrentRun().containsRacerBibNumberInRunningQueue(123));
+		System.out.println("Racer (123) Triggered channel 1");
+		System.out.println("Racer (272) triggered channel 3");
 		
-		//trigger 3 isn't enabled
-		//assertEquals(true, chronotimer.getCurrentRun().containsRacerBibNumberInRunningQueue(315));
+		assertEquals(false, chronotimer.getCurrentRun().containsRacerBibNumberInRunningQueue(111));
+		assertEquals(false, chronotimer.getCurrentRun().containsRacerBibNumberInRunningQueue(711));
 		
 		//"TRIG" End
-		assertEquals(false, chronotimer.getCurrentRun().containsRacerBibNumberInEndQueue(234));
-		assertEquals(false, chronotimer.getCurrentRun().containsRacerBibNumberInEndQueue(315));
+		assertEquals(false, chronotimer.getCurrentRun().containsRacerBibNumberInEndQueue(272));
+		assertEquals(false, chronotimer.getCurrentRun().containsRacerBibNumberInEndQueue(123));
 		chronotimer.triggerChannel(2);
 		chronotimer.triggerChannel(4);
-		assertEquals(true, chronotimer.getCurrentRun().containsRacerBibNumberInEndQueue(234));
-		//trigger 4 isn't enabled
-		//assertEquals(true, chronotimer.getCurrentRun().containsRacerBibNumberInEndQueue(315));
-		System.out.println("Triggered channel 2");
-		System.out.println("Triggered channel 4");
+		assertEquals(true, chronotimer.getCurrentRun().containsRacerBibNumberInEndQueue(123));
+		assertEquals(true, chronotimer.getCurrentRun().containsRacerBibNumberInEndQueue(272));
+		System.out.println("Racer (123) Triggered channel 2");
+		System.out.println("Racer (272) Triggered channel 4");
+		
+		assertTrue(chronotimer.getCurrentRun().getCurrentRunningRacers().length == 0);
 		
 		//"PRINT"
 		chronotimer.print();
@@ -118,12 +117,9 @@ public class TestChronoTimer3 {
 		//"ENDRUN"
 		assertNotEquals(null, chronotimer.getCurrentRun());
 		chronotimer.endRun();
-		assertEquals(false, chronotimer.getIsRunning());
+		assertEquals(null, chronotimer.getCurrentRun());
 		System.out.println("Run ended");
-		
-		//"EXPORT"
-		//TODO: How are we testing export?
-		
+				
 		//"POWER"
 		assertEquals(true, chronotimer.getIsPoweredOn());
 		chronotimer.togglePower();
@@ -131,9 +127,4 @@ public class TestChronoTimer3 {
 		System.out.println("Turning off power...");
 	}
 	
-	public void testParIndExport() {
-		System.out.println("---Testing export---");
-			//TODO: should we further test exports?
-		
-	}
 }
