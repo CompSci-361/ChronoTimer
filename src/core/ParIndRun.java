@@ -9,7 +9,11 @@ public class ParIndRun extends Run {
 		run1 = new IndRun();
 		run2 = new IndRun();
 	}
-	
+	public ParIndRun(int runNum){
+		run1 = new IndRun();
+		run2 = new IndRun();
+		this.runNumber = runNum;
+	}
 	/**
 	 * Adds a racer with the param as the attribute
 	 * Cannot add a racer if a racer with the same bibNumber already Exists

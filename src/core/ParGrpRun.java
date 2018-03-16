@@ -1,6 +1,9 @@
 package core;
 
 public class ParGrpRun extends Run {
+	public ParGrpRun(int runNum) {
+		this.runNumber = runNum;
+	}
 	/**
 	 * Adds a racer with the param as the attribute
 	 * Cannot add a racer if a racer with the same bibNumber already Exists
