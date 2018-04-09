@@ -4,39 +4,30 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JMenuItem;
 import javax.swing.JButton;
 import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
-import javax.swing.UIManager;
-
+import javax.swing.Timer;
 import java.awt.Font;
 import javax.swing.JRadioButton;
 import java.awt.Color;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
-import java.awt.ScrollPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import javax.swing.JComboBox;
 import javax.swing.border.BevelBorder;
-import javax.swing.plaf.ButtonUI;
-import javax.swing.plaf.basic.BasicButtonUI;
-
-import com.sun.prism.Graphics;
-
 import core.Chronotimer;
+import core.Printer;
+import core.Printer.PrintMessageActionListener;
+import core.Printer.PrintMessageActionListenerEventArgs;
 
-import java.awt.Component;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-
-public class Gui {
+public class Gui extends JPanel implements ActionListener{
 	static Chronotimer chrono = new Chronotimer();
 
+	public String racerNumber = "";
+	private final Timer timer = new Timer(40, this);
 	private JFrame frame;
 
 	/**
@@ -48,11 +39,18 @@ public class Gui {
 				try {
 					Gui window = new Gui();
 					window.frame.setVisible(true);
+					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		});
+		
+	}
+	
+	@Override
+	public void actionPerformed(ActionEvent e) {
+	    this.repaint();
 	}
 
 	/**
@@ -71,10 +69,16 @@ public class Gui {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
+		JLabel chronoLabel = new JLabel("Chronotimer 1009");
+		chronoLabel.setForeground(new Color(128, 0, 0));
+		chronoLabel.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
+		chronoLabel.setBounds(278, 11, 151, 16);
+		frame.getContentPane().add(chronoLabel);
+		
 		// ------------ Power button ------------
 		JButton buttonPower = new JButton("Power");
 		buttonPower.setForeground(new Color(0, 0, 0));
-		buttonPower.setBounds(6, 6, 117, 29);
+		buttonPower.setBounds(6, 6, 101, 29);
 		frame.getContentPane().add(buttonPower);
 		buttonPower.setContentAreaFilled(true);
 		buttonPower.setOpaque(false);
@@ -97,43 +101,67 @@ public class Gui {
 		
 		// ------------ Power button ------------
 
+		// ------------ Reset button ------------
+		
+		JButton buttonReset = new JButton("Reset");
+		buttonReset.setBounds(110, 7, 101, 29);
+		frame.getContentPane().add(buttonReset);
+		
+		buttonReset.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				chrono.reset();
+				boolean value = chrono.getIsPoweredOn();
+				System.out.println("Power is " + (value ? "enabled" : "disabled"));
+				if(value)
+					buttonPower.setForeground(new Color(0, 255, 0));
+				else{
+					buttonPower.setForeground(Color.BLACK);
+				}
+				System.out.println("Reset Chronotimer.");
+				    
+			}
+		});
+		
+		// ------------ Reset button ------------
 		
 		JButton btnPrinterPower = new JButton("Printer Power");
-		btnPrinterPower.setBounds(596, 6, 117, 29);
+		btnPrinterPower.setBounds(562, 7, 117, 29);
 		frame.getContentPane().add(btnPrinterPower);
 		
 		JScrollPane scroll = new JScrollPane();
-		scroll.setSize(151, 193);
-		scroll.setLocation(580, 40);
+		scroll.setSize(229, 193);
+		scroll.setLocation(504, 40);
 	    scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		frame.getContentPane().add(scroll);
 		
-		JLabel lblNewLabel = new JLabel("Chronotimer 1009");
-		lblNewLabel.setForeground(new Color(128, 0, 0));
-		lblNewLabel.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
-		lblNewLabel.setBounds(278, 11, 151, 16);
-		frame.getContentPane().add(lblNewLabel);
+		JTextArea printerText = new JTextArea();
+		printerText.setBounds(0, 40, 10, 10);
+		scroll.setViewportView(printerText);
 		
-		JButton buttonSwap = new JButton("Swap");
-		buttonSwap.setBounds(6, 400, 117, 29);
-		frame.getContentPane().add(buttonSwap);
-		
-		JButton buttonFunction = new JButton("Function");
-		buttonFunction.setBackground(Color.PINK);
-		buttonFunction.setBounds(6, 148, 117, 29);
-		frame.getContentPane().add(buttonFunction);
 		
 		JTextArea textArea_1 = new JTextArea();
 		textArea_1.setBackground(new Color(211, 211, 211));
 		textArea_1.setBounds(215, 238, 277, 206);
 		frame.getContentPane().add(textArea_1);
 		
+		JButton buttonSwap = new JButton("Swap");
+		buttonSwap.setBounds(6, 400, 117, 29);
+		frame.getContentPane().add(buttonSwap);
+		
+		JButton buttonFunction = new JButton("End Run");
+		buttonFunction.setBackground(Color.PINK);
+		buttonFunction.setBounds(6, 233, 101, 29);
+		frame.getContentPane().add(buttonFunction);
+		
 		JLabel lblNewLabel_2 = new JLabel("Queue / Running / Finish");
+		lblNewLabel_2.setForeground(new Color(128, 0, 0));
 		lblNewLabel_2.setBounds(272, 456, 164, 16);
 		frame.getContentPane().add(lblNewLabel_2);
 		
+		// ------------ Number keys ------------
+		
 		JPanel panel = new JPanel();
-		panel.setBounds(588, 266, 132, 186);
+		panel.setBounds(542, 245, 132, 186);
 		frame.getContentPane().add(panel);
 		panel.setLayout(null);
 		
@@ -141,41 +169,101 @@ public class Gui {
 		buttonNum1.setBounds(0, 0, 45, 45);
 		panel.add(buttonNum1);
 		
+		buttonNum1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				racerNumber += 1;    
+			}
+		});
+		
 		JButton buttonNum2 = new JButton("2");
 		buttonNum2.setBounds(44, 0, 45, 45);
 		panel.add(buttonNum2);
+		
+		buttonNum2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				racerNumber += 2;    
+			}
+		});
 		
 		JButton buttonNum3 = new JButton("3");
 		buttonNum3.setBounds(88, 0, 45, 45);
 		panel.add(buttonNum3);
 		
+		buttonNum3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				racerNumber += 3;    
+			}
+		});
+		
 		JButton buttonNum4 = new JButton("4");
 		buttonNum4.setBounds(0, 45, 45, 45);
 		panel.add(buttonNum4);
+		
+		buttonNum4.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				racerNumber += 4;    
+			}
+		});
 		
 		JButton buttonNum5 = new JButton("5");
 		buttonNum5.setBounds(44, 45, 45, 45);
 		panel.add(buttonNum5);
 		
+		buttonNum5.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				racerNumber += 5;    
+			}
+		});
+		
 		JButton buttonNum6 = new JButton("6");
 		buttonNum6.setBounds(88, 45, 45, 45);
 		panel.add(buttonNum6);
+		
+		buttonNum6.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				racerNumber += 6;    
+			}
+		});
 		
 		JButton buttonNum7 = new JButton("7");
 		buttonNum7.setBounds(0, 90, 45, 45);
 		panel.add(buttonNum7);
 		
+		buttonNum7.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				racerNumber += 7;    
+			}
+		});
+		
 		JButton buttonNum8 = new JButton("8");
 		buttonNum8.setBounds(44, 90, 45, 45);
 		panel.add(buttonNum8);
+		
+		buttonNum8.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				racerNumber += 8;    
+			}
+		});
 		
 		JButton buttonNum9 = new JButton("9");
 		buttonNum9.setBounds(88, 90, 45, 45);
 		panel.add(buttonNum9);
 		
+		buttonNum9.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				racerNumber += 9;    
+			}
+		});
+		
 		JButton buttonNum0 = new JButton("0");
 		buttonNum0.setBounds(44, 135, 45, 45);
 		panel.add(buttonNum0);
+		
+		buttonNum0.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				racerNumber += 0;    
+			}
+		});
 		
 		JButton buttonStar = new JButton("*");
 		buttonStar.setBounds(0, 135, 45, 45);
@@ -184,6 +272,15 @@ public class Gui {
 		JButton buttonPound = new JButton("#");
 		buttonPound.setBounds(88, 135, 45, 45);
 		panel.add(buttonPound);
+		
+		buttonPound.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				System.out.println(racerNumber);
+				racerNumber = "";
+			}
+		});
+		
+		// ------------ Number keys ------------
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBorder(new BevelBorder(BevelBorder.LOWERED, new Color(0, 0, 0), new Color(0, 0, 0), new Color(0, 0, 0), new Color(0, 0, 0)));
@@ -298,12 +395,43 @@ public class Gui {
 		panel_2.setBounds(0, 99, 285, 5);
 		panel_1.add(panel_2);
 		
-		JTextArea txtrText = new JTextArea();
-		txtrText.setBounds(581, 40, 132, 182);
-		frame.getContentPane().add(txtrText);
+		JButton btnNewRun = new JButton("New Run");
+		btnNewRun.setBounds(6, 57, 101, 29);
+		frame.getContentPane().add(btnNewRun);
+		
+		JButton btnIndRun = new JButton("Ind Run");
+		btnIndRun.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnIndRun.setBounds(6, 114, 101, 29);
+		frame.getContentPane().add(btnIndRun);
+		
+		JButton btnParindRun = new JButton("ParInd Run");
+		btnParindRun.setBounds(6, 140, 101, 29);
+		frame.getContentPane().add(btnParindRun);
+		
+		JButton btnNewButton = new JButton("Grp Run");
+		btnNewButton.setBounds(6, 166, 101, 29);
+		frame.getContentPane().add(btnNewButton);
+		
+		JButton btnPargrpRun = new JButton("ParGrp Run");
+		btnPargrpRun.setBounds(6, 192, 101, 29);
+		frame.getContentPane().add(btnPargrpRun);
+		
+		JLabel lblRaceType = new JLabel("Race Type");
+		lblRaceType.setForeground(new Color(128, 0, 0));
+		lblRaceType.setBounds(26, 98, 69, 16);
+		frame.getContentPane().add(lblRaceType);
 		
 		
-		
-	}
+		Printer.addPrintMessageActionListener(new PrintMessageActionListener(){
 
+			@Override
+			public void onPrintMessageReceived(PrintMessageActionListenerEventArgs args) {
+				printerText.append(args.getMessage() + "\r\n");			
+			}
+			
+		});
+	}
 }

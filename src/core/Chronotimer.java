@@ -1,14 +1,10 @@
 package core;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.attribute.FileAttribute;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -60,6 +56,8 @@ public class Chronotimer {
 			runNumber = 0;
 		}
 		this.isPower = !isPower;
+		
+		Printer.printMessage("Power is " + (this.isPower == true? "ON" : "OFF"));
 	}
 	
 	/**
@@ -100,15 +98,15 @@ public class Chronotimer {
 	 */
 	public void triggerChannel(int channelNumber) {
 		if(!getIsPoweredOn()){
-			System.out.println("Power must be enabled to add racer to run");
+			Printer.printMessage("Power must be enabled to add racer to run");
 			return;
 		}
 		if(channels[channelNumber-1].isEnabled()!=true) {
-			System.out.println("Channel "+ channelNumber + " not enabled");
+			Printer.printMessage("Channel "+ channelNumber + " not enabled");
 			return;
 		}
 		if(currentRun == null){
-			System.out.println("Current Run must not be null");
+			Printer.printMessage("Current Run must not be null");
 			return;
 		}
 		if(channelNumber % 2 == 0) {
@@ -128,7 +126,7 @@ public class Chronotimer {
 	 */
 	public void setConnect(int channelNumber, SensorType sensorType){
 		if(!getIsPoweredOn()){
-			System.out.println("Power must be enabled to add racer to run");
+			Printer.printMessage("Power must be enabled to add racer to run");
 			return;
 		}
 		channels[channelNumber-1].setConnect(sensorType);
@@ -140,7 +138,7 @@ public class Chronotimer {
 	 */
 	public void setDisconnect(int channelNumber){
 		if(!getIsPoweredOn()){
-			System.out.println("Power must be enabled to add racer to run");
+			Printer.printMessage("Power must be enabled to add racer to run");
 			return;
 		}
 		channels[channelNumber-1].setDisconnect();
@@ -162,7 +160,7 @@ public class Chronotimer {
 	 * Creates a new run only if there isn't already a run active
 	 */
 	public void newRun(){
-		if(currentRun != null) System.out.println("Must be starting a new run by ending one first or after initial power on");
+		if(currentRun != null) Printer.printMessage("Must be starting a new run by ending one first or after initial power on");
 		setRunBasedOnRaceType(raceType);
 		++runNumber;		
 		currentRun.setRunNumber(runNumber);
@@ -171,7 +169,7 @@ public class Chronotimer {
 	 * Creates a new run only if there isn't already a run active
 	 */
 	public void newRun(RaceType selectedType){
-		if(currentRun == null) System.out.println("Must be starting a new run by ending one first or after initial power on");
+		if(currentRun == null) Printer.printMessage("Must be starting a new run by ending one first or after initial power on");
 		++runNumber;
 		setRunBasedOnRaceType(selectedType);	
 		//currentRun.setRunNumber(runNumber);
@@ -184,7 +182,7 @@ public class Chronotimer {
 	 */
 	public void setRaceType(RaceType event){
 		if(!getIsPoweredOn()){
-			System.out.println("Power must be enabled to add racer to run");
+			Printer.printMessage("Power must be enabled to add racer to run");
 			return;
 		}
 		this.raceType = event;
@@ -203,7 +201,7 @@ public class Chronotimer {
 		switch(selectedType) {
 		case None:
 			//throw an exception?
-			System.out.println("A race type must be selected first!");
+			Printer.printMessage("A race type must be selected first!");
 			return;
 		case IND:
 			currentRun = new IndRun(runNumber);
@@ -292,11 +290,11 @@ public class Chronotimer {
 	 */
 	public void addRacer(int bibNumber){
 		if(!getIsPoweredOn()){
-			System.out.println("Power must be enabled to add racer to run");
+			Printer.printMessage("Power must be enabled to add racer to run");
 			return;
 		}
 		if(currentRun == null){
-			System.out.println("Current run must not be null");
+			Printer.printMessage("Current run must not be null");
 			return;
 		}
 		currentRun.addRacer(bibNumber);
