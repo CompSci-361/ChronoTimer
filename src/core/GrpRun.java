@@ -1,9 +1,18 @@
 package core;
 
 public class GrpRun extends Run {
+	
+	//order of finishing
+	int placeholder;
+	
+	//start time for all racers in this group run
+	double groupStart;
+	
 	public GrpRun(int runNum) {
 		this.runNumber = runNum;
+		this.placeholder = 0;
 	}
+	
 	/**
 	 * Adds a racer with the param as the attribute
 	 * Cannot add a racer if a racer with the same bibNumber already Exists
@@ -14,13 +23,15 @@ public class GrpRun extends Run {
 		//todo
 		return;
 	}
+	
 	/**
 	 * Gives start time to the first Racer in the queue
 	 * Adds them to the running queue indicating that the racer still needs an endtime
 	 */
 	@Override
 	public void setRacerStartTime(int triggerNumber){
-		//todo
+		//start time is the same for all group racers
+		groupStart = Chronotimer.ourTimer.getSystemTime();
 		return;
 	}
 	/**
