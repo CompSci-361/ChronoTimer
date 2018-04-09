@@ -8,6 +8,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JButton;
 import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.UIManager;
 
 import java.awt.Font;
 import javax.swing.JRadioButton;
@@ -22,11 +23,19 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JComboBox;
 import javax.swing.border.BevelBorder;
+import javax.swing.plaf.ButtonUI;
+import javax.swing.plaf.basic.BasicButtonUI;
+
+import com.sun.prism.Graphics;
+
+import core.Chronotimer;
+
 import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class Gui {
+	static Chronotimer chrono = new Chronotimer();
 
 	private JFrame frame;
 
@@ -62,22 +71,42 @@ public class Gui {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
+		// ------------ Power button ------------
 		JButton buttonPower = new JButton("Power");
+		buttonPower.setForeground(new Color(0, 0, 0));
 		buttonPower.setBounds(6, 6, 117, 29);
 		frame.getContentPane().add(buttonPower);
+		buttonPower.setContentAreaFilled(true);
+		buttonPower.setOpaque(false);
+		buttonPower.setBackground(Color.BLACK);
+		buttonPower.setForeground(Color.BLACK);
+		
+		buttonPower.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				chrono.togglePower();
+				boolean value = chrono.getIsPoweredOn();
+				System.out.println("Power is " + (value ? "enabled" : "disabled"));
+				if(value)
+					buttonPower.setForeground(new Color(0, 255, 0));
+				else{
+					buttonPower.setForeground(Color.BLACK);
+				}
+				    
+			}
+		});
+		
+		// ------------ Power button ------------
+
 		
 		JButton btnPrinterPower = new JButton("Printer Power");
 		btnPrinterPower.setBounds(596, 6, 117, 29);
 		frame.getContentPane().add(btnPrinterPower);
 		
 		JScrollPane scroll = new JScrollPane();
-		scroll.setSize(151, 186);
-		scroll.setLocation(580, 47);
+		scroll.setSize(151, 193);
+		scroll.setLocation(580, 40);
 	    scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		frame.getContentPane().add(scroll);
-		
-		JTextArea txtrText = new JTextArea();
-		scroll.setViewportView(txtrText);
 		
 		JLabel lblNewLabel = new JLabel("Chronotimer 1009");
 		lblNewLabel.setForeground(new Color(128, 0, 0));
@@ -90,6 +119,7 @@ public class Gui {
 		frame.getContentPane().add(buttonSwap);
 		
 		JButton buttonFunction = new JButton("Function");
+		buttonFunction.setBackground(Color.PINK);
 		buttonFunction.setBounds(6, 148, 117, 29);
 		frame.getContentPane().add(buttonFunction);
 		
@@ -267,6 +297,10 @@ public class Gui {
 		panel_2.setBackground(Color.LIGHT_GRAY);
 		panel_2.setBounds(0, 99, 285, 5);
 		panel_1.add(panel_2);
+		
+		JTextArea txtrText = new JTextArea();
+		txtrText.setBounds(581, 40, 132, 182);
+		frame.getContentPane().add(txtrText);
 		
 		
 		
