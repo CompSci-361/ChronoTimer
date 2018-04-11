@@ -6,12 +6,28 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import javax.swing.JTextArea;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.Timer;
 import java.awt.Font;
 import javax.swing.JRadioButton;
 import java.awt.Color;
+import javax.swing.JScrollPane;
+import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 
-public class Gui {
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.border.BevelBorder;
+import core.Chronotimer;
+import core.Printer;
+import core.Printer.PrintMessageActionListener;
+import core.Printer.PrintMessageActionListenerEventArgs;
 
+public class Gui extends JPanel implements ActionListener{
+	static Chronotimer chrono = new Chronotimer();
+
+	public String racerNumber = "";
+	private final Timer timer = new Timer(40, this);
 	private JFrame frame;
 
 	/**
@@ -23,11 +39,18 @@ public class Gui {
 				try {
 					Gui window = new Gui();
 					window.frame.setVisible(true);
+					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		});
+		
+	}
+	
+	@Override
+	public void actionPerformed(ActionEvent e) {
+	    this.repaint();
 	}
 
 	/**
@@ -42,174 +65,373 @@ public class Gui {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 450, 300);
+		frame.setBounds(100, 100, 750, 500);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
+		JLabel chronoLabel = new JLabel("Chronotimer 1009");
+		chronoLabel.setForeground(new Color(128, 0, 0));
+		chronoLabel.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
+		chronoLabel.setBounds(278, 11, 151, 16);
+		frame.getContentPane().add(chronoLabel);
+		
+		// ------------ Power button ------------
 		JButton buttonPower = new JButton("Power");
-		buttonPower.setBounds(6, 6, 117, 29);
+		buttonPower.setForeground(new Color(0, 0, 0));
+		buttonPower.setBounds(6, 6, 101, 29);
 		frame.getContentPane().add(buttonPower);
+		buttonPower.setContentAreaFilled(true);
+		buttonPower.setOpaque(false);
+		buttonPower.setBackground(Color.BLACK);
+		buttonPower.setForeground(Color.BLACK);
+		
+		buttonPower.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				chrono.togglePower();
+				boolean value = chrono.getIsPoweredOn();
+				System.out.println("Power is " + (value ? "enabled" : "disabled"));
+				if(value)
+					buttonPower.setForeground(new Color(0, 255, 0));
+				else{
+					buttonPower.setForeground(Color.BLACK);
+				}
+				    
+			}
+		});
+		
+		// ------------ Power button ------------
+
+		// ------------ Reset button ------------
+		
+		JButton buttonReset = new JButton("Reset");
+		buttonReset.setBounds(110, 7, 101, 29);
+		frame.getContentPane().add(buttonReset);
+		
+		buttonReset.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				chrono.reset();
+				boolean value = chrono.getIsPoweredOn();
+				System.out.println("Power is " + (value ? "enabled" : "disabled"));
+				if(value)
+					buttonPower.setForeground(new Color(0, 255, 0));
+				else{
+					buttonPower.setForeground(Color.BLACK);
+				}
+				System.out.println("Reset Chronotimer.");
+				    
+			}
+		});
+		
+		// ------------ Reset button ------------
 		
 		JButton btnPrinterPower = new JButton("Printer Power");
-		btnPrinterPower.setBounds(327, 6, 117, 29);
+		btnPrinterPower.setBounds(562, 7, 117, 29);
 		frame.getContentPane().add(btnPrinterPower);
 		
-		JTextArea textArea = new JTextArea();
-		textArea.setBackground(new Color(211, 211, 211));
-		textArea.setBounds(337, 36, 96, 55);
-		frame.getContentPane().add(textArea);
+		JScrollPane scroll = new JScrollPane();
+		scroll.setSize(229, 193);
+		scroll.setLocation(504, 40);
+	    scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		frame.getContentPane().add(scroll);
 		
-		JLabel lblNewLabel = new JLabel("Chronotimer 1009");
-		lblNewLabel.setBounds(160, 11, 117, 16);
-		frame.getContentPane().add(lblNewLabel);
+		JTextArea printerText = new JTextArea();
+		printerText.setBounds(0, 40, 10, 10);
+		scroll.setViewportView(printerText);
 		
-		JButton buttonNum1 = new JButton("1");
-		buttonNum1.setBounds(311, 95, 45, 45);
-		frame.getContentPane().add(buttonNum1);
-		
-		JButton buttonNum2 = new JButton("2");
-		buttonNum2.setBounds(355, 95, 45, 45);
-		frame.getContentPane().add(buttonNum2);
-		
-		JButton buttonNum3 = new JButton("3");
-		buttonNum3.setBounds(399, 95, 45, 45);
-		frame.getContentPane().add(buttonNum3);
-		
-		JButton buttonNum4 = new JButton("4");
-		buttonNum4.setBounds(311, 140, 45, 45);
-		frame.getContentPane().add(buttonNum4);
-		
-		JButton buttonNum5 = new JButton("5");
-		buttonNum5.setBounds(355, 140, 45, 45);
-		frame.getContentPane().add(buttonNum5);
-		
-		JButton button6 = new JButton("6");
-		button6.setBounds(399, 140, 45, 45);
-		frame.getContentPane().add(button6);
-		
-		JButton button7 = new JButton("7");
-		button7.setBounds(311, 185, 45, 45);
-		frame.getContentPane().add(button7);
-		
-		JButton button8 = new JButton("8");
-		button8.setBounds(355, 185, 45, 45);
-		frame.getContentPane().add(button8);
-		
-		JButton button9 = new JButton("9");
-		button9.setBounds(399, 185, 45, 45);
-		frame.getContentPane().add(button9);
-		
-		JButton buttonStar = new JButton("*");
-		buttonStar.setBounds(311, 230, 45, 45);
-		frame.getContentPane().add(buttonStar);
-		
-		JButton buttonNum0 = new JButton("0");
-		buttonNum0.setBounds(355, 230, 45, 45);
-		frame.getContentPane().add(buttonNum0);
-		
-		JButton buttonPound = new JButton("#");
-		buttonPound.setBounds(399, 230, 45, 45);
-		frame.getContentPane().add(buttonPound);
-		
-		JButton buttonSwap = new JButton("Swap");
-		buttonSwap.setBounds(6, 230, 117, 29);
-		frame.getContentPane().add(buttonSwap);
-		
-		JButton buttonFunction = new JButton("Function");
-		buttonFunction.setBounds(6, 148, 117, 29);
-		frame.getContentPane().add(buttonFunction);
-		
-		JLabel lblNewLabel_1 = new JLabel("Start");
-		lblNewLabel_1.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
-		lblNewLabel_1.setBounds(147, 37, 26, 16);
-		frame.getContentPane().add(lblNewLabel_1);
-		
-		JLabel lblFinish = new JLabel("Finish");
-		lblFinish.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
-		lblFinish.setBounds(144, 95, 29, 16);
-		frame.getContentPane().add(lblFinish);
-		
-		JLabel lblEnabledisable = new JLabel("Enable/Disable");
-		lblEnabledisable.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
-		lblEnabledisable.setBounds(100, 65, 73, 16);
-		frame.getContentPane().add(lblEnabledisable);
-		
-		JLabel label = new JLabel("Enable/Disable");
-		label.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
-		label.setBounds(100, 123, 73, 16);
-		frame.getContentPane().add(label);
 		
 		JTextArea textArea_1 = new JTextArea();
 		textArea_1.setBackground(new Color(211, 211, 211));
-		textArea_1.setBounds(135, 153, 164, 101);
+		textArea_1.setBounds(215, 238, 277, 206);
 		frame.getContentPane().add(textArea_1);
 		
+		JButton buttonSwap = new JButton("Swap");
+		buttonSwap.setBounds(6, 400, 117, 29);
+		frame.getContentPane().add(buttonSwap);
+		
+		JButton buttonFunction = new JButton("End Run");
+		buttonFunction.setBackground(Color.PINK);
+		buttonFunction.setBounds(6, 233, 101, 29);
+		frame.getContentPane().add(buttonFunction);
+		
 		JLabel lblNewLabel_2 = new JLabel("Queue / Running / Finish");
-		lblNewLabel_2.setBounds(135, 256, 164, 16);
+		lblNewLabel_2.setForeground(new Color(128, 0, 0));
+		lblNewLabel_2.setBounds(272, 456, 164, 16);
 		frame.getContentPane().add(lblNewLabel_2);
 		
-		JRadioButton radioButton = new JRadioButton("");
-		radioButton.setBounds(185, 60, 26, 23);
-		frame.getContentPane().add(radioButton);
+		// ------------ Number keys ------------
 		
-		JRadioButton radioButton_1 = new JRadioButton("");
-		radioButton_1.setBounds(215, 60, 26, 23);
-		frame.getContentPane().add(radioButton_1);
+		JPanel panel = new JPanel();
+		panel.setBounds(542, 245, 132, 186);
+		frame.getContentPane().add(panel);
+		panel.setLayout(null);
 		
-		JRadioButton radioButton_2 = new JRadioButton("");
-		radioButton_2.setBounds(245, 60, 26, 23);
-		frame.getContentPane().add(radioButton_2);
+		JButton buttonNum1 = new JButton("1");
+		buttonNum1.setBounds(0, 0, 45, 45);
+		panel.add(buttonNum1);
 		
-		JRadioButton radioButton_3 = new JRadioButton("");
-		radioButton_3.setBounds(275, 60, 26, 23);
-		frame.getContentPane().add(radioButton_3);
+		buttonNum1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				racerNumber += 1;    
+			}
+		});
 		
-		JRadioButton radioButton_4 = new JRadioButton("");
-		radioButton_4.setBounds(185, 117, 26, 23);
-		frame.getContentPane().add(radioButton_4);
+		JButton buttonNum2 = new JButton("2");
+		buttonNum2.setBounds(44, 0, 45, 45);
+		panel.add(buttonNum2);
 		
-		JRadioButton radioButton_5 = new JRadioButton("");
-		radioButton_5.setBounds(215, 117, 26, 23);
-		frame.getContentPane().add(radioButton_5);
+		buttonNum2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				racerNumber += 2;    
+			}
+		});
 		
-		JRadioButton radioButton_6 = new JRadioButton("");
-		radioButton_6.setBounds(245, 117, 26, 23);
-		frame.getContentPane().add(radioButton_6);
+		JButton buttonNum3 = new JButton("3");
+		buttonNum3.setBounds(88, 0, 45, 45);
+		panel.add(buttonNum3);
 		
-		JRadioButton radioButton_7 = new JRadioButton("");
-		radioButton_7.setBounds(275, 117, 26, 23);
-		frame.getContentPane().add(radioButton_7);
+		buttonNum3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				racerNumber += 3;    
+			}
+		});
 		
-		JButton btn1 = new JButton("1");
-		btn1.setBounds(185, 31, 26, 29);
-		frame.getContentPane().add(btn1);
+		JButton buttonNum4 = new JButton("4");
+		buttonNum4.setBounds(0, 45, 45, 45);
+		panel.add(buttonNum4);
 		
-		JButton button = new JButton("3");
-		button.setBounds(215, 31, 26, 29);
-		frame.getContentPane().add(button);
+		buttonNum4.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				racerNumber += 4;    
+			}
+		});
 		
-		JButton button_1 = new JButton("5");
-		button_1.setBounds(245, 31, 26, 29);
-		frame.getContentPane().add(button_1);
+		JButton buttonNum5 = new JButton("5");
+		buttonNum5.setBounds(44, 45, 45, 45);
+		panel.add(buttonNum5);
 		
-		JButton button_2 = new JButton("7");
-		button_2.setBounds(275, 31, 26, 29);
-		frame.getContentPane().add(button_2);
+		buttonNum5.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				racerNumber += 5;    
+			}
+		});
 		
-		JButton button_3 = new JButton("2");
-		button_3.setBounds(185, 89, 26, 29);
-		frame.getContentPane().add(button_3);
+		JButton buttonNum6 = new JButton("6");
+		buttonNum6.setBounds(88, 45, 45, 45);
+		panel.add(buttonNum6);
 		
-		JButton button_4 = new JButton("4");
-		button_4.setBounds(215, 89, 26, 29);
-		frame.getContentPane().add(button_4);
+		buttonNum6.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				racerNumber += 6;    
+			}
+		});
 		
-		JButton button_5 = new JButton("6");
-		button_5.setBounds(245, 89, 26, 29);
-		frame.getContentPane().add(button_5);
+		JButton buttonNum7 = new JButton("7");
+		buttonNum7.setBounds(0, 90, 45, 45);
+		panel.add(buttonNum7);
 		
-		JButton button_6 = new JButton("8");
-		button_6.setBounds(275, 89, 26, 29);
-		frame.getContentPane().add(button_6);
+		buttonNum7.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				racerNumber += 7;    
+			}
+		});
+		
+		JButton buttonNum8 = new JButton("8");
+		buttonNum8.setBounds(44, 90, 45, 45);
+		panel.add(buttonNum8);
+		
+		buttonNum8.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				racerNumber += 8;    
+			}
+		});
+		
+		JButton buttonNum9 = new JButton("9");
+		buttonNum9.setBounds(88, 90, 45, 45);
+		panel.add(buttonNum9);
+		
+		buttonNum9.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				racerNumber += 9;    
+			}
+		});
+		
+		JButton buttonNum0 = new JButton("0");
+		buttonNum0.setBounds(44, 135, 45, 45);
+		panel.add(buttonNum0);
+		
+		buttonNum0.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				racerNumber += 0;    
+			}
+		});
+		
+		JButton buttonStar = new JButton("*");
+		buttonStar.setBounds(0, 135, 45, 45);
+		panel.add(buttonStar);
+		
+		JButton buttonPound = new JButton("#");
+		buttonPound.setBounds(88, 135, 45, 45);
+		panel.add(buttonPound);
+		
+		buttonPound.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				System.out.println(racerNumber);
+				racerNumber = "";
+			}
+		});
+		
+		// ------------ Number keys ------------
+		
+		JPanel panel_1 = new JPanel();
+		panel_1.setBorder(new BevelBorder(BevelBorder.LOWERED, new Color(0, 0, 0), new Color(0, 0, 0), new Color(0, 0, 0), new Color(0, 0, 0)));
+		panel_1.setBounds(215, 40, 277, 193);
+		frame.getContentPane().add(panel_1);
+		panel_1.setLayout(null);
+		
+		JLabel lblNewLabel_1 = new JLabel("Start");
+		lblNewLabel_1.setBounds(67, 48, 26, 16);
+		panel_1.add(lblNewLabel_1);
+		lblNewLabel_1.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
+		
+		JLabel lblEnabledisable = new JLabel("Enable/Disable");
+		lblEnabledisable.setBounds(20, 76, 73, 16);
+		panel_1.add(lblEnabledisable);
+		lblEnabledisable.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
+		
+		JLabel lblFinish = new JLabel("Finish");
+		lblFinish.setBounds(64, 135, 29, 16);
+		panel_1.add(lblFinish);
+		lblFinish.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
+		
+		JLabel label = new JLabel("Enable/Disable");
+		label.setBounds(20, 171, 73, 16);
+		panel_1.add(label);
+		label.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
+		
+		JPopupMenu menu2 = new JPopupMenu();
+		JPopupMenu menu3 = new JPopupMenu();
+		JPopupMenu menu4 = new JPopupMenu();
+		JPopupMenu menu5 = new JPopupMenu();
+		JPopupMenu menu6 = new JPopupMenu();
+		JPopupMenu menu7 = new JPopupMenu();
+		JPopupMenu menu8 = new JPopupMenu();
+		
+		JButton trig1 = new JButton("1");
+		trig1.setBounds(99, 42, 26, 29);
+		panel_1.add(trig1);
+		
+		JButton trig3 = new JButton("3");
+		trig3.setBounds(137, 42, 26, 29);
+		panel_1.add(trig3);
+		
+		JRadioButton tog7 = new JRadioButton("");
+		tog7.setBounds(213, 73, 26, 23);
+		panel_1.add(tog7);
+		
+		JButton trig2 = new JButton("2");
+		trig2.setBounds(99, 129, 26, 29);
+		panel_1.add(trig2);
+		
+		JRadioButton tog4 = new JRadioButton("");
+		tog4.setBounds(137, 164, 26, 23);
+		panel_1.add(tog4);
+		
+		JButton trig4 = new JButton("4");
+		trig4.setBounds(137, 129, 26, 29);
+		panel_1.add(trig4);
+		
+		JRadioButton tog6 = new JRadioButton("");
+		tog6.setBounds(175, 164, 26, 23);
+		panel_1.add(tog6);
+		
+		JButton trig6 = new JButton("6");
+		trig6.setBounds(175, 129, 26, 29);
+		panel_1.add(trig6);
+		
+		JRadioButton tog8 = new JRadioButton("");
+		tog8.setBounds(213, 164, 26, 23);
+		panel_1.add(tog8);
+		
+		JButton trig8 = new JButton("8");
+		trig8.setBounds(213, 129, 26, 29);
+		panel_1.add(trig8);
+		
+		JRadioButton tog3 = new JRadioButton("");
+		tog3.setBounds(137, 73, 26, 23);
+		panel_1.add(tog3);
+		
+		JRadioButton tog5 = new JRadioButton("");
+		tog5.setBounds(175, 73, 26, 23);
+		panel_1.add(tog5);
+		
+		JRadioButton tog1 = new JRadioButton("");
+		tog1.setBounds(99, 73, 26, 23);
+		panel_1.add(tog1);
+		
+		JButton trig7 = new JButton("7");
+		trig7.setBounds(213, 42, 26, 29);
+		panel_1.add(trig7);
+		
+		JButton trig5 = new JButton("5");
+		trig5.setBounds(175, 42, 26, 29);
+		panel_1.add(trig5);
+		
+		JRadioButton tog2 = new JRadioButton("");
+		tog2.setBounds(99, 164, 26, 23);
+		panel_1.add(tog2);
+		
+		JLabel lblConnect = new JLabel("Connect");
+		lblConnect.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
+		lblConnect.setBounds(53, 20, 40, 16);
+		panel_1.add(lblConnect);
+		
+		JLabel label_1 = new JLabel("Connect");
+		label_1.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
+		label_1.setBounds(53, 107, 40, 16);
+		panel_1.add(label_1);
+		
+		JPanel panel_2 = new JPanel();
+		panel_2.setBackground(Color.LIGHT_GRAY);
+		panel_2.setBounds(0, 99, 285, 5);
+		panel_1.add(panel_2);
+		
+		JButton btnNewRun = new JButton("New Run");
+		btnNewRun.setBounds(6, 57, 101, 29);
+		frame.getContentPane().add(btnNewRun);
+		
+		JButton btnIndRun = new JButton("Ind Run");
+		btnIndRun.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnIndRun.setBounds(6, 114, 101, 29);
+		frame.getContentPane().add(btnIndRun);
+		
+		JButton btnParindRun = new JButton("ParInd Run");
+		btnParindRun.setBounds(6, 140, 101, 29);
+		frame.getContentPane().add(btnParindRun);
+		
+		JButton btnNewButton = new JButton("Grp Run");
+		btnNewButton.setBounds(6, 166, 101, 29);
+		frame.getContentPane().add(btnNewButton);
+		
+		JButton btnPargrpRun = new JButton("ParGrp Run");
+		btnPargrpRun.setBounds(6, 192, 101, 29);
+		frame.getContentPane().add(btnPargrpRun);
+		
+		JLabel lblRaceType = new JLabel("Race Type");
+		lblRaceType.setForeground(new Color(128, 0, 0));
+		lblRaceType.setBounds(26, 98, 69, 16);
+		frame.getContentPane().add(lblRaceType);
+		
+		
+		Printer.addPrintMessageActionListener(new PrintMessageActionListener(){
+
+			@Override
+			public void onPrintMessageReceived(PrintMessageActionListenerEventArgs args) {
+				printerText.append(args.getMessage() + "\r\n");			
+			}
+			
+		});
 	}
 }
