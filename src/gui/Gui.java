@@ -46,6 +46,8 @@ public class Gui extends JPanel implements ActionListener{
 	private final Timer timer = new Timer(40, this);
 	private JFrame frame;
 	private JTextField textField;
+	private JTextField textField_1;
+	private JTextField textField_2;
 
 	/**
 	 * Launch the application.
@@ -458,16 +460,26 @@ public class Gui extends JPanel implements ActionListener{
 		frame.getContentPane().add(lblFunctions);
 		
 		JButton btnClear = new JButton("Clear");
-		btnClear.setBounds(107, 266, 101, 29);
+		btnClear.setBounds(107, 327, 101, 29);
 		frame.getContentPane().add(btnClear);
 		
 		JButton btnDnf = new JButton("DNF");
-		btnDnf.setBounds(6, 295, 101, 29);
+		btnDnf.setBounds(107, 266, 101, 29);
 		frame.getContentPane().add(btnDnf);
 		
 		JButton btnCancel = new JButton("Cancel");
 		btnCancel.setBounds(107, 295, 101, 29);
 		frame.getContentPane().add(btnCancel);
+		
+		textField_1 = new JTextField();
+		textField_1.setBounds(9, 295, 95, 26);
+		frame.getContentPane().add(textField_1);
+		textField_1.setColumns(10);
+		
+		textField_2 = new JTextField();
+		textField_2.setColumns(10);
+		textField_2.setBounds(9, 327, 95, 26);
+		frame.getContentPane().add(textField_2);
 				
 		
 
