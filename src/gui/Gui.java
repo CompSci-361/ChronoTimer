@@ -4,31 +4,48 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.Timer;
 import java.awt.Font;
+import java.awt.Graphics;
+
 import javax.swing.JRadioButton;
+
+import java.awt.BorderLayout;
 import java.awt.Color;
 import javax.swing.JScrollPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.awt.event.ActionEvent;
 import javax.swing.border.BevelBorder;
 import core.Chronotimer;
 import core.Printer;
 import core.Printer.PrintMessageActionListener;
 import core.Printer.PrintMessageActionListenerEventArgs;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.Icon;
 
 public class Gui extends JPanel implements ActionListener{
 	static Chronotimer chrono = new Chronotimer();
 
+	BufferedImage test = null;
 	public String racerNumber = "";
 	private final Timer timer = new Timer(40, this);
 	private JFrame frame;
+	private JTextField textField;
 
 	/**
 	 * Launch the application.
@@ -39,6 +56,9 @@ public class Gui extends JPanel implements ActionListener{
 				try {
 					Gui window = new Gui();
 					window.frame.setVisible(true);
+					
+					GuiSensors window2 = new GuiSensors();
+					window2.getFrame().setVisible(true);
 					
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -78,7 +98,7 @@ public class Gui extends JPanel implements ActionListener{
 		// ------------ Power button ------------
 		JButton buttonPower = new JButton("Power");
 		buttonPower.setForeground(new Color(0, 0, 0));
-		buttonPower.setBounds(6, 6, 101, 29);
+		buttonPower.setBounds(6, 7, 101, 29);
 		frame.getContentPane().add(buttonPower);
 		buttonPower.setContentAreaFilled(true);
 		buttonPower.setOpaque(false);
@@ -94,8 +114,7 @@ public class Gui extends JPanel implements ActionListener{
 					buttonPower.setForeground(new Color(0, 255, 0));
 				else{
 					buttonPower.setForeground(Color.BLACK);
-				}
-				    
+				}	    
 			}
 		});
 		
@@ -104,21 +123,13 @@ public class Gui extends JPanel implements ActionListener{
 		// ------------ Reset button ------------
 		
 		JButton buttonReset = new JButton("Reset");
-		buttonReset.setBounds(110, 7, 101, 29);
+		buttonReset.setBounds(107, 7, 101, 29);
 		frame.getContentPane().add(buttonReset);
 		
 		buttonReset.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				chrono.reset();
-				boolean value = chrono.getIsPoweredOn();
-				System.out.println("Power is " + (value ? "enabled" : "disabled"));
-				if(value)
-					buttonPower.setForeground(new Color(0, 255, 0));
-				else{
-					buttonPower.setForeground(Color.BLACK);
-				}
-				System.out.println("Reset Chronotimer.");
-				    
+				System.out.println("Reset Chronotimer.");    
 			}
 		});
 		
@@ -145,12 +156,12 @@ public class Gui extends JPanel implements ActionListener{
 		frame.getContentPane().add(textArea_1);
 		
 		JButton buttonSwap = new JButton("Swap");
-		buttonSwap.setBounds(6, 400, 117, 29);
+		buttonSwap.setBounds(6, 266, 101, 29);
 		frame.getContentPane().add(buttonSwap);
 		
 		JButton buttonFunction = new JButton("End Run");
 		buttonFunction.setBackground(Color.PINK);
-		buttonFunction.setBounds(6, 233, 101, 29);
+		buttonFunction.setBounds(107, 135, 101, 29);
 		frame.getContentPane().add(buttonFunction);
 		
 		JLabel lblNewLabel_2 = new JLabel("Queue / Running / Finish");
@@ -396,7 +407,7 @@ public class Gui extends JPanel implements ActionListener{
 		panel_1.add(panel_2);
 		
 		JButton btnNewRun = new JButton("New Run");
-		btnNewRun.setBounds(6, 57, 101, 29);
+		btnNewRun.setBounds(107, 108, 101, 29);
 		frame.getContentPane().add(btnNewRun);
 		
 		JButton btnIndRun = new JButton("Ind Run");
@@ -404,26 +415,76 @@ public class Gui extends JPanel implements ActionListener{
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		btnIndRun.setBounds(6, 114, 101, 29);
+		btnIndRun.setBounds(6, 108, 101, 29);
 		frame.getContentPane().add(btnIndRun);
 		
 		JButton btnParindRun = new JButton("ParInd Run");
-		btnParindRun.setBounds(6, 140, 101, 29);
+		btnParindRun.setBounds(6, 135, 101, 29);
 		frame.getContentPane().add(btnParindRun);
 		
 		JButton btnNewButton = new JButton("Grp Run");
-		btnNewButton.setBounds(6, 166, 101, 29);
+		btnNewButton.setBounds(6, 162, 101, 29);
 		frame.getContentPane().add(btnNewButton);
 		
 		JButton btnPargrpRun = new JButton("ParGrp Run");
-		btnPargrpRun.setBounds(6, 192, 101, 29);
+		btnPargrpRun.setBounds(6, 190, 101, 29);
 		frame.getContentPane().add(btnPargrpRun);
 		
 		JLabel lblRaceType = new JLabel("Race Type");
 		lblRaceType.setForeground(new Color(128, 0, 0));
-		lblRaceType.setBounds(26, 98, 69, 16);
+		lblRaceType.setBounds(26, 80, 69, 16);
 		frame.getContentPane().add(lblRaceType);
 		
+		JButton btnTime = new JButton("Time");
+		btnTime.setBounds(107, 37, 101, 29);
+		frame.getContentPane().add(btnTime);
+		
+		textField = new JTextField();
+		textField.setHorizontalAlignment(SwingConstants.CENTER);
+		textField.setText("00:00:00.0");
+		textField.setToolTipText("System Time");
+		textField.setBounds(9, 37, 95, 26);
+		frame.getContentPane().add(textField);
+		textField.setColumns(10);
+		
+		JLabel lblRun = new JLabel("Run");
+		lblRun.setForeground(new Color(128, 0, 0));
+		lblRun.setBounds(140, 80, 32, 16);
+		frame.getContentPane().add(lblRun);
+		
+		JLabel lblFunctions = new JLabel("Functions");
+		lblFunctions.setForeground(new Color(128, 0, 0));
+		lblFunctions.setBounds(74, 238, 69, 16);
+		frame.getContentPane().add(lblFunctions);
+		
+		JButton btnClear = new JButton("Clear");
+		btnClear.setBounds(107, 266, 101, 29);
+		frame.getContentPane().add(btnClear);
+		
+		JButton btnDnf = new JButton("DNF");
+		btnDnf.setBounds(6, 295, 101, 29);
+		frame.getContentPane().add(btnDnf);
+		
+		JButton btnCancel = new JButton("Cancel");
+		btnCancel.setBounds(107, 295, 101, 29);
+		frame.getContentPane().add(btnCancel);
+				
+		
+
+//		try {
+//	        test = ImageIO.read(new File(ClassLoader.getSystemResource("/res/juggernot.png").toURI())); 
+//	        frame.getContentPane().add( new JLabel(new ImageIcon(test)),BorderLayout.CENTER);
+//	        label.setBounds(130, 10, 140, 80);
+//	        frame.setIconImage(test);
+//	        frame.setVisible(true);
+//	        label.setVisible(true);
+//	    } catch (IOException ex) {
+//	        Logger.getLogger(Gui.class.getName()).log(Level.SEVERE, null, ex);
+//	    } catch (URISyntaxException e1) {
+//			// TODO Auto-generated catch block
+//			e1.printStackTrace();
+//		}
+	
 		
 		Printer.addPrintMessageActionListener(new PrintMessageActionListener(){
 
@@ -433,5 +494,11 @@ public class Gui extends JPanel implements ActionListener{
 			}
 			
 		});
+		
+		
+	}
+	public void paint(Graphics g) {
+	    super.paint(g);
+	    g.drawImage(test, 200, 200, null);
 	}
 }
