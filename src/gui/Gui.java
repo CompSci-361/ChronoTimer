@@ -472,19 +472,6 @@ public class Gui extends JPanel implements ActionListener{
 		frame.getContentPane().add(textField_2);
 				
 		
-
-		try {
-	        test = ImageIO.read(new File("res/juggernot.png")); 
-	        JLabel label_2 = new JLabel(new ImageIcon("/Users/scholl/Desktop/361/Sprint1/res/juggernot.png"));
-	        label_2.setLocation(100, 100);
-	        frame.getContentPane().add( label_2,BorderLayout.CENTER);
-	        frame.setIconImage(test);
-	        frame.setVisible(true);
-	        frame.setTitle("Dank meme");
-	    } catch (IOException ex) {
-	        Logger.getLogger(Gui.class.getName()).log(Level.SEVERE, null, ex);
-	    }
-	
 		
 		Printer.addPrintMessageActionListener(new PrintMessageActionListener(){
 

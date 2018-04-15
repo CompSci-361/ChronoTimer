@@ -18,6 +18,7 @@ public class Chronotimer {
 	private Channel[] channels;
 	private int runNumber;
 	private ArrayList<Run> runHistory;
+	private int groupStart;
 	
 	public static Timer ourTimer;
 

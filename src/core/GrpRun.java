@@ -1,5 +1,8 @@
 package core;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
+
 public class GrpRun extends Run {
 	
 	//order of finishing
@@ -8,9 +11,14 @@ public class GrpRun extends Run {
 	//start time for all racers in this group run
 	double groupStart;
 	
+	protected Deque<Racer> waitQueue;
+	protected Deque<Racer> runningQueue;
+	
 	public GrpRun(int runNum) {
 		this.runNumber = runNum;
 		this.placeholder = 0;
+		this.waitQueue = new ArrayDeque<Racer>();
+		this.runningQueue = new ArrayDeque<Racer>();
 	}
 	
 	/**
@@ -20,8 +28,12 @@ public class GrpRun extends Run {
 	 */
 	@Override
 	public void addRacer(int bibNumber){
-		//todo
-		return;
+		Racer racer = new Racer(bibNumber);
+		if(waitQueue.contains(racer)||runningQueue.contains(racer)||endQueue.contains(racer)){
+			System.out.println("Cannot have more than one racer with the same bib number");
+			return;
+		}
+		waitQueue.add(racer);
 	}
 	
 	/**
@@ -31,7 +43,15 @@ public class GrpRun extends Run {
 	@Override
 	public void setRacerStartTime(int triggerNumber){
 		//start time is the same for all group racers
-		groupStart = Chronotimer.ourTimer.getSystemTime();
+		
+		Racer headWait = waitQueue.poll();
+		if(headWait == null) {
+			System.out.println("No waiting racers");
+			return;
+		}
+		headWait.setStartTime();
+		runningQueue.add(headWait);
+		
 		return;
 	}
 	/**
@@ -48,7 +68,7 @@ public class GrpRun extends Run {
 	 */
 	@Override
 	public void giveDnf() {
-		//todo
+		//does not apply to group races
 		return;
 	}
 	/**
@@ -60,14 +80,17 @@ public class GrpRun extends Run {
 		//todo
 		return;
 	}
+	
 	@Override
 	public Racer[] getFinishedRacers() {
-		// TODO Auto-generated method stub
-		return null;
+		return endQueue.toArray(new Racer[0]);
 	}
+	
 	@Override
 	public Racer[] getCurrentRunningRacers() {
-		// TODO Auto-generated method stub
+		if(runningQueue.size() != 0){
+			return runningQueue.toArray(new Racer[0]);
+		}
 		return null;
 	}
 	@Override
@@ -87,13 +110,24 @@ public class GrpRun extends Run {
 	}
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return null;
+		String str= "";
+		Object[] printArray = endQueue.toArray();
+		for(int i = 0; i < printArray.length; i++){
+			str += printArray[i].toString() + "\n";
+		}
+		return str;
 	}
+	
 	@Override
 	public Racer[] getCurrentWaitingRacers() {
-		// TODO Auto-generated method stub
-		return null;
+		Racer [] first = run1.waitQueue.toArray(new Racer[0]);
+		Racer [] second = run2.waitQueue.toArray(new Racer[0]);
+		
+		Racer [] newArray = new Racer[first.length+second.length];
+		System.arraycopy(first, 0, newArray, 0, first.length);
+		System.arraycopy(second, 0, newArray, first.length, second.length );
+		
+		return newArray;
 	}
 	@Override
 	public void clear(int bibNumber) {
