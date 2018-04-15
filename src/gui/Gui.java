@@ -302,24 +302,19 @@ public class Gui extends JPanel implements ActionListener{
 		panel_1.setLayout(null);
 		
 		JLabel lblNewLabel_1 = new JLabel("Start");
-		lblNewLabel_1.setBounds(67, 48, 26, 16);
+		lblNewLabel_1.setBounds(67, 17, 26, 16);
 		panel_1.add(lblNewLabel_1);
 		lblNewLabel_1.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
 		
 		JLabel lblEnabledisable = new JLabel("Enable/Disable");
-		lblEnabledisable.setBounds(20, 76, 73, 16);
+		lblEnabledisable.setBounds(20, 61, 73, 16);
 		panel_1.add(lblEnabledisable);
 		lblEnabledisable.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
 		
 		JLabel lblFinish = new JLabel("Finish");
-		lblFinish.setBounds(64, 135, 29, 16);
+		lblFinish.setBounds(64, 116, 29, 16);
 		panel_1.add(lblFinish);
 		lblFinish.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
-		
-		JLabel label = new JLabel("Enable/Disable");
-		label.setBounds(20, 171, 73, 16);
-		panel_1.add(label);
-		label.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
 		
 		JPopupMenu menu2 = new JPopupMenu();
 		JPopupMenu menu3 = new JPopupMenu();
@@ -330,83 +325,78 @@ public class Gui extends JPanel implements ActionListener{
 		JPopupMenu menu8 = new JPopupMenu();
 		
 		JButton trig1 = new JButton("1");
-		trig1.setBounds(99, 42, 26, 29);
+		trig1.setBounds(99, 11, 26, 29);
 		panel_1.add(trig1);
 		
 		JButton trig3 = new JButton("3");
-		trig3.setBounds(137, 42, 26, 29);
+		trig3.setBounds(137, 11, 26, 29);
 		panel_1.add(trig3);
 		
 		JRadioButton tog7 = new JRadioButton("");
-		tog7.setBounds(213, 73, 26, 23);
+		tog7.setBounds(213, 54, 26, 23);
 		panel_1.add(tog7);
 		
 		JButton trig2 = new JButton("2");
-		trig2.setBounds(99, 129, 26, 29);
+		trig2.setBounds(99, 110, 26, 29);
 		panel_1.add(trig2);
 		
 		JRadioButton tog4 = new JRadioButton("");
-		tog4.setBounds(137, 164, 26, 23);
+		tog4.setBounds(137, 151, 26, 23);
 		panel_1.add(tog4);
 		
 		JButton trig4 = new JButton("4");
-		trig4.setBounds(137, 129, 26, 29);
+		trig4.setBounds(137, 110, 26, 29);
 		panel_1.add(trig4);
 		
 		JRadioButton tog6 = new JRadioButton("");
-		tog6.setBounds(175, 164, 26, 23);
+		tog6.setBounds(175, 151, 26, 23);
 		panel_1.add(tog6);
 		
 		JButton trig6 = new JButton("6");
-		trig6.setBounds(175, 129, 26, 29);
+		trig6.setBounds(175, 110, 26, 29);
 		panel_1.add(trig6);
 		
 		JRadioButton tog8 = new JRadioButton("");
-		tog8.setBounds(213, 164, 26, 23);
+		tog8.setBounds(213, 151, 26, 23);
 		panel_1.add(tog8);
 		
 		JButton trig8 = new JButton("8");
-		trig8.setBounds(213, 129, 26, 29);
+		trig8.setBounds(213, 110, 26, 29);
 		panel_1.add(trig8);
 		
 		JRadioButton tog3 = new JRadioButton("");
-		tog3.setBounds(137, 73, 26, 23);
+		tog3.setBounds(137, 54, 26, 23);
 		panel_1.add(tog3);
 		
 		JRadioButton tog5 = new JRadioButton("");
-		tog5.setBounds(175, 73, 26, 23);
+		tog5.setBounds(175, 54, 26, 23);
 		panel_1.add(tog5);
 		
 		JRadioButton tog1 = new JRadioButton("");
-		tog1.setBounds(99, 73, 26, 23);
+		tog1.setBounds(99, 54, 26, 23);
 		panel_1.add(tog1);
 		
 		JButton trig7 = new JButton("7");
-		trig7.setBounds(213, 42, 26, 29);
+		trig7.setBounds(213, 11, 26, 29);
 		panel_1.add(trig7);
 		
 		JButton trig5 = new JButton("5");
-		trig5.setBounds(175, 42, 26, 29);
+		trig5.setBounds(175, 11, 26, 29);
 		panel_1.add(trig5);
 		
 		JRadioButton tog2 = new JRadioButton("");
-		tog2.setBounds(99, 164, 26, 23);
+		tog2.setBounds(99, 151, 26, 23);
 		panel_1.add(tog2);
-		
-		JLabel lblConnect = new JLabel("Connect");
-		lblConnect.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
-		lblConnect.setBounds(53, 20, 40, 16);
-		panel_1.add(lblConnect);
-		
-		JLabel label_1 = new JLabel("Connect");
-		label_1.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
-		label_1.setBounds(53, 107, 40, 16);
-		panel_1.add(label_1);
 		
 		JPanel panel_2 = new JPanel();
 		panel_2.setBackground(Color.LIGHT_GRAY);
-		panel_2.setBounds(0, 99, 285, 5);
+		panel_2.setBounds(0, 89, 285, 5);
 		panel_1.add(panel_2);
+		
+		JLabel label = new JLabel("Enable/Disable");
+		label.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
+		label.setBounds(20, 153, 73, 16);
+		panel_1.add(label);
 		
 		JButton btnNewRun = new JButton("New Run");
 		btnNewRun.setBounds(107, 108, 101, 29);
@@ -483,19 +473,17 @@ public class Gui extends JPanel implements ActionListener{
 				
 		
 
-//		try {
-//	        test = ImageIO.read(new File(ClassLoader.getSystemResource("/res/juggernot.png").toURI())); 
-//	        frame.getContentPane().add( new JLabel(new ImageIcon(test)),BorderLayout.CENTER);
-//	        label.setBounds(130, 10, 140, 80);
-//	        frame.setIconImage(test);
-//	        frame.setVisible(true);
-//	        label.setVisible(true);
-//	    } catch (IOException ex) {
-//	        Logger.getLogger(Gui.class.getName()).log(Level.SEVERE, null, ex);
-//	    } catch (URISyntaxException e1) {
-//			// TODO Auto-generated catch block
-//			e1.printStackTrace();
-//		}
+		try {
+	        test = ImageIO.read(new File("res/juggernot.png")); 
+	        JLabel label_2 = new JLabel(new ImageIcon("/Users/scholl/Desktop/361/Sprint1/res/juggernot.png"));
+	        label_2.setLocation(100, 100);
+	        frame.getContentPane().add( label_2,BorderLayout.CENTER);
+	        frame.setIconImage(test);
+	        frame.setVisible(true);
+	        frame.setTitle("Dank meme");
+	    } catch (IOException ex) {
+	        Logger.getLogger(Gui.class.getName()).log(Level.SEVERE, null, ex);
+	    }
 	
 		
 		Printer.addPrintMessageActionListener(new PrintMessageActionListener(){
