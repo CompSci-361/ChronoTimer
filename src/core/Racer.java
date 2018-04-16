@@ -21,6 +21,11 @@ public class Racer {
 	public void setStartTime(){
 		this.startTime = Chronotimer.ourTimer.getSystemTime();
 	}
+	
+	public void setStartTime(double time){
+		this.startTime = time;
+	}
+	
 	/**
 	 * Gets the current time from ourTimer and gives that value to the end time
 	 */
@@ -58,6 +63,9 @@ public class Racer {
 	 */
 	public int getBibNumber() {
 		return bibNumber;
+	}
+	public void setBibNumber(int bibNumber) {
+		this.bibNumber = bibNumber;
 	}
 	/**
 	 * To allow checking if a racer is already existing

@@ -110,14 +110,8 @@ public class Chronotimer {
 			Printer.printMessage("Current Run must not be null");
 			return;
 		}
-		if(channelNumber % 2 == 0) {
-			//if Even Channel
-			currentRun.setRacerEndTime(channelNumber);
-		}
-		else {
-			//if an odd channel
-			currentRun.setRacerStartTime(channelNumber);
-		}
+		
+		currentRun.triggerChannel(channelNumber);
 	}
 	
 	/**

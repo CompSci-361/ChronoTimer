@@ -88,4 +88,16 @@ public abstract class Run {
 		
 	public abstract String toString();
 
+	public void triggerChannel(int channelNumber) {
+		if(channelNumber % 2 == 0) {
+			//if Even Channel
+			this.setRacerEndTime(channelNumber);
+		}
+		else {
+			//if an odd channel
+			this.setRacerStartTime(channelNumber);
+		}
+		
+	}
+
 }

@@ -7,6 +7,7 @@ public class GrpRun extends Run {
 	
 	//order of finishing
 	int placeholder;
+	boolean firstTrigger;
 	
 	//start time for all racers in this group run
 	double groupStart;
@@ -16,7 +17,8 @@ public class GrpRun extends Run {
 	
 	public GrpRun(int runNum) {
 		this.runNumber = runNum;
-		this.placeholder = 0;
+		this.placeholder = 1;
+		this.firstTrigger = true;
 		this.waitQueue = new ArrayDeque<Racer>();
 		this.runningQueue = new ArrayDeque<Racer>();
 	}
@@ -28,12 +30,9 @@ public class GrpRun extends Run {
 	 */
 	@Override
 	public void addRacer(int bibNumber){
-		Racer racer = new Racer(bibNumber);
-		if(waitQueue.contains(racer)||runningQueue.contains(racer)||endQueue.contains(racer)){
-			System.out.println("Cannot have more than one racer with the same bib number");
-			return;
-		}
-		waitQueue.add(racer);
+		Racer racer = endQueue.poll();
+		racer.setBibNumber(bibNumber);
+		endQueue.add(racer);
 	}
 	
 	/**
@@ -42,16 +41,7 @@ public class GrpRun extends Run {
 	 */
 	@Override
 	public void setRacerStartTime(int triggerNumber){
-		//start time is the same for all group racers
-		
-		Racer headWait = waitQueue.poll();
-		if(headWait == null) {
-			System.out.println("No waiting racers");
-			return;
-		}
-		headWait.setStartTime();
-		runningQueue.add(headWait);
-		
+		//not used
 		return;
 	}
 	/**
@@ -60,24 +50,28 @@ public class GrpRun extends Run {
 	 */
 	@Override
 	public void setRacerEndTime(int triggerNumber) {
-		//todo
+		//not used
 		return;
 	}
+	
 	/**
 	 * Sets the end time of a Racer that is running to DNF(-1)
 	 */
 	@Override
 	public void giveDnf() {
 		//does not apply to group races
+		Printer.printMessage("DNF does not apply to group races");
 		return;
 	}
+	
 	/**
 	 * Takes the first Racer out of the running queue and places them at the front of the waitQueue
 	 * Clears that Racers start time 
 	 */
 	@Override
 	public void cancel() {
-		//todo
+		//does not apply to group races
+		Printer.printMessage("Cancel does not apply to group races");
 		return;
 	}
 	
@@ -88,24 +82,24 @@ public class GrpRun extends Run {
 	
 	@Override
 	public Racer[] getCurrentRunningRacers() {
-		if(runningQueue.size() != 0){
-			return runningQueue.toArray(new Racer[0]);
-		}
+		//not used
 		return null;
 	}
 	@Override
 	public boolean containsRacerBibNumberInWaitQueue(int bibNumber) {
-		// TODO Auto-generated method stub
+		//not used
 		return false;
 	}
 	@Override
 	public boolean containsRacerBibNumberInRunningQueue(int bibNumber) {
-		// TODO Auto-generated method stub
+		//not used
 		return false;
 	}
 	@Override
 	public boolean containsRacerBibNumberInEndQueue(int bibNumber) {
-		// TODO Auto-generated method stub
+		for(Racer racer : endQueue.toArray(new Racer[0])) {
+			if (racer.getBibNumber() == bibNumber) return true;
+		}
 		return false;
 	}
 	@Override
@@ -120,18 +114,49 @@ public class GrpRun extends Run {
 	
 	@Override
 	public Racer[] getCurrentWaitingRacers() {
-		Racer [] first = run1.waitQueue.toArray(new Racer[0]);
-		Racer [] second = run2.waitQueue.toArray(new Racer[0]);
+		//not used
+		return null;
 		
-		Racer [] newArray = new Racer[first.length+second.length];
-		System.arraycopy(first, 0, newArray, 0, first.length);
-		System.arraycopy(second, 0, newArray, first.length, second.length );
-		
-		return newArray;
 	}
 	@Override
 	public void clear(int bibNumber) {
-		// TODO Auto-generated method stub
-		
+		//does not apply to group races
+		Printer.printMessage("Clear does not apply to group races");
+		return;
+	}
+	
+	@Override
+	public void triggerChannel(int channelNumber){
+		if(channelNumber == 1){
+			if(firstTrigger){
+				firstTrigger = false;
+				groupStart = Chronotimer.ourTimer.getSystemTime();
+			}
+			else{
+				Printer.printMessage("There is only one start on channel 1");
+				return;
+			}
+		}
+		else if(channelNumber == 2){
+			//create new racer
+			Racer racer = new Racer(placeholder);
+			
+			//set racer start time to group start
+			racer.setStartTime(groupStart);
+			
+			//set racer end time to current time
+			racer.setEndTime();
+			
+			//add the racer to the finish queue
+			endQueue.add(racer);
+			
+			//increment placeholder for next runner
+			++placeholder;
+			
+		}
+		else{
+			Printer.printMessage("Can't use this channel");
+			return;
+		}
 	}
 }
