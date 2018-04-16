@@ -91,7 +91,7 @@ public class Gui extends JPanel implements ActionListener{
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
-		JLabel chronoLabel = new JLabel("Chronotimer 1009");
+		JLabel chronoLabel = new JLabel("ChronoTimer 1009");
 		chronoLabel.setForeground(new Color(128, 0, 0));
 		chronoLabel.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
 		chronoLabel.setBounds(278, 11, 151, 16);
