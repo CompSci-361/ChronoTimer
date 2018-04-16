@@ -471,7 +471,11 @@ public class Gui extends JPanel implements ActionListener{
 		textField_2.setBounds(9, 327, 95, 26);
 		frame.getContentPane().add(textField_2);
 				
-		
+		ImageIcon icon = new ImageIcon("juggernotlogo.png");
+		JLabel example = new JLabel();
+		example.setIcon(icon);
+		example.setBounds(55,365, 100, 100);
+		frame.getContentPane().add(example);
 		
 		Printer.addPrintMessageActionListener(new PrintMessageActionListener(){
 
