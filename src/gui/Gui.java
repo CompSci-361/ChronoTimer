@@ -181,7 +181,6 @@ public class Gui extends JPanel implements ActionListener{
 		JButton buttonNum1 = new JButton("1");
 		buttonNum1.setBounds(0, 0, 45, 45);
 		panel.add(buttonNum1);
-		
 		buttonNum1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				racerNumber += 1;    
@@ -323,70 +322,125 @@ public class Gui extends JPanel implements ActionListener{
 		JPopupMenu menu6 = new JPopupMenu();
 		JPopupMenu menu7 = new JPopupMenu();
 		JPopupMenu menu8 = new JPopupMenu();
-		
+	
+//1		
 		JButton trig1 = new JButton("1");
+		trig1.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		trig1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				chrono.triggerChannel(1);
+			}
+		});
 		trig1.setBounds(99, 11, 26, 29);
 		panel_1.add(trig1);
-		
-		JButton trig3 = new JButton("3");
-		trig3.setBounds(137, 11, 26, 29);
-		panel_1.add(trig3);
-		
-		JRadioButton tog7 = new JRadioButton("");
-		tog7.setBounds(213, 54, 26, 23);
-		panel_1.add(tog7);
-		
-		JButton trig2 = new JButton("2");
-		trig2.setBounds(99, 110, 26, 29);
-		panel_1.add(trig2);
-		
-		JRadioButton tog4 = new JRadioButton("");
-		tog4.setBounds(137, 151, 26, 23);
-		panel_1.add(tog4);
-		
-		JButton trig4 = new JButton("4");
-		trig4.setBounds(137, 110, 26, 29);
-		panel_1.add(trig4);
-		
-		JRadioButton tog6 = new JRadioButton("");
-		tog6.setBounds(175, 151, 26, 23);
-		panel_1.add(tog6);
-		
-		JButton trig6 = new JButton("6");
-		trig6.setBounds(175, 110, 26, 29);
-		panel_1.add(trig6);
-		
-		JRadioButton tog8 = new JRadioButton("");
-		tog8.setBounds(213, 151, 26, 23);
-		panel_1.add(tog8);
-		
-		JButton trig8 = new JButton("8");
-		trig8.setBounds(213, 110, 26, 29);
-		panel_1.add(trig8);
-		
-		JRadioButton tog3 = new JRadioButton("");
-		tog3.setBounds(137, 54, 26, 23);
-		panel_1.add(tog3);
-		
-		JRadioButton tog5 = new JRadioButton("");
-		tog5.setBounds(175, 54, 26, 23);
-		panel_1.add(tog5);
 		
 		JRadioButton tog1 = new JRadioButton("");
 		tog1.setBounds(99, 54, 26, 23);
 		panel_1.add(tog1);
 		
-		JButton trig7 = new JButton("7");
-		trig7.setBounds(213, 11, 26, 29);
-		panel_1.add(trig7);
-		
-		JButton trig5 = new JButton("5");
-		trig5.setBounds(175, 11, 26, 29);
-		panel_1.add(trig5);
+//2		
+		JButton trig2 = new JButton("2");
+		trig2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				chrono.triggerChannel(2);
+			}
+		});
+		trig2.setBounds(99, 110, 26, 29);
+		panel_1.add(trig2);
 		
 		JRadioButton tog2 = new JRadioButton("");
 		tog2.setBounds(99, 151, 26, 23);
 		panel_1.add(tog2);
+		
+//3		
+		JButton trig3 = new JButton("3");
+		trig3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				chrono.triggerChannel(3);
+			}
+		});
+		trig3.setBounds(137, 11, 26, 29);
+		panel_1.add(trig3);
+		
+		JRadioButton tog3 = new JRadioButton("");
+		tog3.setBounds(137, 54, 26, 23);
+		panel_1.add(tog3);
+		
+//4		
+		JButton trig4 = new JButton("4");
+		trig4.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				chrono.triggerChannel(4);
+			}
+		});
+		trig4.setBounds(137, 110, 26, 29);
+		panel_1.add(trig4);
+		
+		JRadioButton tog4 = new JRadioButton("");
+		tog4.setBounds(137, 151, 26, 23);
+		panel_1.add(tog4);
+		
+//5		
+		JButton trig5 = new JButton("5");
+		trig5.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				chrono.triggerChannel(5);
+			}
+		});
+		trig5.setBounds(175, 11, 26, 29);
+		panel_1.add(trig5);
+		
+		JRadioButton tog5 = new JRadioButton("");
+		tog5.setBounds(175, 54, 26, 23);
+		panel_1.add(tog5);
+		
+//6		
+		JRadioButton tog6 = new JRadioButton("");
+		tog6.setBounds(175, 151, 26, 23);
+		panel_1.add(tog6);
+		
+		JButton trig6 = new JButton("6");
+		trig6.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				chrono.triggerChannel(6);
+			}
+		});
+		trig6.setBounds(175, 110, 26, 29);
+		panel_1.add(trig6);
+		
+//7		
+		JButton trig7 = new JButton("7");
+		trig7.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				chrono.triggerChannel(7);
+			}
+		});
+		trig7.setBounds(213, 11, 26, 29);
+		panel_1.add(trig7);
+		
+		JRadioButton tog7 = new JRadioButton("");
+		tog7.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				chrono.toggleChannel(7);
+			}
+		});
+		tog7.setBounds(213, 54, 26, 23);
+		panel_1.add(tog7);
+		
+//8		
+		JButton trig8 = new JButton("8");
+		trig8.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				chrono.triggerChannel(8);
+			}
+		});
+		trig8.setBounds(213, 110, 26, 29);
+		panel_1.add(trig8);
+		
+		JRadioButton tog8 = new JRadioButton("");
+		tog8.setBounds(213, 151, 26, 23);
+		panel_1.add(tog8);
+		
 		
 		JPanel panel_2 = new JPanel();
 		panel_2.setBackground(Color.LIGHT_GRAY);

@@ -79,6 +79,7 @@ public class Chronotimer {
 			System.out.println("Power must be enabled to add racer to run");
 			return;
 		}
+		System.out.println("Toggled Channel " + channelNumber);
 		channels[channelNumber-1].toggle();
 	}
 	
@@ -109,7 +110,7 @@ public class Chronotimer {
 			Printer.printMessage("Current Run must not be null");
 			return;
 		}
-		
+		System.out.println("Channel triggered " + channelNumber);
 		currentRun.triggerChannel(channelNumber);
 	}
 	
