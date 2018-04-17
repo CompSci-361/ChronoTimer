@@ -121,9 +121,10 @@ public class Chronotimer {
 	 */
 	public void setConnect(int channelNumber, SensorType sensorType){
 		if(!getIsPoweredOn()){
-			Printer.printMessage("Power must be enabled to add racer to run");
+			Printer.printMessage("Power must be enabled connect sensor");
 			return;
 		}
+		System.out.println(channelNumber + " type "+sensorType);
 		channels[channelNumber-1].setConnect(sensorType);
 	}
 	
@@ -133,7 +134,7 @@ public class Chronotimer {
 	 */
 	public void setDisconnect(int channelNumber){
 		if(!getIsPoweredOn()){
-			Printer.printMessage("Power must be enabled to add racer to run");
+			Printer.printMessage("Power must be enabled to disconnect sensor");
 			return;
 		}
 		channels[channelNumber-1].setDisconnect();
@@ -164,10 +165,10 @@ public class Chronotimer {
 	 * Creates a new run only if there isn't already a run active
 	 */
 	public void newRun(RaceType selectedType){
-		if(currentRun == null) Printer.printMessage("Must be starting a new run by ending one first or after initial power on");
+		if(currentRun != null) Printer.printMessage("Must be starting a new run by ending one first or after initial power on");
 		++runNumber;
 		setRunBasedOnRaceType(selectedType);	
-		//currentRun.setRunNumber(runNumber);
+		currentRun.setRunNumber(runNumber);
 	}
 	
 	/**
@@ -293,6 +294,7 @@ public class Chronotimer {
 			return;
 		}
 		currentRun.addRacer(bibNumber);
+		Printer.printMessage(bibNumber+"");
 	}
 	
 	
@@ -323,12 +325,14 @@ public class Chronotimer {
 	}
 	
 	/**
-	 * Cancels a race from the run and returns them to the queue
+	 * Cancels a racer from the run and returns them to the queue
 	 */
 	public void cancel() {
 		currentRun.cancel();
 	}
-	
+	public void cancel(int bibNumber) {
+		currentRun.cancel(bibNumber);
+	}
 	/**
 	 * Since the raceType is only IND, Start is always just the same as Trig channel 1
 	 */
@@ -369,9 +373,8 @@ public class Chronotimer {
 			Printer.printRun(runHistory.get(runHistory.size()-1));
 		}
 	}
-
+	
 	public void clear(int bibNumber) {
 		currentRun.clear(bibNumber);
 	}
-	
 }

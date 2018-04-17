@@ -74,7 +74,11 @@ public class GrpRun extends Run {
 		Printer.printMessage("Cancel does not apply to group races");
 		return;
 	}
-	
+	public void cancel(int bibNumber) {
+		//does not apply to group races
+		Printer.printMessage("Cancel does not apply to group races");
+		return;
+	}
 	@Override
 	public Racer[] getFinishedRacers() {
 		return endQueue.toArray(new Racer[0]);

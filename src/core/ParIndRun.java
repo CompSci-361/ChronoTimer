@@ -69,7 +69,9 @@ public class ParIndRun extends Run {
 	public void cancel() {
 		compareRun(run1, run2).cancel();
 	}
-
+	public void cancel(int bibNumber) {
+		compareRun(run1, run2).cancel(bibNumber);
+	}
   @Override
 	public void clear(int bibNumber) {
 		Racer racer = new Racer(bibNumber);

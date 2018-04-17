@@ -83,7 +83,7 @@ public class Racer {
 	 */
 	@Override
 	public String toString(){
-		return "Racer " + this.bibNumber + ": Start Time = " + Chronotimer.ourTimer.formatTime(this.startTime)
+		return "Racer " + this.bibNumber + ": Total Time = "+Chronotimer.ourTimer.formatTime(Chronotimer.ourTimer.calculateTime(startTime, endTime))+" Start Time = " + Chronotimer.ourTimer.formatTime(this.startTime)
 				+ " End Time = " + Chronotimer.ourTimer.formatTime(this.endTime);
 	}
 	

@@ -46,7 +46,13 @@ public class ParGrpRun extends Run {
 	 */
 	@Override
 	public void cancel() {
-		//todo
+		//does not apply to group races
+		Printer.printMessage("Cancel does not apply to group races");
+		return;
+	}
+	public void cancel(int bibNumber) {
+		//does not apply to group races
+		Printer.printMessage("Cancel does not apply to group races");
 		return;
 	}
 	@Override
