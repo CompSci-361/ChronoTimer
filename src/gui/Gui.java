@@ -110,18 +110,7 @@ public class Gui extends JPanel implements ActionListener{
 		buttonPower.setBackground(Color.BLACK);
 		buttonPower.setForeground(Color.BLACK);
 		
-		buttonPower.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				chrono.togglePower();
-				boolean value = chrono.getIsPoweredOn();
-				System.out.println("Power is " + (value ? "enabled" : "disabled"));
-				if(value)
-					buttonPower.setForeground(new Color(0, 255, 0));
-				else{
-					buttonPower.setForeground(Color.BLACK);
-				}	    
-			}
-		});
+		
 		
 		// ------------ Power button ------------
 
@@ -136,6 +125,7 @@ public class Gui extends JPanel implements ActionListener{
 		});
 		btnPrinterPower.setBounds(562, 7, 117, 29);
 		frame.getContentPane().add(btnPrinterPower);
+		//btnPrinterPower.setEnabled(false);
 		
 		JScrollPane scroll = new JScrollPane();
 		scroll.setSize(229, 193);
@@ -161,6 +151,7 @@ public class Gui extends JPanel implements ActionListener{
 		});
 		buttonSwap.setBounds(6, 266, 101, 29);
 		frame.getContentPane().add(buttonSwap);
+		//buttonSwap.setEnabled(false);
 		
 		JButton buttonFunction = new JButton("End Run");
 		buttonFunction.addActionListener(new ActionListener() {
@@ -171,6 +162,7 @@ public class Gui extends JPanel implements ActionListener{
 		buttonFunction.setBackground(Color.PINK);
 		buttonFunction.setBounds(107, 135, 101, 29);
 		frame.getContentPane().add(buttonFunction);
+		//buttonFunction.setEnabled(false);
 		
 		JLabel lblNewLabel_2 = new JLabel("Queue / Running / Finish");
 		lblNewLabel_2.setForeground(new Color(128, 0, 0));
@@ -289,8 +281,7 @@ public class Gui extends JPanel implements ActionListener{
 		
 		JButton buttonPound = new JButton("#");
 		buttonPound.setBounds(88, 135, 45, 45);
-		panel.add(buttonPound);
-		
+		panel.add(buttonPound);		
 		buttonPound.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				//System.out.println(racerNumber);
@@ -300,6 +291,7 @@ public class Gui extends JPanel implements ActionListener{
 				racerNumber = "";
 			}
 		});
+		//buttonPound.setEnabled(false);
 		
 		// ------------ Number keys ------------
 		
@@ -647,6 +639,19 @@ public class Gui extends JPanel implements ActionListener{
 			}
 		});		
 		// ------------ Reset button ------------
+		buttonPower.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				chrono.togglePower();
+				boolean value = chrono.getIsPoweredOn();
+				System.out.println("Power is " + (value ? "enabled" : "disabled"));
+				if(value)
+					buttonPower.setForeground(new Color(0, 255, 0));
+				else{
+					buttonPower.setForeground(Color.BLACK);
+				}	    
+				buttonReset.doClick();
+			}
+		});
 				
 		ImageIcon icon = new ImageIcon("juggernotlogo.png");
 		JLabel example = new JLabel();
