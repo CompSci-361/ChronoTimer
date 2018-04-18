@@ -49,6 +49,8 @@ public abstract class Run {
 	 */
 	public abstract void cancel();
 	
+	public abstract void cancel(int bibNumber);
+	
 	public abstract void clear(int bibNumber);
 	
 	/**
@@ -86,7 +88,14 @@ public abstract class Run {
 	 */
 	public abstract boolean containsRacerBibNumberInEndQueue(int bibNumber);
 		
-	public abstract String toString();
+	public String toString() {
+		String str= "";
+		Object[] printArray = getFinishedRacers();
+		for(int i = 0; i < printArray.length; i++){
+			str += printArray[i].toString() + "\n";
+		}
+		return str;
+	}
 
 	public void triggerChannel(int channelNumber) {
 		if(channelNumber % 2 == 0) {

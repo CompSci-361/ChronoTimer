@@ -88,6 +88,31 @@ public class IndRun extends Run {
 		waitQueue.addFirst(headRunning);
 	}
 	/**
+	 * clears the specific racer
+	 */
+	public void cancel(int bibNumber) {
+		if(runningQueue.isEmpty())	System.out.println("No currently running racers");
+		
+		Deque<Racer> reversed = new ArrayDeque<Racer>(); 
+		Racer notFullRacer = new Racer(bibNumber);
+		Racer fullRacer;
+		while(!runningQueue.isEmpty()) {
+			fullRacer = runningQueue.poll();
+			//if we found racer, clear that racer
+			if(fullRacer.equals(notFullRacer)) {
+				fullRacer.clearStartTime();
+				waitQueue.addFirst(fullRacer);
+				break;
+			}
+			//put the non correct racer into the reversed queue to hold
+			reversed.add(fullRacer);
+		}
+		//put all the racers back into the running queue in the correct order
+		while(!reversed.isEmpty()) {
+			runningQueue.add(reversed.pop());
+		}
+	}
+	/**
 	 * Changes the first two runners in the running queue
 	 */
 	public void swap(){
@@ -103,7 +128,9 @@ public class IndRun extends Run {
 			runningQueue.addFirst(newFirst);
 		}
 	}
-	
+	/**
+	 * Clears the race with bibNumber. Takes them out of the waitQueue
+	 */
 	@Override
 	public void clear(int bibNumber) {
 		Racer racer = new Racer(bibNumber);

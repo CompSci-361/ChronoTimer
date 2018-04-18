@@ -40,6 +40,7 @@ public class Timer {
 	public void setTime(int hours, int minutes, double seconds) {
 		setTime=hours*3600000+minutes*60000+seconds*1000;
 		oldSystemTime = System.currentTimeMillis();
+		System.out.println(setTime);
 	}
 	/**
 	 * Converts milliseconds (double) param to the format:
