@@ -126,5 +126,4 @@ public class TestChronoTimer3 {
 		assertEquals(false, chronotimer.getIsPoweredOn());
 		System.out.println("Turning off power...");
 	}
-	
 }
