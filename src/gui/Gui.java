@@ -144,10 +144,17 @@ public class Gui extends JPanel implements ActionListener{
 		scroll.setViewportView(printerText);
 		
 		
+		JScrollPane scroll2 = new JScrollPane();
+		scroll2.setSize(229, 193);
+		scroll2.setLocation(215, 238);
+	    scroll2.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		frame.getContentPane().add(scroll2);
+		
 		JTextArea textArea_1 = new JTextArea();
 		textArea_1.setBackground(new Color(211, 211, 211));
-		textArea_1.setBounds(215, 238, 277, 206);
-		frame.getContentPane().add(textArea_1);
+		textArea_1.setSize(277, 206);
+		textArea_1.setEditable(false);
+		scroll2.setViewportView(textArea_1);
 		
 		JButton buttonSwap = new JButton("Swap");
 		buttonSwap.addActionListener(new ActionListener() {
