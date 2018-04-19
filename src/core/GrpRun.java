@@ -33,6 +33,7 @@ public class GrpRun extends Run {
 		Racer racer = endQueue.poll();
 		racer.setBibNumber(bibNumber);
 		endQueue.add(racer);
+		raiseQueueUpdatedEvent(RunQueueUpdatedEventType.FinishedQueue);
 	}
 	
 	/**
@@ -157,6 +158,7 @@ public class GrpRun extends Run {
 			//increment placeholder for next runner
 			++placeholder;
 			
+			raiseQueueUpdatedEvent(RunQueueUpdatedEventType.FinishedQueue);
 		}
 		else{
 			Printer.printMessage("Can't use this channel");

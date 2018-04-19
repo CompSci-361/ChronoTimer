@@ -26,6 +26,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.awt.event.ActionEvent;
@@ -35,6 +37,9 @@ import core.Printer;
 import core.Printer.PrintMessageActionListener;
 import core.Printer.PrintMessageActionListenerEventArgs;
 import core.RaceType;
+import core.Racer;
+import core.Run;
+import core.Run.RunQueueUpdatedEventArgs;
 
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -42,6 +47,7 @@ import javax.swing.Icon;
 
 public class Gui extends JPanel implements ActionListener{
 	static Chronotimer chrono = new Chronotimer();
+	private ChronoTimerRunQueueUpdateListener runQueueListener;
 
 	BufferedImage test = null;
 	public String racerNumber = "";
@@ -138,10 +144,17 @@ public class Gui extends JPanel implements ActionListener{
 		scroll.setViewportView(printerText);
 		
 		
+		JScrollPane scroll2 = new JScrollPane();
+		scroll2.setSize(229, 193);
+		scroll2.setLocation(215, 238);
+	    scroll2.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		frame.getContentPane().add(scroll2);
+		
 		JTextArea textArea_1 = new JTextArea();
 		textArea_1.setBackground(new Color(211, 211, 211));
-		textArea_1.setBounds(215, 238, 277, 206);
-		frame.getContentPane().add(textArea_1);
+		textArea_1.setSize(277, 206);
+		textArea_1.setEditable(false);
+		scroll2.setViewportView(textArea_1);
 		
 		JButton buttonSwap = new JButton("Swap");
 		buttonSwap.addActionListener(new ActionListener() {
@@ -156,6 +169,9 @@ public class Gui extends JPanel implements ActionListener{
 		JButton buttonFunction = new JButton("End Run");
 		buttonFunction.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if (chrono.getCurrentRun() != null) {
+					chrono.getCurrentRun().removeQueueUpdateEventListener(runQueueListener);
+				}
 				chrono.endRun();
 			}
 		});
@@ -486,6 +502,9 @@ public class Gui extends JPanel implements ActionListener{
 		btnNewRun.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				chrono.newRun(selectedRaceType);
+				if (chrono.getCurrentRun() != null) {
+					chrono.getCurrentRun().addQueueUpdateEventListener(runQueueListener);
+				}
 			}
 		});
 		btnNewRun.setBounds(107, 108, 101, 29);
@@ -668,8 +687,79 @@ public class Gui extends JPanel implements ActionListener{
 			
 		});
 		
-		
+		runQueueListener = new ChronoTimerRunQueueUpdateListener(textArea_1);
 	}
+	
+	private void updateQueueDisplay(JTextArea textArea) {
+		StringBuilder builder = new StringBuilder();
+		
+		if (runQueueListener.waitQueue != null) {
+			builder.append("Wait Queue:\r\n");
+			
+			if (runQueueListener.waitQueue.length > 0) {
+				for(Racer racer : runQueueListener.waitQueue) {
+					String msg = MessageFormat.format("Racer {0}\r\n", racer.getBibNumber());
+					builder.append(msg);
+				}
+			} else {
+				builder.append("No one is waiting yet.\r\n");
+			}
+			builder.append("\r\n");
+		}
+		
+		if (runQueueListener.runningQueue != null) {
+			builder.append("Racers running:\r\n");
+			
+			if (runQueueListener.runningQueue.length > 0) {
+				for(Racer racer : runQueueListener.runningQueue) {
+					String msg = MessageFormat.format("Racer {0} | Start Time: {1}\r\n", 
+							racer.getBibNumber(), Chronotimer.ourTimer.formatTime(racer.getStartTime()));
+					builder.append(msg);
+				}
+			} else {
+				builder.append("No one is running yet.\r\n");
+			}
+			builder.append("\r\n");
+		}
+		
+		if (runQueueListener.finishQueue != null) {
+			builder.append("Finish Queue:\r\n");
+			
+			if (runQueueListener.finishQueue.length > 0) {
+				for(Racer racer : runQueueListener.finishQueue) {
+					String msg = MessageFormat.format("Racer {0} | Start Time: {1} | Finish Time: {2}\r\n", 
+							racer.getBibNumber(), Chronotimer.ourTimer.formatTime(racer.getStartTime()), Chronotimer.ourTimer.formatTime(racer.getEndTime()));
+					builder.append(msg);
+				}
+			} else {
+				builder.append("No one has finished yet.\r\n");
+			}
+			builder.append("\r\n");
+		}
+		
+		textArea.setText(builder.toString());
+	}
+	
+	class ChronoTimerRunQueueUpdateListener implements Run.IRunQueueUpdatedListener {
+		public Racer[] waitQueue;
+		public Racer[] runningQueue;
+		public Racer[] finishQueue;
+		public JTextArea textArea;
+		
+		public ChronoTimerRunQueueUpdateListener(JTextArea textArea) {
+			this.textArea = textArea;
+		}
+		
+		@Override
+		public void queueUpdated(RunQueueUpdatedEventArgs args) {
+			finishQueue = args.getSource().getFinishedRacers();
+			runningQueue = args.getSource().getCurrentRunningRacers();
+			waitQueue = args.getSource().getCurrentWaitingRacers();
+			
+			Gui.this.updateQueueDisplay(textArea);
+		}
+	}
+	
 	public void paint(Graphics g) {
 	    super.paint(g);
 	    g.drawImage(test, 200, 200, null);

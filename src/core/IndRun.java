@@ -31,6 +31,7 @@ public class IndRun extends Run {
 			return;
 		}
 		waitQueue.add(racer);
+		raiseQueueUpdatedEvent(RunQueueUpdatedEventType.WaitQueue);
 	}
 	/**
 	 * Gives start time to the first Racer in the queue
@@ -45,6 +46,7 @@ public class IndRun extends Run {
 		}
 		headWait.setStartTime();
 		runningQueue.add(headWait);
+		raiseQueueUpdatedEvent(RunQueueUpdatedEventType.RunningQueue);
 	}
 	/**
 	 * Gives end time  to the first Racer in the running queue
@@ -59,6 +61,7 @@ public class IndRun extends Run {
 		}
 		headRunning.setEndTime();
 		endQueue.add(headRunning);
+		raiseQueueUpdatedEvent(RunQueueUpdatedEventType.FinishedQueue);
 	}
 	/**
 	 * Sets the end time of a Racer that is running to DNF(-1)
@@ -72,6 +75,7 @@ public class IndRun extends Run {
 		}
 		headRunning.setDnf();
 		endQueue.add(headRunning);
+		raiseQueueUpdatedEvent(RunQueueUpdatedEventType.FinishedQueue);
 	}
 	/**
 	 * Takes the first Racer out of the running queue and places them at the front of the waitQueue
@@ -86,6 +90,7 @@ public class IndRun extends Run {
 		}
 		headRunning.clearStartTime();
 		waitQueue.addFirst(headRunning);
+		raiseQueueUpdatedEvent(RunQueueUpdatedEventType.WaitQueue);
 	}
 	/**
 	 * clears the specific racer
@@ -111,6 +116,8 @@ public class IndRun extends Run {
 		while(!reversed.isEmpty()) {
 			runningQueue.add(reversed.pop());
 		}
+		
+		raiseQueueUpdatedEvent(RunQueueUpdatedEventType.RunningQueue);
 	}
 	/**
 	 * Changes the first two runners in the running queue
@@ -127,6 +134,8 @@ public class IndRun extends Run {
 			runningQueue.addFirst(oldFirst);
 			runningQueue.addFirst(newFirst);
 		}
+		
+		raiseQueueUpdatedEvent(RunQueueUpdatedEventType.RunningQueue);
 	}
 	/**
 	 * Clears the race with bibNumber. Takes them out of the waitQueue
@@ -135,6 +144,8 @@ public class IndRun extends Run {
 	public void clear(int bibNumber) {
 		Racer racer = new Racer(bibNumber);
 		waitQueue.remove(racer);
+		
+		raiseQueueUpdatedEvent(RunQueueUpdatedEventType.WaitQueue);
 	}
 	
 	/**
