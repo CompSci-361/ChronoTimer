@@ -32,6 +32,13 @@ public class Sensor {
 	public SensorType getSensorType() {
 		return sensorType;
 	}
+	
+	public void simulateSensorTriggered() {
+		if (isListening) {
+			sensorThread.interrupt();
+		}
+	}
+	
 	public void close() {
 		sensorListeners.clear();
 		

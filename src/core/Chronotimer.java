@@ -1,5 +1,7 @@
 package core;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -112,8 +114,15 @@ public class Chronotimer {
 			Printer.printMessage("Current Run must not be null");
 			return;
 		}
-		System.out.println("Channel triggered " + channelNumber);
-		currentRun.triggerChannel(channelNumber);
+		
+		if (isSensorConnected(channelNumber)) {
+			System.out.println("Sensor triggered on channel " + channelNumber);
+			Sensor sensor = getSensorByChannelNumber(channelNumber);
+			sensor.simulateSensorTriggered();
+		} else {
+			System.out.println("Channel triggered " + channelNumber);
+			currentRun.triggerChannel(channelNumber);
+		}
 	}
 	
 	/**
@@ -164,7 +173,16 @@ public class Chronotimer {
 		
 		System.out.println(channelNumber + " type "+sensorType);
 		//channels[channelNumber-1].setConnect(sensorType);
-		sensors.add(new Sensor(sensorType, channelNumber));
+		Sensor sensor = new Sensor(sensorType, channelNumber);
+		sensor.addSensorFiredActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//simulate the sensor communicating with the chronotimer.
+				Sensor theSensor = (Sensor)e.getSource();
+				currentRun.triggerChannel(theSensor.getChannelNumber());
+			}	
+		});
+		sensors.add(sensor);
 	}
 	
 	/**
