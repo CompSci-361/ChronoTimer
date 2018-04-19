@@ -277,7 +277,6 @@ public class TestChronoTimer {
 		System.out.println("Triggered channel 4");
 		
 		//"PRINT"
-		// TODO
 		chronotimer.print();
 		
 		//"ENDRUN"
@@ -327,7 +326,6 @@ public class TestChronoTimer {
 		System.out.println("Added racer (201)");
 		
 		//"TRIG" Start
-		// TODO how do we know which racer triggers which???
 		assertEquals(false, chronotimer.getCurrentRun().containsRacerBibNumberInRunningQueue(167));
 		assertEquals(false, chronotimer.getCurrentRun().containsRacerBibNumberInRunningQueue(166));
 		chronotimer.triggerChannel(1);
@@ -348,10 +346,7 @@ public class TestChronoTimer {
 		System.out.println("Triggered channel 2");
 		System.out.println("Triggered channel 2");
 		
-		// TODO how do we test TRIG 4?
-		
 		//"PRINT"
-		// TODO
 		chronotimer.print();
 		
 		//"POWER"
@@ -367,7 +362,6 @@ public class TestChronoTimer {
 		System.out.println("Turning on power...");
 		
 		//"NEWRUN"
-		// TODO note that the previous run was never ended !!
 		//assertEquals(null, chronotimer.getCurrentRun());
 		chronotimer.newRun();
 		assertNotEquals(null, chronotimer.getCurrentRun());

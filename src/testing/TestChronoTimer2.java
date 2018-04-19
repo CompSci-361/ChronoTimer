@@ -168,4 +168,48 @@ public class TestChronoTimer2 {
 		
 		assertEquals(0, chronotimer.getCurrentRun().getCurrentRunningRacers().length);
 	}
+	
+	@Test
+	public void testCancelIND() {
+		chronotimer.togglePower();
+		chronotimer.setRaceType(RaceType.IND);
+		chronotimer.newRun();
+		chronotimer.addRacer(10);
+		chronotimer.toggleChannel(1);
+		
+		assertEquals(true, chronotimer.getCurrentRun().containsRacerBibNumberInWaitQueue(10));
+		assertEquals(false, chronotimer.getCurrentRun().containsRacerBibNumberInRunningQueue(10));
+		
+		chronotimer.triggerChannel(1);
+		
+		assertEquals(false, chronotimer.getCurrentRun().containsRacerBibNumberInWaitQueue(10));
+		assertEquals(true, chronotimer.getCurrentRun().containsRacerBibNumberInRunningQueue(10));
+		
+		chronotimer.cancel();
+		
+		assertEquals(true, chronotimer.getCurrentRun().containsRacerBibNumberInWaitQueue(10));
+		assertEquals(false, chronotimer.getCurrentRun().containsRacerBibNumberInRunningQueue(10));
+	}
+	
+	@Test
+	public void testCancelPARIND() {
+		chronotimer.togglePower();
+		chronotimer.setRaceType(RaceType.PARIND);
+		chronotimer.newRun();
+		chronotimer.addRacer(10);
+		chronotimer.toggleChannel(1);
+		
+		assertEquals(true, chronotimer.getCurrentRun().containsRacerBibNumberInWaitQueue(10));
+		assertEquals(false, chronotimer.getCurrentRun().containsRacerBibNumberInRunningQueue(10));
+		
+		chronotimer.triggerChannel(1);
+		
+		assertEquals(false, chronotimer.getCurrentRun().containsRacerBibNumberInWaitQueue(10));
+		assertEquals(true, chronotimer.getCurrentRun().containsRacerBibNumberInRunningQueue(10));
+		
+		chronotimer.cancel();
+		
+		assertEquals(true, chronotimer.getCurrentRun().containsRacerBibNumberInWaitQueue(10));
+		assertEquals(false, chronotimer.getCurrentRun().containsRacerBibNumberInRunningQueue(10));
+	}
 }
