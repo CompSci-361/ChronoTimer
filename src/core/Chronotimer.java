@@ -199,6 +199,7 @@ public class Chronotimer {
 		if (isSensorConnected(channelNumber)) {
 			//channels[channelNumber-1].setDisconnect();
 			Sensor sensor = getSensorByChannelNumber(channelNumber);
+			Printer.printMessage("Sensor " + sensor.getSensorType() + " disconnected from channel " + channelNumber);
 			sensor.close();
 			sensors.remove(sensor);
 		}

@@ -62,6 +62,7 @@ public class Gui extends JPanel implements ActionListener{
 		GETCLEARBIB
 	}
 	private state ourState = state.GETBIB;
+	private JTextField txtRacer;
 
 	/**
 	 * Launch the application.
@@ -101,7 +102,7 @@ public class Gui extends JPanel implements ActionListener{
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 750, 500);
+		frame.setBounds(100, 100, 750, 530);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
@@ -150,7 +151,7 @@ public class Gui extends JPanel implements ActionListener{
 		
 		
 		JScrollPane scroll2 = new JScrollPane();
-		scroll2.setSize(229, 193);
+		scroll2.setSize(277, 193);
 		scroll2.setLocation(215, 238);
 	    scroll2.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		frame.getContentPane().add(scroll2);
@@ -206,7 +207,7 @@ public class Gui extends JPanel implements ActionListener{
 		// ------------ Number keys ------------
 		
 		JPanel panel = new JPanel();
-		panel.setBounds(542, 245, 132, 186);
+		panel.setBounds(547, 275, 132, 227);
 		frame.getContentPane().add(panel);
 		panel.setLayout(null);
 		
@@ -369,24 +370,32 @@ public class Gui extends JPanel implements ActionListener{
 			}
 		});
 		
-		JButton buttonStar = new JButton("*");
-		buttonStar.addActionListener(new ActionListener() {
+		JButton buttonColon = new JButton(":");
+		buttonColon.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(ourState == state.GETCLEARBIB) {
 					textField_2.setText(racerNumber);
 				}
 				if(ourState == state.GETTIME) {
-					racerNumber += "*";
+					racerNumber += ":";
 					textField.setText(racerNumber);
 				}
 			}
 		});
-		buttonStar.setBounds(0, 135, 45, 45);
-		panel.add(buttonStar);
+		buttonColon.setBounds(20, 180, 45, 45);
+		panel.add(buttonColon);
 		
-		JButton buttonPound = new JButton("#");
-		buttonPound.setBounds(88, 135, 45, 45);
-		panel.add(buttonPound);		
+		JButton buttonPlus = new JButton("+");
+		buttonPlus.setBounds(88, 135, 45, 45);
+		panel.add(buttonPlus);		
+		
+		JButton buttonMinus = new JButton("-");
+		buttonMinus.setBounds(0, 135, 45, 45);
+		panel.add(buttonMinus);
+		
+		JButton buttonPeriod = new JButton(".");
+		buttonPeriod.setBounds(69, 180, 45, 45);
+		panel.add(buttonPeriod);
 		
 		//buttonPound.setEnabled(false);
 		
@@ -643,7 +652,7 @@ public class Gui extends JPanel implements ActionListener{
 				if(ourState == state.GETTIME) {
 					//set time to racerNumber
 					String times = racerNumber;
-					String delims = "\\*";
+					String delims = "\\:";
 					String[] tokens = times.split(delims);
 					int hours = Integer.parseInt(tokens[0]);
 					int minutes = Integer.parseInt(tokens[1]);
@@ -651,7 +660,7 @@ public class Gui extends JPanel implements ActionListener{
 					chrono.setTime(hours, minutes, seconds);
 					ourState = state.GETBIB;
 					racerNumber = "";
-					textField.setText("00*00*00.0");
+					textField.setText("00:00:00.0");
 				}else if(ourState == state.GETBIB){
 					ourState = state.GETTIME;
 					racerNumber = "";
@@ -745,7 +754,7 @@ public class Gui extends JPanel implements ActionListener{
 				textField_2.setText("");
 			}
 		});	
-		buttonPound.addActionListener(new ActionListener() {
+		buttonPlus.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				//System.out.println(racerNumber);
 				if(ourState == state.GETBIB) {
@@ -760,12 +769,12 @@ public class Gui extends JPanel implements ActionListener{
 				}
 			}
 		});
+		
 		// ------------ Reset button ------------
 		buttonPower.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				chrono.togglePower();
 				boolean value = chrono.getIsPoweredOn();
-				System.out.println("Power is " + (value ? "enabled" : "disabled"));
 				if(value)
 					buttonPower.setForeground(new Color(0, 255, 0));
 				else{
@@ -791,6 +800,12 @@ public class Gui extends JPanel implements ActionListener{
 		});
 		
 		runQueueListener = new ChronoTimerRunQueueUpdateListener(textArea_1);
+		
+		txtRacer = new JTextField();
+		txtRacer.setText("Racer ###");
+		txtRacer.setBounds(577, 247, 79, 26);
+		frame.getContentPane().add(txtRacer);
+		txtRacer.setColumns(10);
 	}
 	
 	private void updateQueueDisplay(JTextArea textArea) {
