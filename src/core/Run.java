@@ -1,5 +1,6 @@
 package core;
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Deque;
 //import java.util.LinkedList;
 //import java.util.Queue;
@@ -7,9 +8,11 @@ import java.util.Deque;
 public abstract class Run {
 	protected Deque<Racer> endQueue;
 	protected int runNumber;
+	private ArrayList<IRunQueueUpdatedListener> queueListeners;
 	
 	public Run(){
-			this.endQueue = new ArrayDeque<Racer>();
+		this.endQueue = new ArrayDeque<Racer>();
+		this.queueListeners = new ArrayList<IRunQueueUpdatedListener>();
 	}
 	
 	public void setRunNumber(int number) {
@@ -18,6 +21,24 @@ public abstract class Run {
 	
 	public int getRunNumber() {
 		return runNumber;
+	}
+	
+	public void addQueueUpdateEventListener(IRunQueueUpdatedListener listener) {
+		if (!queueListeners.contains(listener)) {
+			queueListeners.add(listener);
+		}
+	}
+	
+	public void removeQueueUpdateEventListener(IRunQueueUpdatedListener listener) {
+		if (queueListeners.contains(listener)) {
+			queueListeners.remove(listener);
+		}
+	}
+	
+	protected void raiseQueueUpdatedEvent(RunQueueUpdatedEventType type) {
+		for(IRunQueueUpdatedListener listener : queueListeners) {
+			listener.queueUpdated(new RunQueueUpdatedEventArgs(this, type));
+		}
 	}
 	
 	/**
@@ -109,4 +130,28 @@ public abstract class Run {
 		
 	}
 
+	public enum RunQueueUpdatedEventType {
+		WaitQueue,
+		RunningQueue,
+		FinishedQueue
+	}
+	public class RunQueueUpdatedEventArgs {
+		private Run eventSource;
+		private RunQueueUpdatedEventType eventType;
+		public RunQueueUpdatedEventArgs(Run source, RunQueueUpdatedEventType type) {
+			eventSource = source;
+			eventType = type;
+		}
+		
+		public Run getSource() {
+			return eventSource;
+		}
+		
+		public RunQueueUpdatedEventType getQueueType() {
+			return eventType;
+		}
+	}
+	public interface IRunQueueUpdatedListener {
+		void queueUpdated(RunQueueUpdatedEventArgs args);
+	}
 }
