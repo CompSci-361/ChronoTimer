@@ -18,6 +18,7 @@ public class Chronotimer {
 	private Channel[] channels;
 	private int runNumber;
 	private ArrayList<Run> runHistory;
+	private ArrayList<Sensor> sensors;
 	
 	public static Timer ourTimer;
 
@@ -31,6 +32,7 @@ public class Chronotimer {
 		raceType = RaceType.IND;
 		runNumber = 0;
 		runHistory = new ArrayList<Run>();
+		sensors = new ArrayList<Sensor>();
 	}
 	
 	/**
@@ -115,6 +117,36 @@ public class Chronotimer {
 	}
 	
 	/**
+	 * Checks if a sensor is connected to a specific channel.
+	 * @param channelNumber The channel to check.
+	 * @return <true, false>
+	 */
+	public boolean isSensorConnected(int channelNumber) {
+		for(Sensor sensor : sensors) {
+			if (sensor.getChannelNumber() == channelNumber) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	/**
+	 * Gets the sensor connected to a specific channel.
+	 * @param channelNumber The channel of the sensor to retrieve.
+	 * @return <Sensor, null>
+	 */
+	public Sensor getSensorByChannelNumber(int channelNumber) {
+		for(Sensor sensor : sensors) {
+			if (sensor.getChannelNumber() == channelNumber) {
+				return sensor;
+			}
+		}
+		
+		return null;
+	}
+	
+	/**
 	 * Connects a sensor to a given channel
 	 * @param channelNumber Which channel is being connected to
 	 * @param sensorType <GATE,EYE,TRIP>
@@ -124,8 +156,15 @@ public class Chronotimer {
 			Printer.printMessage("Power must be enabled connect sensor");
 			return;
 		}
+		
+		if (isSensorConnected(channelNumber)) {
+			Printer.printMessage("A sensor is already connected to channel number: " + channelNumber);
+			return;
+		}
+		
 		System.out.println(channelNumber + " type "+sensorType);
-		channels[channelNumber-1].setConnect(sensorType);
+		//channels[channelNumber-1].setConnect(sensorType);
+		sensors.add(new Sensor(sensorType, channelNumber));
 	}
 	
 	/**
@@ -137,15 +176,30 @@ public class Chronotimer {
 			Printer.printMessage("Power must be enabled to disconnect sensor");
 			return;
 		}
-		channels[channelNumber-1].setDisconnect();
+		
+
+		if (isSensorConnected(channelNumber)) {
+			//channels[channelNumber-1].setDisconnect();
+			Sensor sensor = getSensorByChannelNumber(channelNumber);
+			sensor.close();
+			sensors.remove(sensor);
+		}
 	}
 	/**
-	 * Gets the SensoreType of the channel
+	 * Gets the SensorType of the channel
 	 * @param channelNumber
-	 * @return <GATE,EYE,TRIP>
+	 * @return <GATE,EYE,TRIP,NONE>
 	 */
 	public SensorType getSensorType(int channelNumber){
-		return channels[channelNumber-1].getSensorType();
+		if (isSensorConnected(channelNumber)) {
+			//return channels[channelNumber-1].getSensorType();
+			Sensor sensor = getSensorByChannelNumber(channelNumber);
+			if (sensor != null) {
+				return sensor.getSensorType();
+			}
+		}
+		
+		return SensorType.NONE;
 	}
 	
 	public int getRunNumber() {
