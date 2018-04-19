@@ -713,7 +713,7 @@ public class Gui extends JPanel implements ActionListener{
 			if (runQueueListener.runningQueue.length > 0) {
 				for(Racer racer : runQueueListener.runningQueue) {
 					String msg = MessageFormat.format("Racer {0} | Start Time: {1}\r\n", 
-							racer.getBibNumber(), racer.getStartTime());
+							racer.getBibNumber(), Chronotimer.ourTimer.formatTime(racer.getStartTime()));
 					builder.append(msg);
 				}
 			} else {
@@ -728,7 +728,7 @@ public class Gui extends JPanel implements ActionListener{
 			if (runQueueListener.finishQueue.length > 0) {
 				for(Racer racer : runQueueListener.finishQueue) {
 					String msg = MessageFormat.format("Racer {0} | Start Time: {1} | Finish Time: {2}\r\n", 
-							racer.getBibNumber(), racer.getStartTime(), racer.getEndTime());
+							racer.getBibNumber(), Chronotimer.ourTimer.formatTime(racer.getStartTime()), Chronotimer.ourTimer.formatTime(racer.getEndTime()));
 					builder.append(msg);
 				}
 			} else {
