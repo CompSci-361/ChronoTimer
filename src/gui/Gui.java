@@ -683,6 +683,7 @@ public class Gui extends JPanel implements ActionListener{
 		btnIndRun.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				selectedRaceType = RaceType.IND;
+				Printer.printMessage(selectedRaceType + " selected");
 			}
 		});
 		btnIndRun.setBounds(6, 108, 101, 29);
@@ -692,6 +693,7 @@ public class Gui extends JPanel implements ActionListener{
 		btnParindRun.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				selectedRaceType = RaceType.PARIND;
+				Printer.printMessage(selectedRaceType + " selected");
 			}
 		});
 		btnParindRun.setBounds(6, 135, 101, 29);
@@ -701,6 +703,7 @@ public class Gui extends JPanel implements ActionListener{
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				selectedRaceType = RaceType.GRP;
+				Printer.printMessage(selectedRaceType + " selected");
 			}
 		});
 		btnNewButton.setBounds(6, 162, 101, 29);
@@ -710,6 +713,7 @@ public class Gui extends JPanel implements ActionListener{
 		btnPargrpRun.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				selectedRaceType = RaceType.PARGRP;
+				Printer.printMessage(selectedRaceType + " selected");
 			}
 		});
 		btnPargrpRun.setBounds(6, 190, 101, 29);

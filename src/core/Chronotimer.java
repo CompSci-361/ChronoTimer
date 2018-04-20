@@ -88,9 +88,9 @@ public class Chronotimer {
 		}
 		channels[channelNumber-1].toggle();
 		if(channels[channelNumber-1].isEnabled())
-			Printer.printMessage("Channel " + channelNumber + "is enabled");
+			Printer.printMessage("Channel " + channelNumber + " is enabled");
 		else 
-			Printer.printMessage("Channel " + channelNumber + "is disabled");
+			Printer.printMessage("Channel " + channelNumber + " is disabled");
 	}
 	
 	/**
@@ -235,19 +235,27 @@ public class Chronotimer {
 	 * Creates a new run only if there isn't already a run active
 	 */
 	public void newRun(){
-		if(currentRun != null) Printer.printMessage("Must be starting a new run by ending one first or after initial power on");
+		if(currentRun != null){
+			Printer.printMessage("Must be starting a new run by ending one first or after initial power on");
+			return;
+		}
 		setRunBasedOnRaceType(raceType);
 		++runNumber;		
 		currentRun.setRunNumber(runNumber);
+		Printer.printMessage("New run started");
 	}
 	/**
 	 * Creates a new run only if there isn't already a run active
 	 */
 	public void newRun(RaceType selectedType){
-		if(currentRun != null) Printer.printMessage("Must be starting a new run by ending one first or after initial power on");
+		if(currentRun != null){
+			Printer.printMessage("Must be starting a new run by ending one first or after initial power on");
+			return;
+		}
 		++runNumber;
 		setRunBasedOnRaceType(selectedType);	
 		currentRun.setRunNumber(runNumber);
+		Printer.printMessage("New run started");
 	}
 	
 	/**
@@ -312,6 +320,7 @@ public class Chronotimer {
 			}
 		}
 		currentRun = null;
+		Printer.printMessage("Run ended");
 	}
 	
 	public void exportRun(int requestedRunNumber) {
@@ -369,7 +378,7 @@ public class Chronotimer {
 			return;
 		}
 		if(currentRun == null){
-			Printer.printMessage("Current run must not be null");
+			Printer.printMessage("Must start new run before adding racer");
 			return;
 		}
 		currentRun.addRacer(bibNumber);
