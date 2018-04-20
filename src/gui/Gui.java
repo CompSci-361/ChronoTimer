@@ -49,6 +49,7 @@ public class Gui extends JPanel implements ActionListener{
 	
 	static Chronotimer chrono = new Chronotimer();
 	private ChronoTimerRunQueueUpdateListener runQueueListener;
+	private Timer runQueueTimer;
 
 	BufferedImage test = null;
 	public String stdIn = "";
@@ -875,6 +876,13 @@ public class Gui extends JPanel implements ActionListener{
 		
 		runQueueListener = new ChronoTimerRunQueueUpdateListener(runnerText);
 		
+		runQueueTimer = new Timer(50, new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) { 		 
+				updateQueueDisplay(runnerText);
+			}
+		}); 
+		
 		textRacer = new JTextField();
 		textRacer.setText("Racer ###");
 		textRacer.setBounds(577, 247, 79, 26);
@@ -894,7 +902,7 @@ public class Gui extends JPanel implements ActionListener{
 					builder.append(msg);
 				}
 			} else {
-				builder.append("No one is waiting yet.\r\n");
+				builder.append("No one is waiting.\r\n");
 			}
 			builder.append("\r\n");
 		}
@@ -903,13 +911,21 @@ public class Gui extends JPanel implements ActionListener{
 			builder.append("Racers running:\r\n");
 			
 			if (runQueueListener.runningQueue.length > 0) {
+				if (!runQueueTimer.isRunning())
+					runQueueTimer.start();
+				
 				for(Racer racer : runQueueListener.runningQueue) {
-					String msg = MessageFormat.format("Racer {0} | Start Time: {1}\r\n", 
-							racer.getBibNumber(), Chronotimer.ourTimer.formatTime(racer.getStartTime()));
+ 					String msg = MessageFormat.format("Racer {0} | Start Time: {1}\r\n    -Time: +{2}\r\n",  
+						racer.getBibNumber(),
+						Chronotimer.ourTimer.formatTime(racer.getStartTime()),
+						Chronotimer.ourTimer.formatTime(racer.getCurrentRaceTime()));
+ 					
 					builder.append(msg);
 				}
 			} else {
-				builder.append("No one is running yet.\r\n");
+				if (runQueueTimer.isRunning())
+					runQueueTimer.stop(); 
+				builder.append("No one is running.\r\n");
 			}
 			builder.append("\r\n");
 		}
@@ -917,14 +933,14 @@ public class Gui extends JPanel implements ActionListener{
 		if (runQueueListener.finishQueue != null) {
 			builder.append("Finish Queue:\r\n");
 			
-			if (runQueueListener.finishQueue.length > 0) {
+			if (runQueueListener.finishQueue.length > 0) {				
 				for(Racer racer : runQueueListener.finishQueue) {
 					String msg = MessageFormat.format("Racer {0} | Start Time: {1} | Finish Time: {2}\r\n", 
 							racer.getBibNumber(), Chronotimer.ourTimer.formatTime(racer.getStartTime()), Chronotimer.ourTimer.formatTime(racer.getEndTime()));
 					builder.append(msg);
 				}
 			} else {
-				builder.append("No one has finished yet.\r\n");
+				builder.append("No one has finished.\r\n");
 			}
 			builder.append("\r\n");
 		}
