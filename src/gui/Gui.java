@@ -113,31 +113,6 @@ public class Gui extends JPanel implements ActionListener{
 		chronoLabel.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
 		chronoLabel.setBounds(278, 11, 151, 16);
 		frame.getContentPane().add(chronoLabel);
-		
-		
-		// ------------ Power button ------------
-		JButton buttonPower = new JButton("Power");
-		buttonPower.setForeground(new Color(0, 0, 0));
-		buttonPower.setBounds(6, 7, 101, 29);
-		frame.getContentPane().add(buttonPower);
-		buttonPower.setContentAreaFilled(true);
-		buttonPower.setOpaque(false);
-		buttonPower.setBackground(Color.BLACK);
-		buttonPower.setForeground(Color.BLACK);
-		
-		buttonPower.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				chrono.togglePower();
-				boolean value = chrono.getIsPoweredOn();
-				if(value)
-					buttonPower.setForeground(new Color(0, 255, 0));
-				else{
-					buttonPower.setForeground(Color.BLACK);
-				}	    
-			}
-		});
-		
-		// ------------ Power button ------------
 
 		// ------------ Print button and print text box ------------
 		JButton buttonPrintRun = new JButton("Print Run");
@@ -198,6 +173,10 @@ public class Gui extends JPanel implements ActionListener{
 		JButton buttonFunction = new JButton("End Run");
 		buttonFunction.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if(!chrono.getIsPoweredOn()){
+					Printer.printMessage("Power must be enabled to end run");
+					return;
+				}
 				if (chrono.getCurrentRun() != null) {
 					chrono.getCurrentRun().removeQueueUpdateEventListener(runQueueListener);
 				}
@@ -732,6 +711,10 @@ public class Gui extends JPanel implements ActionListener{
 		JButton btnTime = new JButton("Time");
 		btnTime.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if(!chrono.getIsPoweredOn()){
+					Printer.printMessage("Power must be enabled to set time");
+					return;
+				}
 				if(ourState == state.GETTIME) {
 					//set time to racerNumber
 					String times = stdIn;
@@ -823,7 +806,11 @@ public class Gui extends JPanel implements ActionListener{
 		frame.getContentPane().add(buttonReset);
 		buttonReset.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-					chrono.reset();
+				if(!chrono.getIsPoweredOn()){
+					Printer.printMessage("Power must be enabled to reset timer");
+					return;
+				}
+				chrono.reset();
 				System.out.println("Reset Chronotimer."); 
 				tog1.setSelected(false);
 				tog2.setSelected(false);
@@ -842,7 +829,38 @@ public class Gui extends JPanel implements ActionListener{
 		});	
 		
 		// ------------ Reset button ------------
-
+		
+		// ------------ Power button ------------
+				JButton buttonPower = new JButton("Power");
+				buttonPower.setForeground(new Color(0, 0, 0));
+				buttonPower.setBounds(6, 7, 101, 29);
+				frame.getContentPane().add(buttonPower);
+				buttonPower.setContentAreaFilled(true);
+				buttonPower.setOpaque(false);
+				buttonPower.setBackground(Color.BLACK);
+				buttonPower.setForeground(Color.BLACK);
+				
+				buttonPower.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						chrono.togglePower();
+						boolean value = chrono.getIsPoweredOn();
+						if(value)
+							buttonPower.setForeground(new Color(0, 255, 0));
+						else{
+							buttonPower.setForeground(Color.BLACK);
+						}	
+						tog1.setSelected(false);
+						tog2.setSelected(false);
+						tog3.setSelected(false);
+						tog4.setSelected(false);
+						tog5.setSelected(false);
+						tog6.setSelected(false);
+						tog7.setSelected(false);
+						tog8.setSelected(false);
+					}
+				});
+				
+				// ------------ Power button ------------
 		
 		buttonPlus.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {

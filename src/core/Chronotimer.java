@@ -83,7 +83,7 @@ public class Chronotimer {
 	 */
 	public void toggleChannel(int channelNumber){
 		if(!getIsPoweredOn()){
-			Printer.printMessage("Power must be enabled to add racer to run");
+			Printer.printMessage("Power must be enabled to toggle channel");
 			return;
 		}
 		channels[channelNumber-1].toggle();
@@ -235,6 +235,10 @@ public class Chronotimer {
 	 * Creates a new run only if there isn't already a run active
 	 */
 	public void newRun(){
+		if(!getIsPoweredOn()){
+			Printer.printMessage("Power must be turned on to start new run");
+			return;
+		}
 		if(currentRun != null){
 			Printer.printMessage("Must be starting a new run by ending one first or after initial power on");
 			return;
@@ -248,6 +252,10 @@ public class Chronotimer {
 	 * Creates a new run only if there isn't already a run active
 	 */
 	public void newRun(RaceType selectedType){
+		if(!getIsPoweredOn()){
+			Printer.printMessage("Power must be turned on to start new run");
+			return;
+		}
 		if(currentRun != null){
 			Printer.printMessage("Must be starting a new run by ending one first or after initial power on");
 			return;
@@ -281,6 +289,10 @@ public class Chronotimer {
 	}
 	
 	private void setRunBasedOnRaceType(RaceType selectedType) {
+		if(!getIsPoweredOn()){
+			Printer.printMessage("Power must be turned on to select race type");
+			return;
+		}
 		switch(selectedType) {
 		case None:
 			//throw an exception?
@@ -314,6 +326,10 @@ public class Chronotimer {
 	 */
 	public void endRun(){
 		//should this call currentRun.cancel
+		if(!getIsPoweredOn()){
+			Printer.printMessage("Power must be turned on to end run");
+			return;
+		}
 		if (currentRun != null) {
 			if (!runHistory.contains(currentRun)) {
 				runHistory.add(currentRun);
