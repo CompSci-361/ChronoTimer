@@ -27,7 +27,7 @@ class Stopwatch {
 	public double getElapsedTime() {
 		if (isActive) {
 			Date now = Date.from(Instant.now());
-			double result = startTimeSystem + (now.getTime() - startTime.getTime());
+			double result = (now.getTime() - startTime.getTime());
 			return result;
 		}
 		

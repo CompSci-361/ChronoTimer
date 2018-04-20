@@ -842,7 +842,7 @@ public class Gui extends JPanel implements ActionListener{
 					runQueueTimer.start();
 				
 				for(Racer racer : runQueueListener.runningQueue) {
-					String msg = MessageFormat.format("Racer {0} | Start Time: {1}\r\n\t -Time: {2}\r\n", 
+					String msg = MessageFormat.format("Racer {0} | Start Time: {1}\r\n    -Time: +{2}\r\n", 
 							racer.getBibNumber(), 
 							Chronotimer.ourTimer.formatTime(racer.getStartTime()),
 							Chronotimer.ourTimer.formatTime(racer.getCurrentRaceTime()));
