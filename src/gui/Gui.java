@@ -49,22 +49,21 @@ public class Gui extends JPanel implements ActionListener{
 	
 	static Chronotimer chrono = new Chronotimer();
 	private ChronoTimerRunQueueUpdateListener runQueueListener;
-	private Timer runQueueTimer;
 
 	BufferedImage test = null;
-	public String racerNumber = "";
+	public String stdIn = "";
 	private RaceType selectedRaceType=RaceType.IND;
 	private final Timer timer = new Timer(40, this);
 	private JFrame frame;
 	private JTextField textField;
-	private JTextField textField_2;
+	private JTextField textClear;
 	private enum state{
 		GETTIME,
 		GETBIB,
 		GETCLEARBIB
 	}
 	private state ourState = state.GETBIB;
-	private JTextField txtRacer;
+	private JTextField textRacer;
 
 	/**
 	 * Launch the application.
@@ -134,13 +133,12 @@ public class Gui extends JPanel implements ActionListener{
 				else{
 					buttonPower.setForeground(Color.BLACK);
 				}	    
-				chrono.reset();
 			}
 		});
 		
 		// ------------ Power button ------------
 
-		
+		// ------------ Print button and print text box ------------
 		JButton buttonPrintRun = new JButton("Print Run");
 		buttonPrintRun.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -162,18 +160,26 @@ public class Gui extends JPanel implements ActionListener{
 		printerText.setBounds(0, 40, 10, 10);
 		scroll.setViewportView(printerText);
 		
+		// ------------ Print button ------------
+
+		// ------------ Text Area for Runners ------------
 		
-		JScrollPane scroll2 = new JScrollPane();
-		scroll2.setSize(277, 193);
-		scroll2.setLocation(215, 238);
-	    scroll2.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		frame.getContentPane().add(scroll2);
+		JScrollPane scrollRunnerText = new JScrollPane();
+		scrollRunnerText.setSize(277, 193);
+		scrollRunnerText.setLocation(215, 238);
+	    scrollRunnerText.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		frame.getContentPane().add(scrollRunnerText);
 		
-		JTextArea textArea_1 = new JTextArea();
-		textArea_1.setBackground(new Color(211, 211, 211));
-		textArea_1.setSize(277, 206);
-		textArea_1.setEditable(false);
-		scroll2.setViewportView(textArea_1);
+		JTextArea runnerText = new JTextArea();
+		runnerText.setBackground(new Color(211, 211, 211));
+		runnerText.setSize(277, 206);
+		runnerText.setEditable(false);
+		scrollRunnerText.setViewportView(runnerText);
+		
+		// ------------ Text Area for Runners ------------
+
+		
+		// ------------ Swap Button ------------
 		
 		JButton buttonSwap = new JButton("Swap");
 		buttonSwap.addActionListener(new ActionListener() {
@@ -185,6 +191,9 @@ public class Gui extends JPanel implements ActionListener{
 		frame.getContentPane().add(buttonSwap);
 		//buttonSwap.setEnabled(false);
 		
+		// ------------ Swap Button ------------
+
+		
 		JButton buttonFunction = new JButton("End Run");
 		buttonFunction.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -192,6 +201,8 @@ public class Gui extends JPanel implements ActionListener{
 					chrono.getCurrentRun().removeQueueUpdateEventListener(runQueueListener);
 				}
 				chrono.endRun();
+				runnerText.setText("");
+				printerText.setText("");
 			}
 		});
 		buttonFunction.setBackground(Color.PINK);
@@ -212,10 +223,10 @@ public class Gui extends JPanel implements ActionListener{
 		frame.getContentPane().add(textField);
 		textField.setColumns(10);
 		
-		textField_2 = new JTextField();
-		textField_2.setColumns(10);
-		textField_2.setBounds(9, 327, 95, 26);
-		frame.getContentPane().add(textField_2);
+		textClear = new JTextField();
+		textClear.setColumns(10);
+		textClear.setBounds(9, 327, 95, 26);
+		frame.getContentPane().add(textClear);
 		
 		// ------------ Number keys ------------
 		
@@ -229,12 +240,15 @@ public class Gui extends JPanel implements ActionListener{
 		panel.add(buttonNum1);
 		buttonNum1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				racerNumber += 1; 
+				stdIn += 1; 
+				if(ourState == state.GETBIB){
+					textRacer.setText(stdIn);
+				}
 				if(ourState == state.GETCLEARBIB) {
-					textField_2.setText(racerNumber);
+					textClear.setText(stdIn);
 				}
 				if(ourState == state.GETTIME) {
-					textField.setText(racerNumber);
+					textField.setText(stdIn);
 				}
 			}
 		});
@@ -245,12 +259,15 @@ public class Gui extends JPanel implements ActionListener{
 		
 		buttonNum2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				racerNumber += 2; 
+				stdIn += 2; 
+				if(ourState == state.GETBIB){
+					textRacer.setText(stdIn);
+				}
 				if(ourState == state.GETCLEARBIB) {
-					textField_2.setText(racerNumber);
+					textClear.setText(stdIn);
 				}
 				if(ourState == state.GETTIME) {
-					textField.setText(racerNumber);
+					textField.setText(stdIn);
 				}
 			}
 		});
@@ -261,12 +278,15 @@ public class Gui extends JPanel implements ActionListener{
 		
 		buttonNum3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				racerNumber += 3;   
+				stdIn += 3;  
+				if(ourState == state.GETBIB){
+					textRacer.setText(stdIn);
+				}
 				if(ourState == state.GETCLEARBIB) {
-					textField_2.setText(racerNumber);
+					textClear.setText(stdIn);
 				}
 				if(ourState == state.GETTIME) {
-					textField.setText(racerNumber);
+					textField.setText(stdIn);
 				}
 			}
 		});
@@ -277,12 +297,15 @@ public class Gui extends JPanel implements ActionListener{
 		
 		buttonNum4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				racerNumber += 4;    
+				stdIn += 4;  
+				if(ourState == state.GETBIB){
+					textRacer.setText(stdIn);
+				}
 				if(ourState == state.GETCLEARBIB) {
-					textField_2.setText(racerNumber);
+					textClear.setText(stdIn);
 				}
 				if(ourState == state.GETTIME) {
-					textField.setText(racerNumber);
+					textField.setText(stdIn);
 				}
 			}
 		});
@@ -293,12 +316,15 @@ public class Gui extends JPanel implements ActionListener{
 		
 		buttonNum5.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				racerNumber += 5; 
+				stdIn += 5; 
+				if(ourState == state.GETBIB){
+					textRacer.setText(stdIn);
+				}
 				if(ourState == state.GETCLEARBIB) {
-					textField_2.setText(racerNumber);
+					textClear.setText(stdIn);
 				}
 				if(ourState == state.GETTIME) {
-					textField.setText(racerNumber);
+					textField.setText(stdIn);
 				}
 			}
 		});
@@ -309,12 +335,15 @@ public class Gui extends JPanel implements ActionListener{
 		
 		buttonNum6.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				racerNumber += 6; 
+				stdIn += 6; 
+				if(ourState == state.GETBIB){
+					textRacer.setText(stdIn);
+				}
 				if(ourState == state.GETCLEARBIB) {
-					textField_2.setText(racerNumber);
+					textClear.setText(stdIn);
 				}
 				if(ourState == state.GETTIME) {
-					textField.setText(racerNumber);
+					textField.setText(stdIn);
 				}
 			}
 		});
@@ -325,12 +354,15 @@ public class Gui extends JPanel implements ActionListener{
 		
 		buttonNum7.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				racerNumber += 7;
+				stdIn += 7;
+				if(ourState == state.GETBIB){
+					textRacer.setText(stdIn);
+				}
 				if(ourState == state.GETCLEARBIB) {
-					textField_2.setText(racerNumber);
+					textClear.setText(stdIn);
 				}
 				if(ourState == state.GETTIME) {
-					textField.setText(racerNumber);
+					textField.setText(stdIn);
 				}
 			}
 		});
@@ -341,12 +373,15 @@ public class Gui extends JPanel implements ActionListener{
 		
 		buttonNum8.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				racerNumber += 8;
+				stdIn += 8;
+				if(ourState == state.GETBIB){
+					textRacer.setText(stdIn);
+				}
 				if(ourState == state.GETCLEARBIB) {
-					textField_2.setText(racerNumber);
+					textClear.setText(stdIn);
 				}
 				if(ourState == state.GETTIME) {
-					textField.setText(racerNumber);
+					textField.setText(stdIn);
 				}
 			}
 		});
@@ -357,12 +392,15 @@ public class Gui extends JPanel implements ActionListener{
 		
 		buttonNum9.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				racerNumber += 9;
+				stdIn += 9;
+				if(ourState == state.GETBIB){
+					textRacer.setText(stdIn);
+				}
 				if(ourState == state.GETCLEARBIB) {
-					textField_2.setText(racerNumber);
+					textClear.setText(stdIn);
 				}
 				if(ourState == state.GETTIME) {
-					textField.setText(racerNumber);
+					textField.setText(stdIn);
 				}
 			}
 		});
@@ -373,12 +411,15 @@ public class Gui extends JPanel implements ActionListener{
 		
 		buttonNum0.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				racerNumber += 0; 
+				stdIn += 0; 
+				if(ourState == state.GETBIB){
+					textRacer.setText(stdIn);
+				}
 				if(ourState == state.GETCLEARBIB) {
-					textField_2.setText(racerNumber);
+					textClear.setText(stdIn);
 				}
 				if(ourState == state.GETTIME) {
-					textField.setText(racerNumber);
+					textField.setText(stdIn);
 				}
 			}
 		});
@@ -386,12 +427,9 @@ public class Gui extends JPanel implements ActionListener{
 		JButton buttonColon = new JButton(":");
 		buttonColon.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(ourState == state.GETCLEARBIB) {
-					textField_2.setText(racerNumber);
-				}
 				if(ourState == state.GETTIME) {
-					racerNumber += ":";
-					textField.setText(racerNumber);
+					stdIn += ":";
+					textField.setText(stdIn);
 				}
 			}
 		});
@@ -406,9 +444,34 @@ public class Gui extends JPanel implements ActionListener{
 		buttonMinus.setBounds(0, 135, 45, 45);
 		panel.add(buttonMinus);
 		
+		buttonMinus.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(stdIn.length() != 0)
+					stdIn = stdIn.substring(0, stdIn.length()-1);
+				if(ourState == state.GETBIB){
+					textRacer.setText(stdIn);
+				}
+				if(ourState == state.GETCLEARBIB) {
+					textClear.setText(stdIn);
+				}
+				if(ourState == state.GETTIME) {
+					textField.setText(stdIn);
+				}
+			}
+		});
+		
 		JButton buttonPeriod = new JButton(".");
 		buttonPeriod.setBounds(69, 180, 45, 45);
 		panel.add(buttonPeriod);
+		
+		buttonPeriod.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(ourState == state.GETTIME) {
+					stdIn += ".";
+					textField.setText(stdIn);
+				}
+			}
+		});
 		
 		//buttonPound.setEnabled(false);
 		
@@ -420,20 +483,7 @@ public class Gui extends JPanel implements ActionListener{
 		frame.getContentPane().add(panel_1);
 		panel_1.setLayout(null);
 		
-		JLabel lblNewLabel_1 = new JLabel("Start");
-		lblNewLabel_1.setBounds(67, 17, 26, 16);
-		panel_1.add(lblNewLabel_1);
-		lblNewLabel_1.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
 		
-		JLabel lblEnabledisable = new JLabel("Enable/Disable");
-		lblEnabledisable.setBounds(20, 61, 73, 16);
-		panel_1.add(lblEnabledisable);
-		lblEnabledisable.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
-		
-		JLabel lblFinish = new JLabel("Finish");
-		lblFinish.setBounds(64, 116, 29, 16);
-		panel_1.add(lblFinish);
-		lblFinish.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
 		
 //1		
 		JButton trig1 = new JButton("1");
@@ -597,8 +647,23 @@ public class Gui extends JPanel implements ActionListener{
 		
 		JLabel label = new JLabel("Enable/Disable");
 		label.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
-		label.setBounds(20, 153, 73, 16);
+		label.setBounds(20, 154, 73, 16);
 		panel_1.add(label);
+		
+		JLabel label_1 = new JLabel("Enable/Disable");
+		label_1.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
+		label_1.setBounds(20, 57, 73, 16);
+		panel_1.add(label_1);
+		
+		JLabel lblStart = new JLabel("Start");
+		lblStart.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
+		lblStart.setBounds(20, 15, 73, 16);
+		panel_1.add(lblStart);
+		
+		JLabel lblFinish = new JLabel("Finish");
+		lblFinish.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
+		lblFinish.setBounds(20, 115, 73, 16);
+		panel_1.add(lblFinish);
 		
 //Runs and types		
 		JButton btnNewRun = new JButton("New Run");
@@ -664,7 +729,7 @@ public class Gui extends JPanel implements ActionListener{
 			public void actionPerformed(ActionEvent e) {
 				if(ourState == state.GETTIME) {
 					//set time to racerNumber
-					String times = racerNumber;
+					String times = stdIn;
 					String delims = "\\:";
 					String[] tokens = times.split(delims);
 					int hours = Integer.parseInt(tokens[0]);
@@ -672,11 +737,11 @@ public class Gui extends JPanel implements ActionListener{
 					double seconds = Double.parseDouble(tokens[2]);
 					chrono.setTime(hours, minutes, seconds);
 					ourState = state.GETBIB;
-					racerNumber = "";
+					stdIn = "";
 					textField.setText("00:00:00.0");
 				}else if(ourState == state.GETBIB){
 					ourState = state.GETTIME;
-					racerNumber = "";
+					stdIn = "";
 				}
 				
 			}
@@ -728,18 +793,18 @@ public class Gui extends JPanel implements ActionListener{
 		btnClear.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(ourState == state.GETCLEARBIB) {
-					String racer = racerNumber;
+					String racer = stdIn;
 					//System.out.println("Clearing :"+racer+":");
 					if(racer.length()>0) {
 						//System.out.println("Racer = A"+racer+"A");
 						chrono.clear(Integer.parseInt(racer));
 					}
-					racerNumber = "";
+					stdIn = "";
 					ourState = state.GETBIB;
-					textField_2.setText("");
+					textClear.setText("");
 				}else if(ourState == state.GETBIB){
 					ourState = state.GETCLEARBIB;
-					racerNumber = "";
+					stdIn = "";
 				}
 			}
 		});
@@ -764,18 +829,25 @@ public class Gui extends JPanel implements ActionListener{
 				tog7.setSelected(false);
 				tog8.setSelected(false);
 				textField.setText("00:00:00.0");
-				textField_2.setText("");
-				racerNumber = "";
+				textClear.setText("");
+				stdIn = "";
+				runnerText.setText("");
+				printerText.setText("");
 			}
 		});	
+		
+		// ------------ Reset button ------------
+
+		
 		buttonPlus.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				//System.out.println(racerNumber);
 				if(ourState == state.GETBIB) {
-					if(racerNumber != "") {
-						chrono.addRacer(Integer.parseInt(racerNumber));
+					if(stdIn != "") {
+						chrono.addRacer(Integer.parseInt(stdIn));
 					}
-					racerNumber = "";
+					stdIn = "";
+					textRacer.setText("");
 				} else if(ourState == state.GETCLEARBIB) {
 					btnClear.doClick();
 				} else if (ourState == state.GETTIME) {
@@ -784,7 +856,6 @@ public class Gui extends JPanel implements ActionListener{
 			}
 		});
 		
-		// ------------ Reset button ------------
 		
 				
 		ImageIcon icon = new ImageIcon("juggernotlogo.png");
@@ -802,21 +873,13 @@ public class Gui extends JPanel implements ActionListener{
 			
 		});
 		
-		runQueueListener = new ChronoTimerRunQueueUpdateListener(textArea_1);
+		runQueueListener = new ChronoTimerRunQueueUpdateListener(runnerText);
 		
-		runQueueTimer = new Timer(50, new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				updateQueueDisplay(textArea_1);
-			}
-		});
-		
-		txtRacer = new JTextField();
-		txtRacer.setText("Racer ###");
-		txtRacer.setBounds(577, 247, 79, 26);
-		frame.getContentPane().add(txtRacer);
-		txtRacer.setColumns(10);
+		textRacer = new JTextField();
+		textRacer.setText("Racer ###");
+		textRacer.setBounds(577, 247, 79, 26);
+		frame.getContentPane().add(textRacer);
+		textRacer.setColumns(10);
 	}
 	
 	private void updateQueueDisplay(JTextArea textArea) {
@@ -831,7 +894,7 @@ public class Gui extends JPanel implements ActionListener{
 					builder.append(msg);
 				}
 			} else {
-				builder.append("No one is waiting.\r\n");
+				builder.append("No one is waiting yet.\r\n");
 			}
 			builder.append("\r\n");
 		}
@@ -840,20 +903,13 @@ public class Gui extends JPanel implements ActionListener{
 			builder.append("Racers running:\r\n");
 			
 			if (runQueueListener.runningQueue.length > 0) {
-				if (!runQueueTimer.isRunning())
-					runQueueTimer.start();
-				
 				for(Racer racer : runQueueListener.runningQueue) {
-					String msg = MessageFormat.format("Racer {0} | Start Time: {1}\r\n    -Time: +{2}\r\n", 
-							racer.getBibNumber(), 
-							Chronotimer.ourTimer.formatTime(racer.getStartTime()),
-							Chronotimer.ourTimer.formatTime(racer.getCurrentRaceTime()));
+					String msg = MessageFormat.format("Racer {0} | Start Time: {1}\r\n", 
+							racer.getBibNumber(), Chronotimer.ourTimer.formatTime(racer.getStartTime()));
 					builder.append(msg);
 				}
 			} else {
-				if (runQueueTimer.isRunning())
-					runQueueTimer.stop();
-				builder.append("No one is running.\r\n");
+				builder.append("No one is running yet.\r\n");
 			}
 			builder.append("\r\n");
 		}
@@ -868,7 +924,7 @@ public class Gui extends JPanel implements ActionListener{
 					builder.append(msg);
 				}
 			} else {
-				builder.append("No one has finished.\r\n");
+				builder.append("No one has finished yet.\r\n");
 			}
 			builder.append("\r\n");
 		}

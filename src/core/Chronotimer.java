@@ -48,6 +48,9 @@ public class Chronotimer {
 		ourTimer = new Timer();
 		raceType = RaceType.IND;
 		//runNumber = 0;
+		
+		Printer.printMessage("Chronotimer reset");
+		
 	}
 	
 	/**
@@ -174,7 +177,7 @@ public class Chronotimer {
 			return;
 		}
 		
-		System.out.println(channelNumber + " type "+sensorType);
+		Printer.printMessage(sensorType + " connected to channel " + channelNumber);
 		//channels[channelNumber-1].setConnect(sensorType);
 		Sensor sensor = new Sensor(sensorType, channelNumber);
 		sensor.addSensorFiredActionListener(new ActionListener() {
@@ -381,6 +384,10 @@ public class Chronotimer {
 	 * @param seconds
 	 */
 	public void setTime(int hours, int minutes, double seconds) {
+		if(!getIsPoweredOn()){
+			Printer.printMessage("Power must be enabled to set time");
+			return;
+		}
 		ourTimer.setTime(hours, minutes, seconds);
 	}
 	
