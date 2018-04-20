@@ -46,6 +46,7 @@ public class IndRun extends Run {
 		}
 		headWait.setStartTime();
 		runningQueue.add(headWait);
+		headWait.onBeginRacing();
 		raiseQueueUpdatedEvent(RunQueueUpdatedEventType.RunningQueue);
 	}
 	/**
@@ -61,6 +62,7 @@ public class IndRun extends Run {
 		}
 		headRunning.setEndTime();
 		endQueue.add(headRunning);
+		headRunning.onFinishRacing();
 		raiseQueueUpdatedEvent(RunQueueUpdatedEventType.FinishedQueue);
 	}
 	/**
@@ -75,6 +77,7 @@ public class IndRun extends Run {
 		}
 		headRunning.setDnf();
 		endQueue.add(headRunning);
+		headRunning.onFinishRacing();
 		raiseQueueUpdatedEvent(RunQueueUpdatedEventType.FinishedQueue);
 	}
 	/**
@@ -107,6 +110,7 @@ public class IndRun extends Run {
 			if(fullRacer.equals(notFullRacer)) {
 				fullRacer.clearStartTime();
 				waitQueue.addFirst(fullRacer);
+				fullRacer.onFinishRacing();
 				break;
 			}
 			//put the non correct racer into the reversed queue to hold
