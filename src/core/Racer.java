@@ -3,12 +3,27 @@ package core;
 public class Racer {
 
 	private int bibNumber;
-	private double startTime;
-	private double endTime;
+	private double startTime; //milliseconds
+	private double endTime; //milliseconds
+	private Stopwatch raceStopWatch;
 	
 	public Racer(int bibNumber){
 		this.bibNumber = bibNumber;
+		this.raceStopWatch = new Stopwatch();
 	}
+	
+	void onBeginRacing() {
+		raceStopWatch.start();
+	}
+	
+	void onFinishRacing() {
+		raceStopWatch.stop();
+	}
+	
+	public double getCurrentRaceTime() {
+		return raceStopWatch.getElapsedTime();
+	}
+	
 	/**
 	 * resets the startTime to 0
 	 */

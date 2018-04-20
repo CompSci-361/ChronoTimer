@@ -148,9 +148,11 @@ public class GrpRun extends Run {
 			
 			//set racer start time to group start
 			racer.setStartTime(groupStart);
+			racer.onBeginRacing();
 			
 			//set racer end time to current time
 			racer.setEndTime();
+			racer.onFinishRacing();
 			
 			//add the racer to the finish queue
 			endQueue.add(racer);
