@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.Scanner;
 
 import core.Chronotimer;
+import core.Printer;
 import core.RaceType;
 import core.SensorType;
 
@@ -111,8 +112,6 @@ public class Simulator {
 		switch (cmd) {
 			case "POWER": {
 				chrono.togglePower();
-				boolean value = chrono.getIsPoweredOn();
-				System.out.println("Power is " + (value ? "enabled" : "disabled"));
 				break;
 			}
 			case "EXIT": {
@@ -128,7 +127,6 @@ public class Simulator {
 			case "TIME": {
 				String[] token = param.split(":");
 				chrono.setTime(Integer.parseInt(token[0]), Integer.parseInt(token[1]), Double.parseDouble(token[2]));
-				System.out.println("Current Time is " + chrono.getTime());
 				break;
 			}
 			case "DNF": {

@@ -80,11 +80,14 @@ public class Chronotimer {
 	 */
 	public void toggleChannel(int channelNumber){
 		if(!getIsPoweredOn()){
-			System.out.println("Power must be enabled to add racer to run");
+			Printer.printMessage("Power must be enabled to add racer to run");
 			return;
 		}
-		System.out.println("Toggled Channel " + channelNumber);
 		channels[channelNumber-1].toggle();
+		if(channels[channelNumber-1].isEnabled())
+			Printer.printMessage("Channel " + channelNumber + "is enabled");
+		else 
+			Printer.printMessage("Channel " + channelNumber + "is disabled");
 	}
 	
 	/**
@@ -116,7 +119,7 @@ public class Chronotimer {
 		}
 		
 		if (isSensorConnected(channelNumber)) {
-			System.out.println("Sensor triggered on channel " + channelNumber);
+			Printer.printMessage("Sensor triggered on channel " + channelNumber);
 			Sensor sensor = getSensorByChannelNumber(channelNumber);
 			sensor.simulateSensorTriggered();
 		} else {
@@ -427,7 +430,7 @@ public class Chronotimer {
 		if(currentRun instanceof IndRun)
 			((IndRun) currentRun).swap();
 		else
-			System.out.println("Swap is only used for IndRun");
+			Printer.printMessage("Swap is only used for IndRun");
 	}
 	
 	/**

@@ -46,6 +46,7 @@ import javax.swing.SwingConstants;
 import javax.swing.Icon;
 
 public class Gui extends JPanel implements ActionListener{
+	
 	static Chronotimer chrono = new Chronotimer();
 	private ChronoTimerRunQueueUpdateListener runQueueListener;
 
@@ -112,6 +113,7 @@ public class Gui extends JPanel implements ActionListener{
 		chronoLabel.setBounds(278, 11, 151, 16);
 		frame.getContentPane().add(chronoLabel);
 		
+		
 		// ------------ Power button ------------
 		JButton buttonPower = new JButton("Power");
 		buttonPower.setForeground(new Color(0, 0, 0));
@@ -122,21 +124,31 @@ public class Gui extends JPanel implements ActionListener{
 		buttonPower.setBackground(Color.BLACK);
 		buttonPower.setForeground(Color.BLACK);
 		
-		
+		buttonPower.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				chrono.togglePower();
+				boolean value = chrono.getIsPoweredOn();
+				if(value)
+					buttonPower.setForeground(new Color(0, 255, 0));
+				else{
+					buttonPower.setForeground(Color.BLACK);
+				}	    
+				chrono.reset();
+			}
+		});
 		
 		// ------------ Power button ------------
 
 		
-		
-		JButton btnPrinterPower = new JButton("Print Current Run");
-		btnPrinterPower.addActionListener(new ActionListener() {
+		JButton buttonPrintRun = new JButton("Print Run");
+		buttonPrintRun.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				chrono.print();
 				//chrono.printerPower
 			}
 		});
-		btnPrinterPower.setBounds(562, 7, 117, 29);
-		frame.getContentPane().add(btnPrinterPower);
+		buttonPrintRun.setBounds(562, 7, 117, 29);
+		frame.getContentPane().add(buttonPrintRun);
 		//btnPrinterPower.setEnabled(false);
 		
 		JScrollPane scroll = new JScrollPane();
@@ -193,7 +205,7 @@ public class Gui extends JPanel implements ActionListener{
 		
 		textField = new JTextField();
 		textField.setHorizontalAlignment(SwingConstants.CENTER);
-		textField.setText("00*00*00.0");
+		textField.setText("00:00:00.0");
 		textField.setToolTipText("System Time");
 		textField.setBounds(9, 37, 95, 26);
 		frame.getContentPane().add(textField);
@@ -750,8 +762,9 @@ public class Gui extends JPanel implements ActionListener{
 				tog6.setSelected(false);
 				tog7.setSelected(false);
 				tog8.setSelected(false);
-				textField.setText("00*00*00.0");
+				textField.setText("00:00:00.0");
 				textField_2.setText("");
+				racerNumber = "";
 			}
 		});	
 		buttonPlus.addActionListener(new ActionListener() {
@@ -771,18 +784,7 @@ public class Gui extends JPanel implements ActionListener{
 		});
 		
 		// ------------ Reset button ------------
-		buttonPower.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				chrono.togglePower();
-				boolean value = chrono.getIsPoweredOn();
-				if(value)
-					buttonPower.setForeground(new Color(0, 255, 0));
-				else{
-					buttonPower.setForeground(Color.BLACK);
-				}	    
-				buttonReset.doClick();
-			}
-		});
+		
 				
 		ImageIcon icon = new ImageIcon("juggernotlogo.png");
 		JLabel example = new JLabel();
