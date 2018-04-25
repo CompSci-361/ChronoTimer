@@ -2,22 +2,21 @@ package testing;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import core.*;
-
+import core.Chronotimer;
+import core.RaceType;
+import core.Racer;
 
 public class TestChronoTimer3 {
-	
 	@Test
-	public void testParInd() {
-		System.out.println("---Test ParInd---");
+	public void testGrpRun() {
+		System.out.println("---Test GrpRun---");
 		
 		/*
 		 * Unit tests that reflect some of the outputs
-		 * of chrono3.txt
+		 * of chrono4.txt
 		 */
 		
 		Chronotimer chronotimer = new Chronotimer();
@@ -28,26 +27,7 @@ public class TestChronoTimer3 {
 		chronotimer.togglePower();
 		assertEquals(true, chronotimer.getIsPoweredOn());
 		
-		//"TIME"
-		System.out.println("Setting time...");
-		chronotimer.setTime(12, 1, 30);
-		assertEquals("12:1:30.0", chronotimer.getTime());
-		
-		//"EVENT IND"
-		assertEquals(RaceType.IND, chronotimer.getRaceType());
-		chronotimer.setRaceType(RaceType.PARIND);
-		assertEquals(RaceType.PARIND, chronotimer.getRaceType());
-		System.out.println("Set race type: PARIND");
-				
-		//"NEWRUN"
-		assertEquals(null, chronotimer.getCurrentRun());
-		chronotimer.newRun();
-		assertNotEquals(null, chronotimer.getCurrentRun());
-		System.out.println("New run initiated");		
-		
-		System.out.println("First run test beginning...");
-		
-		//"TOG" - Toggle Channels 1 - 4
+		//"TOG" - Toggle Channels 1 and 2
 		assertEquals(false, chronotimer.getChannelIsEnabled(1));
 		chronotimer.toggleChannel(1);
 		assertEquals(true, chronotimer.getChannelIsEnabled(1));
@@ -58,68 +38,57 @@ public class TestChronoTimer3 {
 		assertEquals(true, chronotimer.getChannelIsEnabled(2));	
 		System.out.println("Toggled channel 2");
 		
-		assertEquals(false, chronotimer.getChannelIsEnabled(3));
-		chronotimer.toggleChannel(3);
-		assertEquals(true, chronotimer.getChannelIsEnabled(3));	
-		System.out.println("Toggled channel 3");
+		//"EVENT IND"
+		assertEquals(RaceType.IND, chronotimer.getRaceType());
+		chronotimer.setRaceType(RaceType.GRP);
+		assertEquals(RaceType.GRP, chronotimer.getRaceType());
+		System.out.println("Set race type: GRP");
 		
-		assertEquals(false, chronotimer.getChannelIsEnabled(4));
-		chronotimer.toggleChannel(4);
-		assertEquals(true, chronotimer.getChannelIsEnabled(4));	
-		System.out.println("Toggled channel 4");
-
-		//"NUM" - Adds racer 234 and 315
-		assertEquals(false, chronotimer.getCurrentRun().containsRacerBibNumberInWaitQueue(272));
-		assertEquals(false, chronotimer.getCurrentRun().containsRacerBibNumberInWaitQueue(123));
-		assertEquals(false, chronotimer.getCurrentRun().containsRacerBibNumberInWaitQueue(111));
-		assertEquals(false, chronotimer.getCurrentRun().containsRacerBibNumberInWaitQueue(711));
-		chronotimer.addRacer(272);
-		chronotimer.addRacer(123);
-		chronotimer.addRacer(111);
-		chronotimer.addRacer(711);
-		assertEquals(true, chronotimer.getCurrentRun().containsRacerBibNumberInWaitQueue(272));
-		assertEquals(true, chronotimer.getCurrentRun().containsRacerBibNumberInWaitQueue(123));
-		assertEquals(true, chronotimer.getCurrentRun().containsRacerBibNumberInWaitQueue(111));
-		assertEquals(true, chronotimer.getCurrentRun().containsRacerBibNumberInWaitQueue(711));
-		System.out.println("Added racer (272)");
-		System.out.println("Added racer (123)");
-		System.out.println("Added racer (111)");
-		System.out.println("Added racer (711)");
+		//"NEWRUN"
+		assertEquals(null, chronotimer.getCurrentRun());
+		chronotimer.newRun();
+		assertNotEquals(null, chronotimer.getCurrentRun());
+		System.out.println("New run initiated");		
+		
+		System.out.println("First run test beginning...");
 		
 		//"TRIG" Start
-		assertEquals(false, chronotimer.getCurrentRun().containsRacerBibNumberInRunningQueue(272));
-		assertEquals(false, chronotimer.getCurrentRun().containsRacerBibNumberInRunningQueue(111));
+		assertEquals(0, chronotimer.getCurrentRun().getFinishedRacers().length);
 		chronotimer.triggerChannel(1);
-		chronotimer.triggerChannel(3);
-		assertEquals(true, chronotimer.getCurrentRun().containsRacerBibNumberInRunningQueue(272));
-		assertEquals(true, chronotimer.getCurrentRun().containsRacerBibNumberInRunningQueue(123));
-		System.out.println("Racer (123) Triggered channel 1");
-		System.out.println("Racer (272) triggered channel 3");
-		
-		assertEquals(false, chronotimer.getCurrentRun().containsRacerBibNumberInRunningQueue(111));
-		assertEquals(false, chronotimer.getCurrentRun().containsRacerBibNumberInRunningQueue(711));
+		System.out.println("Racers triggered channel 1");
 		
 		//"TRIG" End
-		assertEquals(false, chronotimer.getCurrentRun().containsRacerBibNumberInEndQueue(272));
-		assertEquals(false, chronotimer.getCurrentRun().containsRacerBibNumberInEndQueue(123));
+		assertEquals(0, chronotimer.getCurrentRun().getFinishedRacers().length);
 		chronotimer.triggerChannel(2);
-		chronotimer.triggerChannel(4);
-		assertEquals(true, chronotimer.getCurrentRun().containsRacerBibNumberInEndQueue(123));
-		assertEquals(true, chronotimer.getCurrentRun().containsRacerBibNumberInEndQueue(272));
-		System.out.println("Racer (123) Triggered channel 2");
-		System.out.println("Racer (272) Triggered channel 4");
+		chronotimer.triggerChannel(2);
+		chronotimer.triggerChannel(2);
+		assertEquals(3, chronotimer.getCurrentRun().getFinishedRacers().length);
+		System.out.println("Three racers triggered channel 2");
 		
-		assertTrue(chronotimer.getCurrentRun().getCurrentRunningRacers().length == 0);
-		
-		//"PRINT"
-		chronotimer.print();
+		//"NUM" - Adds racers 123, 456, 789
+		Racer[] racers = chronotimer.getCurrentRun().getFinishedRacers();
+		assertNotEquals(123, racers[0].getBibNumber());
+		assertNotEquals(456, racers[1].getBibNumber());
+		assertNotEquals(789, racers[2].getBibNumber());
+		chronotimer.addRacer(123);
+		chronotimer.addRacer(456);
+		chronotimer.addRacer(789);
+		assertEquals(123, racers[0].getBibNumber());
+		assertEquals(456, racers[1].getBibNumber());
+		assertEquals(789, racers[2].getBibNumber());
+		System.out.println("Added racer (123)");
+		System.out.println("Added racer (456)");
+		System.out.println("Added racer (789)");
 		
 		//"ENDRUN"
 		assertNotEquals(null, chronotimer.getCurrentRun());
 		chronotimer.endRun();
 		assertEquals(null, chronotimer.getCurrentRun());
 		System.out.println("Run ended");
-				
+		
+		//"PRINT"
+		chronotimer.print();
+		
 		//"POWER"
 		assertEquals(true, chronotimer.getIsPoweredOn());
 		chronotimer.togglePower();
