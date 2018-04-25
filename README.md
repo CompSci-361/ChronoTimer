@@ -10,4 +10,4 @@ This sprint updates the chronotimer and simulator to track another type of race,
 
 ## Sprint 3
 
-This sprint implements a user interface and updates the chronotimer and simulator to track group run racetypes.
+This sprint implements a user interface and updates the chronotimer and simulator to track group run racetypes. Users may need to install WindowBuilder.
