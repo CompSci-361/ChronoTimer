@@ -88,6 +88,13 @@ public class ParIndRun extends Run {
 	 */
 
 	private Run compareRun(Run run1, Run run2){
+		if(run1.getCurrentRunningRacers().length == 0 && run2.getCurrentRunningRacers().length == 0)
+			return null;
+		if(run1.getCurrentRunningRacers().length == 0)
+			return run2;
+		else if(run2.getCurrentRunningRacers().length == 0)
+			return run1;
+		
 		if(run1.getCurrentRunningRacers()[0].getStartTime() < run2.getCurrentRunningRacers()[0].getStartTime())
 			return run1;
 		else
