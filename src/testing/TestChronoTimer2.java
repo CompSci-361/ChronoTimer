@@ -68,7 +68,7 @@ public class TestChronoTimer2 {
 		assertEquals(true, chronotimer.getChannelIsEnabled(4));	
 		System.out.println("Toggled channel 4");
 
-		//"NUM" - Adds racer 234 and 315
+		//"NUM" - Adds racer 272, 123, 111, 711
 		assertEquals(false, chronotimer.getCurrentRun().containsRacerBibNumberInWaitQueue(272));
 		assertEquals(false, chronotimer.getCurrentRun().containsRacerBibNumberInWaitQueue(123));
 		assertEquals(false, chronotimer.getCurrentRun().containsRacerBibNumberInWaitQueue(111));
