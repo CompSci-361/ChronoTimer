@@ -8,19 +8,24 @@ public class GrpRun extends Run {
 	//order of finishing
 	int placeholder;
 	boolean firstTrigger;
+	boolean flag;
 	
 	//start time for all racers in this group run
 	double groupStart;
 	
 	protected Deque<Racer> waitQueue;
 	protected Deque<Racer> runningQueue;
+	protected Deque<Double> timeQueue;
 	
 	public GrpRun(int runNum) {
 		this.runNumber = runNum;
 		this.placeholder = 1;
 		this.firstTrigger = true;
+		this.flag = false;
+		this.groupStart = -1;
 		this.waitQueue = new ArrayDeque<Racer>();
 		this.runningQueue = new ArrayDeque<Racer>();
+		this.timeQueue = new ArrayDeque<Double>();
 	}
 	
 	/**
@@ -30,10 +35,35 @@ public class GrpRun extends Run {
 	 */
 	@Override
 	public void addRacer(int bibNumber){
-		Racer racer = endQueue.poll();
-		racer.setBibNumber(bibNumber);
-		endQueue.add(racer);
-		raiseQueueUpdatedEvent(RunQueueUpdatedEventType.FinishedQueue);
+		//if racers are not added prior to start of the race
+		//we use -1 to represent that the first trigger has not been called (i.e. race hasn't started)
+		if(groupStart != -1){
+			
+			if(flag){
+				for(Racer racer : runningQueue.toArray(new Racer[0])) {
+					if (racer.getBibNumber() == bibNumber){
+						racer.setEndTime(timeQueue.poll());
+						endQueue.add(racer);
+						runningQueue.remove(racer);
+					}
+				}
+			}
+			else{
+				Racer racer = endQueue.poll();
+				racer.setBibNumber(bibNumber);
+				endQueue.add(racer);
+				raiseQueueUpdatedEvent(RunQueueUpdatedEventType.FinishedQueue);
+			}
+			
+			
+		}
+		else{
+			//set flag to true to indicate we are keeping track of the racers
+			flag = true;
+			Racer racer = new Racer(bibNumber);
+			waitQueue.add(racer);
+			raiseQueueUpdatedEvent(RunQueueUpdatedEventType.WaitQueue);
+		}
 	}
 	
 	/**
@@ -88,16 +118,20 @@ public class GrpRun extends Run {
 	@Override
 	public Racer[] getCurrentRunningRacers() {
 		//not used
-		return null;
+		return runningQueue.toArray(new Racer[0]);
 	}
 	@Override
 	public boolean containsRacerBibNumberInWaitQueue(int bibNumber) {
-		//not used
+		for(Racer racer : waitQueue.toArray(new Racer[0])) {
+			if (racer.getBibNumber() == bibNumber) return true;
+		}
 		return false;
 	}
 	@Override
 	public boolean containsRacerBibNumberInRunningQueue(int bibNumber) {
-		//not used
+		for(Racer racer : runningQueue.toArray(new Racer[0])) {
+			if (racer.getBibNumber() == bibNumber) return true;
+		}
 		return false;
 	}
 	@Override
@@ -119,10 +153,9 @@ public class GrpRun extends Run {
 	
 	@Override
 	public Racer[] getCurrentWaitingRacers() {
-		//not used
-		return null;
-		
+		return waitQueue.toArray(new Racer[0]);
 	}
+	
 	@Override
 	public void clear(int bibNumber) {
 		//does not apply to group races
@@ -132,39 +165,64 @@ public class GrpRun extends Run {
 	
 	@Override
 	public void triggerChannel(int channelNumber){
-		if(channelNumber == 1){
-			if(firstTrigger){
-				firstTrigger = false;
-				groupStart = Chronotimer.ourTimer.getSystemTime();
+		if(flag){
+			if(channelNumber == 1){
+				if(firstTrigger){
+					firstTrigger = false;
+					groupStart = Chronotimer.ourTimer.getSystemTime();
+					
+					//set all the racers in the waitQueue to the runningQueue
+					while(!waitQueue.isEmpty()){
+						runningQueue.add(waitQueue.poll());
+					}
+				}
+				else{
+					Printer.printMessage("There is only one start on channel 1");
+				}
+			}
+			else if(channelNumber == 2){
+				timeQueue.add(Chronotimer.ourTimer.getSystemTime());
 			}
 			else{
 				Printer.printMessage("There is only one start on channel 1");
-				return;
 			}
-		}
-		else if(channelNumber == 2){
-			//create new racer
-			Racer racer = new Racer(placeholder);
-			
-			//set racer start time to group start
-			racer.setStartTime(groupStart);
-			racer.onBeginRacing();
-			
-			//set racer end time to current time
-			racer.setEndTime();
-			racer.onFinishRacing();
-			
-			//add the racer to the finish queue
-			endQueue.add(racer);
-			
-			//increment placeholder for next runner
-			++placeholder;
-			
-			raiseQueueUpdatedEvent(RunQueueUpdatedEventType.FinishedQueue);
+			return;
 		}
 		else{
-			Printer.printMessage("Can't use this channel");
-			return;
+			if(channelNumber == 1){
+				if(firstTrigger){
+					firstTrigger = false;
+					groupStart = Chronotimer.ourTimer.getSystemTime();
+				}
+				else{
+					Printer.printMessage("There is only one start on channel 1");
+					return;
+				}
+			}
+			else if(channelNumber == 2){
+				//create new racer
+				Racer racer = new Racer(placeholder);
+				
+				//set racer start time to group start
+				racer.setStartTime(groupStart);
+				racer.onBeginRacing();
+				
+				//set racer end time to current time
+				racer.setEndTime();
+				racer.onFinishRacing();
+				
+				//add the racer to the finish queue
+				endQueue.add(racer);
+				
+				//increment placeholder for next runner
+				++placeholder;
+				
+				raiseQueueUpdatedEvent(RunQueueUpdatedEventType.FinishedQueue);
+			}
+			else{
+				Printer.printMessage("Can't use this channel");
+				return;
+			}
 		}
 	}
 }
