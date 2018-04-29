@@ -47,6 +47,11 @@ public class Racer {
 	public void setEndTime(){
 		this.endTime = Chronotimer.ourTimer.getSystemTime();
 	}
+	
+	public void setEndTime(double time){
+		this.endTime = time;
+	}
+	
 	/**
 	 * This is for giving a racer a DNF end time represented by -1
 	 */
