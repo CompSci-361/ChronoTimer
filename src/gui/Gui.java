@@ -17,6 +17,8 @@ import javax.swing.JRadioButton;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
+
 import javax.swing.JScrollPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
@@ -99,6 +101,7 @@ public class Gui extends JPanel implements ActionListener{
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
+		
 		JLabel chronoLabel = new JLabel("ChronoTimer 1009");
 		chronoLabel.setForeground(new Color(128, 0, 0));
 		chronoLabel.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
@@ -159,11 +162,6 @@ public class Gui extends JPanel implements ActionListener{
 		//buttonSwap.setEnabled(false);
 		
 		JButton buttonFunction = new JButton("End Run");
-		buttonFunction.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				chrono.endRun();
-			}
-		});
 		buttonFunction.setBackground(Color.PINK);
 		buttonFunction.setBounds(107, 135, 101, 29);
 		frame.getContentPane().add(buttonFunction);
@@ -564,11 +562,7 @@ public class Gui extends JPanel implements ActionListener{
 		
 //Runs and types		
 		JButton btnNewRun = new JButton("New Run");
-		btnNewRun.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				chrono.newRun(selectedRaceType);
-			}
-		});
+		
 		btnNewRun.setBounds(107, 108, 101, 29);
 		frame.getContentPane().add(btnNewRun);
 		
@@ -590,14 +584,14 @@ public class Gui extends JPanel implements ActionListener{
 		btnParindRun.setBounds(6, 135, 101, 29);
 		frame.getContentPane().add(btnParindRun);
 		
-		JButton btnNewButton = new JButton("Grp Run");
-		btnNewButton.addActionListener(new ActionListener() {
+		JButton btnGrpRun = new JButton("Grp Run");
+		btnGrpRun.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				selectedRaceType = RaceType.GRP;
 			}
 		});
-		btnNewButton.setBounds(6, 162, 101, 29);
-		frame.getContentPane().add(btnNewButton);
+		btnGrpRun.setBounds(6, 162, 101, 29);
+		frame.getContentPane().add(btnGrpRun);
 		
 		JButton btnPargrpRun = new JButton("ParGrp Run");
 		btnPargrpRun.addActionListener(new ActionListener() {
@@ -712,7 +706,7 @@ public class Gui extends JPanel implements ActionListener{
 		frame.getContentPane().add(buttonReset);
 		buttonReset.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-					chrono.reset();
+				chrono.reset();
 				System.out.println("Reset Chronotimer."); 
 				tog1.setSelected(false);
 				tog2.setSelected(false);
@@ -724,8 +718,21 @@ public class Gui extends JPanel implements ActionListener{
 				tog8.setSelected(false);
 				textField.setText("00*00*00.0");
 				textField_2.setText("");
+				ourState = state.GETBIB;
+				printerText.setText("");
+				textArea_1.setText("");
+				
 			}
 		});	
+		btnNewRun.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				chrono.newRun(selectedRaceType);
+				btnIndRun.setEnabled(true);
+				btnParindRun.setEnabled(true);
+				btnPargrpRun.setEnabled(true);
+				btnGrpRun.setEnabled(true);
+			}
+		});
 		buttonPound.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				//System.out.println(racerNumber);
@@ -753,6 +760,45 @@ public class Gui extends JPanel implements ActionListener{
 					buttonPower.setForeground(Color.BLACK);
 				}	    
 				buttonReset.doClick();
+				if(value == true) {
+					for(Object c : frame.getContentPane().getComponents()) {
+						if(c instanceof JButton) {
+							if(!((JButton) c).getText().equals("Ind Run")&&!((JButton) c).getText().equals("Grp Run")&&!((JButton) c).getText().equals("ParInd Run")&&!((JButton) c).getText().equals("ParGrp Run") )
+								((JButton) c).setEnabled(value);
+						}
+					}
+				}else {
+					for(Object c : frame.getContentPane().getComponents()) {
+						if(c instanceof JButton) {
+							((JButton) c).setEnabled(value);
+						}
+					}
+				}
+				for(Object c : panel.getComponents()) {
+					if(c instanceof JButton) {
+						((JButton) c).setEnabled(value);
+					}
+				}
+				for(Object c : panel_1.getComponents()) {
+					if(c instanceof JButton) {
+						((JButton) c).setEnabled(value);
+					}
+					if(c instanceof JRadioButton) {
+						((JRadioButton) c).setEnabled(value);
+					}
+				}
+				buttonPower.setEnabled(true);
+			}
+		});
+		buttonFunction.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				boolean value = chrono.endRun();
+				if(value) {
+					btnIndRun.setEnabled(!value);
+					btnParindRun.setEnabled(!value);
+					btnPargrpRun.setEnabled(!value);
+					btnGrpRun.setEnabled(!value);
+				}
 			}
 		});
 				
@@ -770,6 +816,25 @@ public class Gui extends JPanel implements ActionListener{
 			}
 			
 		});
+		for(Object c : frame.getContentPane().getComponents()) {
+			if(c instanceof JButton) {
+				((JButton) c).setEnabled(false);
+			}
+		}
+		for(Object c : panel.getComponents()) {
+			if(c instanceof JButton) {
+				((JButton) c).setEnabled(false);
+			}
+		}
+		for(Object c : panel_1.getComponents()) {
+			if(c instanceof JButton) {
+				((JButton) c).setEnabled(false);
+			}
+			if(c instanceof JRadioButton) {
+				((JRadioButton) c).setEnabled(false);
+			}
+		}
+		buttonPower.setEnabled(true);
 		
 		
 	}

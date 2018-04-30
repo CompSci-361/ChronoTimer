@@ -26,9 +26,21 @@ public class Channel {
 	/**
 	 * Connects the param to this channel by setting the sensorType to <GATE,EYE,TRIP, PAD, NONE>
 	 * @param sensor
+	 * @return whether the connect succeeded or not
 	 */
-	public void setConnect(SensorType sensor){
-		sensorType = sensor;
+	public boolean setConnect(SensorType sensor){
+		if(state) {
+			if(sensor == SensorType.NONE) {
+				Printer.printMessage("Can't connect a sensor of type NONE");
+				return false;
+			}else {
+				sensorType = sensor;
+			}
+		}else {
+			Printer.printMessage("Can't connect to disabled channel");
+			return false;
+		}
+		return true;
 	}
 	
 	/**

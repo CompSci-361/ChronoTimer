@@ -61,28 +61,37 @@ public class GuiSensors {
 		comboBox.setBounds(139, 22, 106, 27);
 		getFrame().getContentPane().add(comboBox);
 		
-		
+		class doRadio{
+			public void complete(JRadioButton c, int channelNum) {
+				if(c.isSelected()) {
+					switch((String)comboBox.getSelectedItem()) {
+					case "EYE":
+						c.setSelected(Gui.chrono.setConnect(channelNum, SensorType.EYE));
+						break;
+					case "GATE":
+						c.setSelected(Gui.chrono.setConnect(channelNum, SensorType.GATE));
+						break;
+					case "TRIP":
+						c.setSelected(Gui.chrono.setConnect(channelNum, SensorType.TRIP));
+						break;
+					case "NONE":
+						c.setSelected(Gui.chrono.setConnect(channelNum, SensorType.NONE));
+						break;
+					case "PAD":
+						c.setSelected(Gui.chrono.setConnect(channelNum, SensorType.PAD));
+						break;
+					}
+					
+				}else {
+					Gui.chrono.setDisconnect(1);
+				}
+			}
+		}
 		JRadioButton radioButton1 = new JRadioButton("");
 		radioButton1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(radioButton1.isSelected()) {
-					switch((String)comboBox.getSelectedItem()) {
-					case "EYE":
-						Gui.chrono.setConnect(1, SensorType.EYE);
-						break;
-					case "GATE":
-						Gui.chrono.setConnect(1, SensorType.GATE);
-						break;
-					case "TRIP":
-						Gui.chrono.setConnect(1, SensorType.TRIP);
-						break;
-					case "NONE":
-						Gui.chrono.setConnect(1, SensorType.NONE);
-						break;
-					case "PAD":
-						Gui.chrono.setConnect(1, SensorType.PAD);
-						break;
-					}
+					new doRadio().complete(radioButton1, 1);
 				}else {
 					Gui.chrono.setDisconnect(1);
 				}
@@ -95,23 +104,7 @@ public class GuiSensors {
 		radioButton3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(radioButton3.isSelected()) {
-					switch((String)comboBox.getSelectedItem()) {
-					case "EYE":
-						Gui.chrono.setConnect(3, SensorType.EYE);
-						break;
-					case "GATE":
-						Gui.chrono.setConnect(3, SensorType.GATE);
-						break;
-					case "TRIP":
-						Gui.chrono.setConnect(3, SensorType.TRIP);
-						break;
-					case "NONE":
-						Gui.chrono.setConnect(3, SensorType.NONE);
-						break;
-					case "PAD":
-						Gui.chrono.setConnect(3, SensorType.PAD);
-						break;
-					}
+					new doRadio().complete(radioButton3, 3);
 				}else {
 					Gui.chrono.setDisconnect(3);
 				}
@@ -125,23 +118,7 @@ public class GuiSensors {
 		radioButton4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(radioButton4.isSelected()) {
-					switch((String)comboBox.getSelectedItem()) {
-					case "EYE":
-						Gui.chrono.setConnect(4, SensorType.EYE);
-						break;
-					case "GATE":
-						Gui.chrono.setConnect(4, SensorType.GATE);
-						break;
-					case "TRIP":
-						Gui.chrono.setConnect(4, SensorType.TRIP);
-						break;
-					case "NONE":
-						Gui.chrono.setConnect(4, SensorType.NONE);
-						break;
-					case "PAD":
-						Gui.chrono.setConnect(4, SensorType.PAD);
-						break;
-					}
+					new doRadio().complete(radioButton4, 4);
 				}else {
 					Gui.chrono.setDisconnect(4);
 				}
@@ -155,23 +132,7 @@ public class GuiSensors {
 		radioButton5.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(radioButton5.isSelected()) {	
-					switch((String)comboBox.getSelectedItem()) {
-					case "EYE":
-						Gui.chrono.setConnect(5, SensorType.EYE);
-						break;
-					case "GATE":
-						Gui.chrono.setConnect(5, SensorType.GATE);
-						break;
-					case "TRIP":
-						Gui.chrono.setConnect(5, SensorType.TRIP);
-						break;
-					case "NONE":
-						Gui.chrono.setConnect(5, SensorType.NONE);
-						break;
-					case "PAD":
-						Gui.chrono.setConnect(5, SensorType.PAD);
-						break;
-					}
+					new doRadio().complete(radioButton5, 5);
 				}else {
 					Gui.chrono.setDisconnect(5);
 				}
@@ -185,23 +146,7 @@ public class GuiSensors {
 		radioButton2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(radioButton2.isSelected()) {
-					switch((String)comboBox.getSelectedItem()) {
-					case "EYE":
-						Gui.chrono.setConnect(2, SensorType.EYE);
-						break;
-					case "GATE":
-						Gui.chrono.setConnect(2, SensorType.GATE);
-						break;
-					case "TRIP":
-						Gui.chrono.setConnect(2, SensorType.TRIP);
-						break;
-					case "NONE":
-						Gui.chrono.setConnect(2, SensorType.NONE);
-						break;
-					case "PAD":
-						Gui.chrono.setConnect(2, SensorType.PAD);
-						break;
-					}
+					new doRadio().complete(radioButton2, 2);
 				}else {
 					Gui.chrono.setDisconnect(2);
 				}
@@ -215,23 +160,7 @@ public class GuiSensors {
 		radioButton7.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(radioButton7.isSelected()) {
-					switch((String)comboBox.getSelectedItem()) {
-					case "EYE":
-						Gui.chrono.setConnect(7, SensorType.EYE);
-						break;
-					case "GATE":
-						Gui.chrono.setConnect(7, SensorType.GATE);
-						break;
-					case "TRIP":
-						Gui.chrono.setConnect(7, SensorType.TRIP);
-						break;
-					case "NONE":
-						Gui.chrono.setConnect(7, SensorType.NONE);
-						break;
-					case "PAD":
-						Gui.chrono.setConnect(7, SensorType.PAD);
-						break;
-					}
+					new doRadio().complete(radioButton7, 7);
 				}else {
 					Gui.chrono.setDisconnect(7);
 				}
@@ -245,23 +174,7 @@ public class GuiSensors {
 		radioButton6.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(radioButton6.isSelected()) {
-					switch((String)comboBox.getSelectedItem()) {
-					case "EYE":
-						Gui.chrono.setConnect(6, SensorType.EYE);
-						break;
-					case "GATE":
-						Gui.chrono.setConnect(6, SensorType.GATE);
-						break;
-					case "TRIP":
-						Gui.chrono.setConnect(6, SensorType.TRIP);
-						break;
-					case "NONE":
-						Gui.chrono.setConnect(6, SensorType.NONE);
-						break;
-					case "PAD":
-						Gui.chrono.setConnect(6, SensorType.PAD);
-						break;
-					}
+					new doRadio().complete(radioButton6, 6);
 				}else {
 					Gui.chrono.setDisconnect(6);
 				}
@@ -275,23 +188,7 @@ public class GuiSensors {
 		radioButton8.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(radioButton8.isSelected()) {
-					switch((String)comboBox.getSelectedItem()) {
-					case "EYE":
-						Gui.chrono.setConnect(8, SensorType.EYE);
-						break;
-					case "GATE":
-						Gui.chrono.setConnect(8, SensorType.GATE);
-						break;
-					case "TRIP":
-						Gui.chrono.setConnect(8, SensorType.TRIP);
-						break;
-					case "NONE":
-						Gui.chrono.setConnect(8, SensorType.NONE);
-						break;
-					case "PAD":
-						Gui.chrono.setConnect(8, SensorType.PAD);
-						break;
-					}
+					new doRadio().complete(radioButton8, 8);
 				}else {
 					Gui.chrono.setDisconnect(8);
 				}

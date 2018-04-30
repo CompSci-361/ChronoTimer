@@ -118,14 +118,15 @@ public class Chronotimer {
 	 * Connects a sensor to a given channel
 	 * @param channelNumber Which channel is being connected to
 	 * @param sensorType <GATE,EYE,TRIP>
+	 * @return whether the connect succeeded or not 
 	 */
-	public void setConnect(int channelNumber, SensorType sensorType){
+	public boolean setConnect(int channelNumber, SensorType sensorType){
 		if(!getIsPoweredOn()){
 			Printer.printMessage("Power must be enabled connect sensor");
-			return;
+			return false;
 		}
 		System.out.println(channelNumber + " type "+sensorType);
-		channels[channelNumber-1].setConnect(sensorType);
+		return channels[channelNumber-1].setConnect(sensorType);
 	}
 	
 	/**
@@ -224,15 +225,19 @@ public class Chronotimer {
 	
 	/**
 	 * Clears the current run, newRun() can now be called
+	 * @return whether ending a run succeeded or not. True if there was a run.
 	 */
-	public void endRun(){
+	public boolean endRun(){
 		//should this call currentRun.cancel
 		if (currentRun != null) {
 			if (!runHistory.contains(currentRun)) {
 				runHistory.add(currentRun);
 			}
+			currentRun = null;
+			return true;
 		}
-		currentRun = null;
+		//return false if a run wasn't ended
+		return false;
 	}
 	
 	public void exportRun(int requestedRunNumber) {
@@ -375,6 +380,10 @@ public class Chronotimer {
 	}
 	
 	public void clear(int bibNumber) {
+		if(currentRun == null) {
+			Printer.printMessage("Can't clear a racer without a current run");
+			return;
+		}
 		currentRun.clear(bibNumber);
 	}
 }
