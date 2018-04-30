@@ -27,6 +27,7 @@ public class ParIndRun extends Run {
 		else{
 			run2.addRacer(bibNumber);
 		}
+		raiseQueueUpdatedEvent(RunQueueUpdatedEventType.WaitQueue);
 	}
 	/**
 	 * Gives start time to the first Racer in the queue
@@ -40,6 +41,7 @@ public class ParIndRun extends Run {
 		else if(triggerNumber == 3){
 			run2.setRacerStartTime(triggerNumber);
 		}
+		raiseQueueUpdatedEvent(RunQueueUpdatedEventType.RunningQueue);
 	}
 	/**
 	 * Gives end time  to the first Racer in the running queue
@@ -53,6 +55,7 @@ public class ParIndRun extends Run {
 		else if(triggerNumber == 4){
 			run2.setRacerEndTime(triggerNumber);
 		}
+		raiseQueueUpdatedEvent(RunQueueUpdatedEventType.FinishedQueue);
 	}
 	/**
 	 * Sets the end time of a Racer that is running to DNF(-1)
