@@ -1,8 +1,21 @@
 package core;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
+
 public class ParGrpRun extends Run {
+	
+	double groupStart;
+	protected Deque<Racer> waitQueue;
+	protected Racer[] waitArray;
+	protected Deque<Racer> runningQueue;
+	
 	public ParGrpRun(int runNum) {
 		this.runNumber = runNum;
+		this.groupStart = -1;
+		this.waitQueue = new ArrayDeque<Racer>();
+		this.runningQueue = new ArrayDeque<Racer>();
+		waitArray = new Racer[8];
 	}
 	/**
 	 * Adds a racer with the param as the attribute
@@ -11,7 +24,11 @@ public class ParGrpRun extends Run {
 	 */
 	@Override
 	public void addRacer(int bibNumber){
-		//todo
+		Racer racer = new Racer(bibNumber);
+		if(waitArray.length < 8)
+			waitArray[waitArray.length] = racer;
+		else
+			Printer.printMessage("ParGrp race is full. Wait until next round.");
 		return;
 	}
 	/**
