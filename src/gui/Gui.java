@@ -40,6 +40,7 @@ import core.RaceType;
 import core.Racer;
 import core.Run;
 import core.Run.RunQueueUpdatedEventArgs;
+import java.awt.Component;
 
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -64,6 +65,7 @@ public class Gui extends JPanel implements ActionListener{
 		GETCLEARBIB
 	}
 	private state ourState = state.GETBIB;
+	public static GuiSensors window2 = new GuiSensors();
 	private JTextField textRacer;
 
 	/**
@@ -76,7 +78,7 @@ public class Gui extends JPanel implements ActionListener{
 					Gui window = new Gui();
 					window.frame.setVisible(true);
 					
-					GuiSensors window2 = new GuiSensors();
+					window2 = new GuiSensors();
 					window2.getFrame().setVisible(true);
 					
 				} catch (Exception e) {
@@ -170,24 +172,10 @@ public class Gui extends JPanel implements ActionListener{
 		// ------------ Swap Button ------------
 
 		
-		JButton buttonFunction = new JButton("End Run");
-		buttonFunction.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if(!chrono.getIsPoweredOn()){
-					Printer.printMessage("Power must be enabled to end run");
-					return;
-				}
-				if (chrono.getCurrentRun() != null) {
-					chrono.getCurrentRun().removeQueueUpdateEventListener(runQueueListener);
-				}
-				chrono.endRun();
-				runnerText.setText("");
-				printerText.setText("");
-			}
-		});
-		buttonFunction.setBackground(Color.PINK);
-		buttonFunction.setBounds(107, 135, 101, 29);
-		frame.getContentPane().add(buttonFunction);
+		JButton btnEndRun = new JButton("End Run");
+		btnEndRun.setBackground(Color.PINK);
+		btnEndRun.setBounds(107, 135, 101, 29);
+		frame.getContentPane().add(btnEndRun);
 		//buttonFunction.setEnabled(false);
 		
 		JLabel lblNewLabel_2 = new JLabel("Queue / Running / Finish");
@@ -647,14 +635,6 @@ public class Gui extends JPanel implements ActionListener{
 		
 //Runs and types		
 		JButton btnNewRun = new JButton("New Run");
-		btnNewRun.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				chrono.newRun(selectedRaceType);
-				if (chrono.getCurrentRun() != null) {
-					chrono.getCurrentRun().addQueueUpdateEventListener(runQueueListener);
-				}
-			}
-		});
 		btnNewRun.setBounds(107, 108, 101, 29);
 		frame.getContentPane().add(btnNewRun);
 		
@@ -662,6 +642,7 @@ public class Gui extends JPanel implements ActionListener{
 		btnIndRun.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				selectedRaceType = RaceType.IND;
+				btnNewRun.setEnabled(true);
 				Printer.printMessage(selectedRaceType + " selected");
 			}
 		});
@@ -672,26 +653,29 @@ public class Gui extends JPanel implements ActionListener{
 		btnParindRun.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				selectedRaceType = RaceType.PARIND;
+				btnNewRun.setEnabled(true);
 				Printer.printMessage(selectedRaceType + " selected");
 			}
 		});
 		btnParindRun.setBounds(6, 135, 101, 29);
 		frame.getContentPane().add(btnParindRun);
 		
-		JButton btnNewButton = new JButton("Grp Run");
-		btnNewButton.addActionListener(new ActionListener() {
+		JButton btnGrpRun = new JButton("Grp Run");
+		btnGrpRun.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				selectedRaceType = RaceType.GRP;
+				btnNewRun.setEnabled(true);
 				Printer.printMessage(selectedRaceType + " selected");
 			}
 		});
-		btnNewButton.setBounds(6, 162, 101, 29);
-		frame.getContentPane().add(btnNewButton);
+		btnGrpRun.setBounds(6, 162, 101, 29);
+		frame.getContentPane().add(btnGrpRun);
 		
 		JButton btnPargrpRun = new JButton("ParGrp Run");
 		btnPargrpRun.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				selectedRaceType = RaceType.PARGRP;
+				btnNewRun.setEnabled(true);
 				Printer.printMessage(selectedRaceType + " selected");
 			}
 		});
@@ -825,40 +809,96 @@ public class Gui extends JPanel implements ActionListener{
 				stdIn = "";
 				runnerText.setText("");
 				printerText.setText("");
+				ourState = state.GETBIB;
+				btnNewRun.setEnabled(false);
+				btnEndRun.setEnabled(false);
+				btnIndRun.setEnabled(true);
+				btnParindRun.setEnabled(true);
+				btnPargrpRun.setEnabled(true);
+				btnGrpRun.setEnabled(true);
+				//window2.exit();
+				window2 = new GuiSensors();
+				window2.getFrame().setVisible(true);
 			}
 		});	
+		btnNewRun.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				chrono.newRun(selectedRaceType);
+				btnIndRun.setEnabled(false);
+				btnParindRun.setEnabled(false);
+				btnPargrpRun.setEnabled(false);
+				btnGrpRun.setEnabled(false);
+				btnEndRun.setEnabled(true);
+			}
+		});
 		
 		// ------------ Reset button ------------
 		
 		// ------------ Power button ------------
-				JButton buttonPower = new JButton("Power");
-				buttonPower.setForeground(new Color(0, 0, 0));
-				buttonPower.setBounds(6, 7, 101, 29);
-				frame.getContentPane().add(buttonPower);
-				buttonPower.setContentAreaFilled(true);
-				buttonPower.setOpaque(false);
-				buttonPower.setBackground(Color.BLACK);
-				buttonPower.setForeground(Color.BLACK);
-				
-				buttonPower.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent arg0) {
-						chrono.togglePower();
-						boolean value = chrono.getIsPoweredOn();
-						if(value)
-							buttonPower.setForeground(new Color(0, 255, 0));
-						else{
-							buttonPower.setForeground(Color.BLACK);
-						}	
-						tog1.setSelected(false);
-						tog2.setSelected(false);
-						tog3.setSelected(false);
-						tog4.setSelected(false);
-						tog5.setSelected(false);
-						tog6.setSelected(false);
-						tog7.setSelected(false);
-						tog8.setSelected(false);
+		JButton buttonPower = new JButton("Power");
+		buttonPower.setForeground(new Color(0, 0, 0));
+		buttonPower.setBounds(6, 7, 101, 29);
+		frame.getContentPane().add(buttonPower);
+		buttonPower.setContentAreaFilled(true);
+		buttonPower.setOpaque(false);
+		buttonPower.setBackground(Color.BLACK);
+		buttonPower.setForeground(Color.BLACK);
+		
+		buttonPower.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				chrono.togglePower();
+				boolean value = chrono.getIsPoweredOn();
+				if(value)
+					buttonPower.setForeground(new Color(0, 255, 0));
+				else{
+					buttonPower.setForeground(Color.BLACK);
+				}	
+				buttonReset.doClick();
+				if(value == true) {
+					for(Object c : frame.getContentPane().getComponents()) {
+						if(c instanceof JButton) {
+							//if(!((JButton) c).getText().equals("Ind Run")&&!((JButton) c).getText().equals("Grp Run")&&!((JButton) c).getText().equals("ParInd Run")&&!((JButton) c).getText().equals("ParGrp Run") )
+							if(!((JButton) c).getText().equals("New Run")&&!((JButton) c).getText().equals("End Run"))
+								((JButton) c).setEnabled(value);
+						}
 					}
-				});
+				}else {
+					for(Object c : frame.getContentPane().getComponents()) {
+						if(c instanceof JButton) {
+							((JButton) c).setEnabled(value);
+						}
+					}
+				}
+				for(Object c : panel.getComponents()) {
+					if(c instanceof JButton) {
+						((JButton) c).setEnabled(value);
+					}
+				}
+				for(Object c : panel_1.getComponents()) {
+					if(c instanceof JButton) {
+						((JButton) c).setEnabled(value);
+					}
+					if(c instanceof JRadioButton) {
+						((JRadioButton) c).setEnabled(value);
+					}
+				}
+				buttonPower.setEnabled(true);
+			}
+		});
+		
+		btnEndRun.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				boolean value = chrono.endRun();
+				if(value) {
+					btnIndRun.setEnabled(value);
+					btnParindRun.setEnabled(value);
+					btnPargrpRun.setEnabled(value);
+					btnGrpRun.setEnabled(value);
+					btnNewRun.setEnabled(false);
+					btnEndRun.setEnabled(false);
+				}
+ 			}
+ 		});
 				
 				// ------------ Power button ------------
 		
@@ -879,7 +919,25 @@ public class Gui extends JPanel implements ActionListener{
 			}
 		});
 		
-		
+		for(Object c : frame.getContentPane().getComponents()) {
+			if(c instanceof JButton) {
+				((JButton) c).setEnabled(false);
+			}
+		}
+		for(Object c : panel.getComponents()) {
+			if(c instanceof JButton) {
+				((JButton) c).setEnabled(false);
+			}
+		}
+			for(Object c : panel_1.getComponents()) {
+			if(c instanceof JButton) {
+				((JButton) c).setEnabled(false);
+			}
+			if(c instanceof JRadioButton) {
+				((JRadioButton) c).setEnabled(false);
+			}
+		}
+		buttonPower.setEnabled(true);
 				
 		ImageIcon icon = new ImageIcon("juggernotlogo.png");
 		JLabel example = new JLabel();

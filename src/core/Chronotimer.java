@@ -166,19 +166,24 @@ public class Chronotimer {
 	 * @param channelNumber Which channel is being connected to
 	 * @param sensorType <GATE,EYE,TRIP>
 	 */
-	public void setConnect(int channelNumber, SensorType sensorType){
+	public boolean setConnect(int channelNumber, SensorType sensorType){
 		if(!getIsPoweredOn()){
 			Printer.printMessage("Power must be enabled connect sensor");
-			return;
+			return false;
 		}
 		
 		if (isSensorConnected(channelNumber)) {
 			Printer.printMessage("A sensor is already connected to channel number: " + channelNumber);
-			return;
+			return false;
 		}
-		
+		if(sensorType == SensorType.NONE) {
+			Printer.printMessage("Can't connect NONE type sensor");
+			return false;
+		}
 		Printer.printMessage(sensorType + " connected to channel " + channelNumber);
 		//channels[channelNumber-1].setConnect(sensorType);
+		//TODO
+		//Check that channel is enabled and return true or false if it connects
 		Sensor sensor = new Sensor(sensorType, channelNumber);
 		sensor.addSensorFiredActionListener(new ActionListener() {
 			@Override
@@ -189,6 +194,7 @@ public class Chronotimer {
 			}	
 		});
 		sensors.add(sensor);
+		return true;
 	}
 	
 	/**
@@ -324,19 +330,21 @@ public class Chronotimer {
 	/**
 	 * Clears the current run, newRun() can now be called
 	 */
-	public void endRun(){
+	public boolean endRun(){
 		//should this call currentRun.cancel
 		if(!getIsPoweredOn()){
 			Printer.printMessage("Power must be turned on to end run");
-			return;
+			return false;
 		}
 		if (currentRun != null) {
 			if (!runHistory.contains(currentRun)) {
 				runHistory.add(currentRun);
 			}
+			currentRun = null;
+			Printer.printMessage("Run ended");
+			return true;
 		}
-		currentRun = null;
-		Printer.printMessage("Run ended");
+		return false;
 	}
 	
 	public void exportRun(int requestedRunNumber) {
@@ -483,6 +491,10 @@ public class Chronotimer {
 	}
 	
 	public void clear(int bibNumber) {
-		currentRun.clear(bibNumber);
+		if(currentRun == null) {
+			Printer.printMessage("Can't clear a racer without a current run");
+			return;
+		}
+ 		currentRun.clear(bibNumber);
 	}
 }
