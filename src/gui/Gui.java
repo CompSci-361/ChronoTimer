@@ -161,11 +161,10 @@ public class Gui extends JPanel implements ActionListener{
 		frame.getContentPane().add(buttonSwap);
 		//buttonSwap.setEnabled(false);
 		
-		JButton buttonFunction = new JButton("End Run");
-		buttonFunction.setBackground(Color.PINK);
-		buttonFunction.setBounds(107, 135, 101, 29);
-		frame.getContentPane().add(buttonFunction);
-		//buttonFunction.setEnabled(false);
+		JButton btnEndRun = new JButton("End Run");
+		btnEndRun.setBackground(Color.PINK);
+		btnEndRun.setBounds(107, 135, 101, 29);
+		frame.getContentPane().add(btnEndRun);
 		
 		JLabel lblNewLabel_2 = new JLabel("Queue / Running / Finish");
 		lblNewLabel_2.setForeground(new Color(128, 0, 0));
@@ -570,6 +569,7 @@ public class Gui extends JPanel implements ActionListener{
 		btnIndRun.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				selectedRaceType = RaceType.IND;
+				btnNewRun.setEnabled(true);
 			}
 		});
 		btnIndRun.setBounds(6, 108, 101, 29);
@@ -579,6 +579,8 @@ public class Gui extends JPanel implements ActionListener{
 		btnParindRun.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				selectedRaceType = RaceType.PARIND;
+				btnNewRun.setEnabled(true);
+
 			}
 		});
 		btnParindRun.setBounds(6, 135, 101, 29);
@@ -588,6 +590,8 @@ public class Gui extends JPanel implements ActionListener{
 		btnGrpRun.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				selectedRaceType = RaceType.GRP;
+				btnNewRun.setEnabled(true);
+
 			}
 		});
 		btnGrpRun.setBounds(6, 162, 101, 29);
@@ -597,6 +601,8 @@ public class Gui extends JPanel implements ActionListener{
 		btnPargrpRun.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				selectedRaceType = RaceType.PARGRP;
+				btnNewRun.setEnabled(true);
+
 			}
 		});
 		btnPargrpRun.setBounds(6, 190, 101, 29);
@@ -727,10 +733,11 @@ public class Gui extends JPanel implements ActionListener{
 		btnNewRun.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				chrono.newRun(selectedRaceType);
-				btnIndRun.setEnabled(true);
-				btnParindRun.setEnabled(true);
-				btnPargrpRun.setEnabled(true);
-				btnGrpRun.setEnabled(true);
+				btnIndRun.setEnabled(false);
+				btnParindRun.setEnabled(false);
+				btnPargrpRun.setEnabled(false);
+				btnGrpRun.setEnabled(false);
+				btnEndRun.setEnabled(true);
 			}
 		});
 		buttonPound.addActionListener(new ActionListener() {
@@ -763,7 +770,8 @@ public class Gui extends JPanel implements ActionListener{
 				if(value == true) {
 					for(Object c : frame.getContentPane().getComponents()) {
 						if(c instanceof JButton) {
-							if(!((JButton) c).getText().equals("Ind Run")&&!((JButton) c).getText().equals("Grp Run")&&!((JButton) c).getText().equals("ParInd Run")&&!((JButton) c).getText().equals("ParGrp Run") )
+							//if(!((JButton) c).getText().equals("Ind Run")&&!((JButton) c).getText().equals("Grp Run")&&!((JButton) c).getText().equals("ParInd Run")&&!((JButton) c).getText().equals("ParGrp Run") )
+							if(!((JButton) c).getText().equals("New Run")&&!((JButton) c).getText().equals("End Run"))
 								((JButton) c).setEnabled(value);
 						}
 					}
@@ -790,14 +798,16 @@ public class Gui extends JPanel implements ActionListener{
 				buttonPower.setEnabled(true);
 			}
 		});
-		buttonFunction.addActionListener(new ActionListener() {
+		btnEndRun.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				boolean value = chrono.endRun();
 				if(value) {
-					btnIndRun.setEnabled(!value);
-					btnParindRun.setEnabled(!value);
-					btnPargrpRun.setEnabled(!value);
-					btnGrpRun.setEnabled(!value);
+					btnIndRun.setEnabled(value);
+					btnParindRun.setEnabled(value);
+					btnPargrpRun.setEnabled(value);
+					btnGrpRun.setEnabled(value);
+					btnNewRun.setEnabled(false);
+					btnEndRun.setEnabled(false);
 				}
 			}
 		});
