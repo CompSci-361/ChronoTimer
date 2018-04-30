@@ -45,8 +45,10 @@ public class GrpRun extends Run {
 						racer.setEndTime(timeQueue.poll());
 						endQueue.add(racer);
 						runningQueue.remove(racer);
+						racer.onFinishRacing();
 					}
 				}
+				raiseQueueUpdatedEvent(RunQueueUpdatedEventType.FinishedQueue);
 			}
 			else{
 				Racer racer = endQueue.poll();
@@ -173,8 +175,12 @@ public class GrpRun extends Run {
 					
 					//set all the racers in the waitQueue to the runningQueue
 					while(!waitQueue.isEmpty()){
-						runningQueue.add(waitQueue.poll());
+						Racer r = waitQueue.poll();
+						runningQueue.add(r);
+						r.onBeginRacing();
 					}
+					
+					raiseQueueUpdatedEvent(RunQueueUpdatedEventType.RunningQueue);
 				}
 				else{
 					Printer.printMessage("There is only one start on channel 1");
