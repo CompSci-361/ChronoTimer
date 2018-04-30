@@ -255,4 +255,7 @@ public class GuiSensors {
 	public void setFrame(JFrame frame) {
 		this.frame = frame;
 	}
+	public void exit() {
+		frame.dispose();
+	}
 }

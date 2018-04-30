@@ -58,6 +58,7 @@ public class Gui extends JPanel implements ActionListener{
 		GETCLEARBIB
 	}
 	private state ourState = state.GETBIB;
+	public static GuiSensors window2 = new GuiSensors();
 
 	/**
 	 * Launch the application.
@@ -69,7 +70,7 @@ public class Gui extends JPanel implements ActionListener{
 					Gui window = new Gui();
 					window.frame.setVisible(true);
 					
-					GuiSensors window2 = new GuiSensors();
+					window2 = new GuiSensors();
 					window2.getFrame().setVisible(true);
 					
 				} catch (Exception e) {
@@ -727,6 +728,9 @@ public class Gui extends JPanel implements ActionListener{
 				ourState = state.GETBIB;
 				printerText.setText("");
 				textArea_1.setText("");
+				window2.exit();
+				window2 = new GuiSensors();
+				window2.getFrame().setVisible(true);
 				
 			}
 		});	
