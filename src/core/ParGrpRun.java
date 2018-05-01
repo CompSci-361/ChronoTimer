@@ -1,6 +1,7 @@
 package core;
 
 import java.util.ArrayDeque;
+import java.util.Arrays;
 import java.util.Deque;
 
 import core.Run.RunQueueUpdatedEventType;
@@ -27,12 +28,33 @@ public class ParGrpRun extends Run {
 	@Override
 	public void addRacer(int bibNumber){
 		Racer racer = new Racer(bibNumber);
-		if(waitArray.length < 8)
-			waitArray[waitArray.length] = racer;
+		if(waitSize() < 8)
+			waitArray[waitSize()] = racer;
 		else
 			Printer.printMessage("ParGrp race is full. Wait until next round.");
 		return;
 	}
+	
+	public int waitSize(){
+		int size = 0;
+		for(int i = 0; i < 8; i++){
+			if(waitArray[i] != null) ++size;
+		}
+		return size;
+	}
+	
+	public int runSize(){
+		int size = 0;
+		for(int i = 0; i < 8; i++){
+			if(runningArray[i] != null) ++size;
+		}
+		return size;
+	}
+	
+	public int endSize(){
+		return endQueue.size();
+	}
+	
 	/**
 	 * Gives start time to the first Racer in the queue
 	 * Adds them to the running queue indicating that the racer still needs an endtime
@@ -61,7 +83,8 @@ public class ParGrpRun extends Run {
 	}
 	
 	public void giveDnf(int channelNumber) {
-		waitArray[channelNumber-1].setDnf();
+		//not used
+		return;
 	}
 	
 	/**
@@ -85,7 +108,7 @@ public class ParGrpRun extends Run {
 	}
 	@Override
 	public Racer[] getCurrentRunningRacers() {
-		return runningArray;
+		return runningArray.clone();
 	}
 	@Override
 	public boolean containsRacerBibNumberInWaitQueue(int bibNumber) {
@@ -136,9 +159,15 @@ public class ParGrpRun extends Run {
 			if(channelNumber == 1){
 				groupStart = Chronotimer.ourTimer.getSystemTime();
 				for(int i = 0; i < waitArray.length; i++){
-					waitArray[i].setStartTime(groupStart);
-					runningArray[i] = waitArray[i];
+					if(waitArray[i] != null){
+						waitArray[i].setStartTime(groupStart);
+//						if(!chronotimer.isSensorTypeConnected(i))
+//							waitArray[i].setDnf();
+						runningArray[i] = waitArray[i];
+						waitArray[i] = null;
+					}
 				}
+				raceStarted = true;
 			}
 			else{
 				Printer.printMessage("Channel 1 trigger starts the race");
