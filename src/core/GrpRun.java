@@ -38,20 +38,25 @@ public class GrpRun extends Run {
 		//if racers are not added prior to start of the race
 		//we use -1 to represent that the first trigger has not been called (i.e. race hasn't started)
 		if(groupStart != -1){
-			
 			if(flag){
 				for(Racer racer : runningQueue.toArray(new Racer[0])) {
 					if (racer.getBibNumber() == bibNumber){
-						//todo NULL CHECK
-						racer.setEndTime(timeQueue.poll());
-						endQueue.add(racer);
-						runningQueue.remove(racer);
-						racer.onFinishRacing();
+						if(!timeQueue.isEmpty()){
+							racer.setEndTime(timeQueue.poll());
+							endQueue.add(racer);
+							runningQueue.remove(racer);
+							racer.onFinishRacing();
+						}
 					}
 				}
 				raiseQueueUpdatedEvent(RunQueueUpdatedEventType.FinishedQueue);
 			}
 			else{
+				Racer racerCheck = endQueue.peek();
+				if(endQueue.contains(racerCheck)){
+					Printer.printMessage("Cannot add duplicate racer");
+					return;
+				}
 				Racer racer = endQueue.poll();
 				racer.setBibNumber(bibNumber);
 				endQueue.add(racer);
@@ -64,8 +69,13 @@ public class GrpRun extends Run {
 			//set flag to true to indicate we are keeping track of the racers
 			flag = true;
 			Racer racer = new Racer(bibNumber);
-			waitQueue.add(racer);
-			raiseQueueUpdatedEvent(RunQueueUpdatedEventType.WaitQueue);
+			if(!waitQueue.contains(racer)){
+				waitQueue.add(racer);
+				raiseQueueUpdatedEvent(RunQueueUpdatedEventType.WaitQueue);
+			}
+			else{
+				Printer.printMessage("Cannot add duplicate racer");
+			}
 		}
 	}
 	

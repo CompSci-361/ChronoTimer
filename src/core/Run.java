@@ -6,6 +6,7 @@ import java.util.Deque;
 //import java.util.Queue;
 
 public abstract class Run {
+	protected Chronotimer chronotimer;
 	protected Deque<Racer> endQueue;
 	protected int runNumber;
 	private ArrayList<IRunQueueUpdatedListener> queueListeners;
@@ -13,6 +14,7 @@ public abstract class Run {
 	public Run(){
 		this.endQueue = new ArrayDeque<Racer>();
 		this.queueListeners = new ArrayList<IRunQueueUpdatedListener>();
+		chronotimer = new Chronotimer();
 	}
 	
 	public void setRunNumber(int number) {

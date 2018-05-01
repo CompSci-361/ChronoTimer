@@ -146,6 +146,16 @@ public class Chronotimer {
 		return false;
 	}
 	
+	public boolean isSensorTypeConnected(int channelNumber){
+		for(Sensor sensor : sensors) {
+			if (sensor.getChannelNumber() == channelNumber) {
+				if(sensor.getSensorType() != null && sensor.getSensorType() != SensorType.NONE)
+					return true;
+			}
+		}
+		return false;
+	}
+	
 	/**
 	 * Gets the sensor connected to a specific channel.
 	 * @param channelNumber The channel of the sensor to retrieve.

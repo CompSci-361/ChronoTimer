@@ -790,14 +790,15 @@ public class Gui extends JPanel implements ActionListener{
 		frame.getContentPane().add(buttonReset);
 		buttonReset.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+
 				if(!chrono.getIsPoweredOn()){
 					Printer.printMessage("Power must be enabled to reset timer");
 					return;
 				}
 				if (runQueueTimer.isRunning())
 					runQueueTimer.stop(); 
+
 				chrono.reset();
-				System.out.println("Reset Chronotimer."); 
 				tog1.setSelected(false);
 				tog2.setSelected(false);
 				tog3.setSelected(false);
