@@ -794,6 +794,8 @@ public class Gui extends JPanel implements ActionListener{
 					Printer.printMessage("Power must be enabled to reset timer");
 					return;
 				}
+				if (runQueueTimer.isRunning())
+					runQueueTimer.stop(); 
 				chrono.reset();
 				System.out.println("Reset Chronotimer."); 
 				tog1.setSelected(false);
@@ -824,6 +826,7 @@ public class Gui extends JPanel implements ActionListener{
 		btnNewRun.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				chrono.newRun(selectedRaceType);
+				chrono.getCurrentRun().addQueueUpdateEventListener(runQueueListener);
 				btnIndRun.setEnabled(false);
 				btnParindRun.setEnabled(false);
 				btnPargrpRun.setEnabled(false);
@@ -888,8 +891,12 @@ public class Gui extends JPanel implements ActionListener{
 		
 		btnEndRun.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				Run currentRun = chrono.getCurrentRun();
 				boolean value = chrono.endRun();
 				if(value) {
+					currentRun.removeQueueUpdateEventListener(runQueueListener);
+					if (runQueueTimer.isRunning())
+						runQueueTimer.stop(); 
 					btnIndRun.setEnabled(value);
 					btnParindRun.setEnabled(value);
 					btnPargrpRun.setEnabled(value);
@@ -961,7 +968,9 @@ public class Gui extends JPanel implements ActionListener{
 			public void actionPerformed(ActionEvent e) { 		 
 				updateQueueDisplay(runnerText);
 			}
-		}); 
+		});
+		
+		runnerText.setText("Ready.");
 		
 		textRacer = new JTextField();
 		textRacer.setText("Racer ###");
