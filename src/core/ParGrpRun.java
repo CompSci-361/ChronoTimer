@@ -8,16 +8,14 @@ import core.Run.RunQueueUpdatedEventType;
 public class ParGrpRun extends Run {
 	
 	double groupStart;
-	protected Deque<Racer> waitQueue;
 	protected Racer[] waitArray;
-	protected Deque<Racer> runningQueue;
+	protected Racer[] runningArray;
 	boolean raceStarted;
 	
 	public ParGrpRun(int runNum) {
 		this.runNumber = runNum;
 		this.groupStart = -1;
-		this.waitQueue = new ArrayDeque<Racer>();
-		this.runningQueue = new ArrayDeque<Racer>();
+		this.runningArray = new Racer[8];
 		waitArray = new Racer[8];
 		raceStarted = false;
 	}
@@ -61,6 +59,11 @@ public class ParGrpRun extends Run {
 		//not used?
 		return;
 	}
+	
+	public void giveDnf(int channelNumber) {
+		waitArray[channelNumber-1].setDnf();
+	}
+	
 	/**
 	 * Takes the first Racer out of the running queue and places them at the front of the waitQueue
 	 * Clears that Racers start time 
@@ -78,56 +81,78 @@ public class ParGrpRun extends Run {
 	}
 	@Override
 	public Racer[] getFinishedRacers() {
-		// TODO Auto-generated method stub
-		return null;
+		return endQueue.toArray(new Racer[0]);
 	}
 	@Override
 	public Racer[] getCurrentRunningRacers() {
-		// TODO Auto-generated method stub
-		return null;
+		return runningArray;
 	}
 	@Override
 	public boolean containsRacerBibNumberInWaitQueue(int bibNumber) {
-		// TODO Auto-generated method stub
+		for(int i = 0; i < waitArray.length; i++){
+			if(waitArray[i].getBibNumber() == bibNumber)
+				return true;
+		}
 		return false;
 	}
 	@Override
 	public boolean containsRacerBibNumberInRunningQueue(int bibNumber) {
-		// TODO Auto-generated method stub
+		for(int i = 0; i < runningArray.length; i++){
+			if(runningArray[i].getBibNumber() == bibNumber)
+				return true;
+		}
 		return false;
 	}
+	
 	@Override
 	public boolean containsRacerBibNumberInEndQueue(int bibNumber) {
-		// TODO Auto-generated method stub
+		for(Racer racer : endQueue.toArray(new Racer[0])) {
+			if (racer.getBibNumber() == bibNumber) return true;
+		}
 		return false;
 	}
+	
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return null;
+		String str= "";
+		Object[] printArray = endQueue.toArray();
+		for(int i = 0; i < printArray.length; i++){
+			str += printArray[i].toString() + "\n";
+		}
+		return str;
 	}
 	@Override
 	public Racer[] getCurrentWaitingRacers() {
-		// TODO Auto-generated method stub
-		return null;
+			return waitArray;
 	}
 	@Override
 	public void clear(int bibNumber) {
 		//does not apply to pargrp races
-		
 	}
+	
 	@Override
 	public void triggerChannel(int channelNumber){
 		if(!raceStarted){
 			if(channelNumber == 1){
 				groupStart = Chronotimer.ourTimer.getSystemTime();
+				for(int i = 0; i < waitArray.length; i++){
+					waitArray[i].setStartTime(groupStart);
+					runningArray[i] = waitArray[i];
+				}
 			}
 			else{
 				Printer.printMessage("Channel 1 trigger starts the race");
 			}
 		}
 		else{
-			
+			if(runningArray[channelNumber-1] != null){
+				runningArray[channelNumber-1].setEndTime();
+				endQueue.add(runningArray[channelNumber-1]);
+				runningArray[channelNumber-1] = null;
+			}
+			else{
+				Printer.printMessage("No active running racer");
+			}
 		}
 		
 	}
