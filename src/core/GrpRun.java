@@ -42,11 +42,12 @@ public class GrpRun extends Run {
 			if(flag){
 				for(Racer racer : runningQueue.toArray(new Racer[0])) {
 					if (racer.getBibNumber() == bibNumber){
-						//todo NULL CHECK
-						racer.setEndTime(timeQueue.poll());
-						endQueue.add(racer);
-						runningQueue.remove(racer);
-						racer.onFinishRacing();
+						if(!timeQueue.isEmpty()){
+							racer.setEndTime(timeQueue.poll());
+							endQueue.add(racer);
+							runningQueue.remove(racer);
+							racer.onFinishRacing();
+						}
 					}
 				}
 				raiseQueueUpdatedEvent(RunQueueUpdatedEventType.FinishedQueue);

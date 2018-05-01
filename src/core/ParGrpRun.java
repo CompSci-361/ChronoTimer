@@ -3,12 +3,15 @@ package core;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
+import core.Run.RunQueueUpdatedEventType;
+
 public class ParGrpRun extends Run {
 	
 	double groupStart;
 	protected Deque<Racer> waitQueue;
 	protected Racer[] waitArray;
 	protected Deque<Racer> runningQueue;
+	boolean raceStarted;
 	
 	public ParGrpRun(int runNum) {
 		this.runNumber = runNum;
@@ -16,6 +19,7 @@ public class ParGrpRun extends Run {
 		this.waitQueue = new ArrayDeque<Racer>();
 		this.runningQueue = new ArrayDeque<Racer>();
 		waitArray = new Racer[8];
+		raceStarted = false;
 	}
 	/**
 	 * Adds a racer with the param as the attribute
@@ -37,7 +41,7 @@ public class ParGrpRun extends Run {
 	 */
 	@Override
 	public void setRacerStartTime(int triggerNumber){
-		//todo
+		//not used
 		return;
 	}
 	/**
@@ -46,7 +50,7 @@ public class ParGrpRun extends Run {
 	 */
 	@Override
 	public void setRacerEndTime(int triggerNumber) {
-		//todo
+		//not used
 		return;
 	}
 	/**
@@ -54,7 +58,7 @@ public class ParGrpRun extends Run {
 	 */
 	@Override
 	public void giveDnf() {
-		//todo
+		//not used?
 		return;
 	}
 	/**
@@ -63,12 +67,12 @@ public class ParGrpRun extends Run {
 	 */
 	@Override
 	public void cancel() {
-		//does not apply to group races
+		//does not apply to parallel group races
 		Printer.printMessage("Cancel does not apply to group races");
 		return;
 	}
 	public void cancel(int bibNumber) {
-		//does not apply to group races
+		//does not apply to parallel group races
 		Printer.printMessage("Cancel does not apply to group races");
 		return;
 	}
@@ -109,7 +113,22 @@ public class ParGrpRun extends Run {
 	}
 	@Override
 	public void clear(int bibNumber) {
-		// TODO Auto-generated method stub
+		//does not apply to pargrp races
+		
+	}
+	@Override
+	public void triggerChannel(int channelNumber){
+		if(!raceStarted){
+			if(channelNumber == 1){
+				groupStart = Chronotimer.ourTimer.getSystemTime();
+			}
+			else{
+				Printer.printMessage("Channel 1 trigger starts the race");
+			}
+		}
+		else{
+			
+		}
 		
 	}
 }
