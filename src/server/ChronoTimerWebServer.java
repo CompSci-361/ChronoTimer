@@ -62,6 +62,9 @@ public class ChronoTimerWebServer {
     			
     			//deserialize response (assuming it is json) into an object using the Gson lib.
     			
+    			//http status code 201 "created"
+    			t.sendResponseHeaders(201, -1);
+    			
     		} else {
     			//http status code 501 "not implemented"
     			//https://docs.oracle.com/javase/8/docs/jre/api/net/httpserver/spec/com/sun/net/httpserver/HttpExchange.html#sendResponseHeaders-int-long-
