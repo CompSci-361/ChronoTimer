@@ -152,13 +152,12 @@ public class Chronotimer {
 		return false;
 	}
 	
-	public boolean isSensorTypeConnected(int channelNumber){
-		for(Sensor sensor : sensors) {
-			if (sensor.getChannelNumber() == channelNumber) {
-				if(sensor.getSensorType() != null && sensor.getSensorType() != SensorType.NONE)
-					return true;
-			}
+	public boolean isSensorTypeConnected(int channelNumber) {
+		if (isSensorConnected(channelNumber)) {
+			Sensor sensor = getSensorByChannelNumber(channelNumber);
+			return sensor.getSensorType() != SensorType.NONE;
 		}
+		
 		return false;
 	}
 	
@@ -196,21 +195,27 @@ public class Chronotimer {
 			Printer.printMessage("Can't connect NONE type sensor");
 			return false;
 		}
-		Printer.printMessage(sensorType + " connected to channel " + channelNumber);
-		//channels[channelNumber-1].setConnect(sensorType);
-		//TODO
+
+		Channel theChannel = channels[channelNumber-1];		
+		
 		//Check that channel is enabled and return true or false if it connects
-		Sensor sensor = new Sensor(sensorType, channelNumber);
-		sensor.addSensorFiredActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				//simulate the sensor communicating with the chronotimer.
-				Sensor theSensor = (Sensor)e.getSource();
-				currentRun.triggerChannel(theSensor.getChannelNumber());
-			}	
-		});
-		sensors.add(sensor);
-		return true;
+		if (theChannel.isEnabled()) {
+			Sensor sensor = new Sensor(sensorType, theChannel, channelNumber);
+			sensor.addSensorFiredActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					//simulate the sensor communicating with the chronotimer.
+					Sensor theSensor = (Sensor)e.getSource();
+					currentRun.triggerChannel(theSensor.getChannelNumber());
+				}	
+			});
+			sensors.add(sensor);
+			Printer.printMessage(sensorType + " connected to channel " + channelNumber);
+			return true;
+		} else {
+			Printer.printMessage("Channel " + channelNumber + " is not enabled.");
+			return false;
+		}
 	}
 	
 	/**

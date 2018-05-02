@@ -6,13 +6,16 @@ import java.util.ArrayList;
 
 public class Sensor {
 	private SensorType sensorType;
+	private Channel channel;
 	private int channelNumber;
 	private Thread sensorThread = null;
 	private volatile boolean isListening = false;
 	private ArrayList<ActionListener> sensorListeners = null;
-	Sensor(SensorType type, int channelNumber) {
+	Sensor(SensorType type, Channel channel, int channelNum) {
 		sensorType = type;
-		this.channelNumber = channelNumber;
+		this.channel = channel;
+		channelNumber = channelNum;
+		channel.setConnect(type);
 		sensorListeners = new ArrayList<ActionListener>();
 		isListening = true;
 		sensorThread = new Thread(new SensorThread());
@@ -58,6 +61,7 @@ public class Sensor {
 	 * Stops the sensor from listening by killing the thread and removing all listeners.
 	 */
 	public void close() {
+		channel.setDisconnect();
 		sensorListeners.clear();
 		
 		isListening = false;
