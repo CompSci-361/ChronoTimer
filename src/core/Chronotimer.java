@@ -48,6 +48,12 @@ public class Chronotimer {
 			raiseRaceStatusChangedEvent(RaceStatusChangedEventType.RaceEnd);
 		}
 		
+		for(Sensor sensor : sensors) {
+			if (sensor != null) {
+				sensor.close();
+			}
+		}
+		
 		currentRun = null;
 		for(int i = 0; i < 8; i++)
 			channels[i] = new Channel(i+1);
