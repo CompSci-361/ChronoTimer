@@ -21,6 +21,7 @@ public class Chronotimer {
 	private int runNumber;
 	private ArrayList<Run> runHistory;
 	private ArrayList<Sensor> sensors;
+	private ArrayList<ActionListener> statusChangeListeners;
 	
 	public static Timer ourTimer;
 
@@ -35,6 +36,7 @@ public class Chronotimer {
 		runNumber = 0;
 		runHistory = new ArrayList<Run>();
 		sensors = new ArrayList<Sensor>();
+		statusChangeListeners = new ArrayList<ActionListener>();
 	}
 	
 	/**
@@ -42,6 +44,10 @@ public class Chronotimer {
 	 * except it doesn't  hange the information needed for the Gson files
 	 */
 	public void reset(){
+		if (currentRun != null) {
+			raiseRaceStatusChangedEvent(RaceStatusChangedEventType.RaceEnd);
+		}
+		
 		currentRun = null;
 		for(int i = 0; i < 8; i++)
 			channels[i] = new Channel();
@@ -263,6 +269,7 @@ public class Chronotimer {
 		++runNumber;		
 		currentRun.setRunNumber(runNumber);
 		Printer.printMessage("New run started");
+		raiseRaceStatusChangedEvent(RaceStatusChangedEventType.RaceNew);
 	}
 	/**
 	 * Creates a new run only if there isn't already a run active
@@ -280,6 +287,7 @@ public class Chronotimer {
 		setRunBasedOnRaceType(selectedType);	
 		currentRun.setRunNumber(runNumber);
 		Printer.printMessage("New run started");
+		raiseRaceStatusChangedEvent(RaceStatusChangedEventType.RaceNew);
 	}
 	
 	/**
@@ -350,6 +358,7 @@ public class Chronotimer {
 			if (!runHistory.contains(currentRun)) {
 				runHistory.add(currentRun);
 			}
+			raiseRaceStatusChangedEvent(RaceStatusChangedEventType.RaceEnd);
 			currentRun = null;
 			Printer.printMessage("Run ended");
 			return true;
@@ -506,5 +515,25 @@ public class Chronotimer {
 			return;
 		}
  		currentRun.clear(bibNumber);
+	}
+	
+	public void addRaceStatusChangedActionListener(ActionListener listener) {
+		if (!statusChangeListeners.contains(listener)) {
+			statusChangeListeners.add(listener);
+		} else {
+			//this specific listener has already been attached.
+			throw new IllegalArgumentException("listener");
+		}
+	}
+	
+	public enum RaceStatusChangedEventType {
+		RaceNew,
+		RaceEnd
+	}
+	
+	private void raiseRaceStatusChangedEvent(RaceStatusChangedEventType type) {
+		for(ActionListener listener : statusChangeListeners) {
+			listener.actionPerformed(new ActionEvent(this, 0, type.toString()));
+		}
 	}
 }
