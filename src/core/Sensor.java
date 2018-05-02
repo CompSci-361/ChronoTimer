@@ -12,6 +12,10 @@ public class Sensor {
 	private volatile boolean isListening = false;
 	private ArrayList<ActionListener> sensorListeners = null;
 	Sensor(SensorType type, Channel channel, int channelNum) {
+		if (type == SensorType.NONE) throw new IllegalArgumentException("type");
+		if (channel == null) throw new IllegalArgumentException("channel");
+		if (channelNum > 8 || channelNum < 1) throw new IllegalArgumentException("channelNum");
+		
 		sensorType = type;
 		this.channel = channel;
 		channelNumber = channelNum;
