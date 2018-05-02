@@ -11,10 +11,11 @@ public class Sensor {
 	private Thread sensorThread = null;
 	private volatile boolean isListening = false;
 	private ArrayList<ActionListener> sensorListeners = null;
-	Sensor(SensorType type, Channel channel, int channelNum) {
+	Sensor(SensorType type, Channel channel, int channelNum) throws Throwable {
 		if (type == SensorType.NONE) throw new IllegalArgumentException("type");
 		if (channel == null) throw new IllegalArgumentException("channel");
 		if (channelNum > 8 || channelNum < 1) throw new IllegalArgumentException("channelNum");
+		if (channel.getChannelNumber() != channelNum) throw new Exception("Channel and channel number mismatch.");
 		
 		sensorType = type;
 		this.channel = channel;

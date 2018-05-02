@@ -6,6 +6,7 @@ public class Channel {
 	private int channelNumber;
 	
 	public Channel(int channelNumber) {
+		if (channelNumber > 8 || channelNumber < 1) throw new IllegalArgumentException("channelNumber");
 		state = false;
 		sensorType = null;
 		this.channelNumber = channelNumber;

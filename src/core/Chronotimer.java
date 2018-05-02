@@ -48,11 +48,7 @@ public class Chronotimer {
 			raiseRaceStatusChangedEvent(RaceStatusChangedEventType.RaceEnd);
 		}
 		
-		for(Sensor sensor : sensors) {
-			if (sensor != null) {
-				sensor.close();
-			}
-		}
+		disconnectSensors();
 		
 		currentRun = null;
 		for(int i = 0; i < 8; i++)
@@ -182,12 +178,22 @@ public class Chronotimer {
 		return null;
 	}
 	
+	public void disconnectSensors() {
+		for(Sensor sensor : sensors) {
+			if (sensor != null) {
+				sensor.close();
+			}
+		}
+		sensors.clear();
+	}
+	
 	/**
 	 * Connects a sensor to a given channel
 	 * @param channelNumber Which channel is being connected to
 	 * @param sensorType <GATE,EYE,TRIP>
+	 * @throws Throwable 
 	 */
-	public boolean setConnect(int channelNumber, SensorType sensorType){
+	public boolean setConnect(int channelNumber, SensorType sensorType) throws Throwable{
 		if(!getIsPoweredOn()){
 			Printer.printMessage("Power must be enabled connect sensor");
 			return false;
