@@ -28,8 +28,10 @@ public class ParGrpRun extends Run {
 	@Override
 	public void addRacer(int bibNumber){
 		Racer racer = new Racer(bibNumber);
-		if(waitSize() < 8)
+		if(waitSize() < 8){
 			waitArray[waitSize()] = racer;
+			raiseQueueUpdatedEvent(RunQueueUpdatedEventType.WaitQueue);
+		}
 		else
 			Printer.printMessage("ParGrp race is full. Wait until next round.");
 		return;
@@ -146,7 +148,7 @@ public class ParGrpRun extends Run {
 	}
 	@Override
 	public Racer[] getCurrentWaitingRacers() {
-			return waitArray;
+			return waitArray.clone();
 	}
 	@Override
 	public void clear(int bibNumber) {
@@ -156,17 +158,33 @@ public class ParGrpRun extends Run {
 	@Override
 	public void triggerChannel(int channelNumber){
 		if(!raceStarted){
+			//start the race
 			if(channelNumber == 1){
+				//record the group start time regardless of whether sensors are connected
 				groupStart = Chronotimer.ourTimer.getSystemTime();
+				
+				//loop through all channels to give them a start time only if a sensor is connected to that channel
 				for(int i = 0; i < waitArray.length; i++){
+					//if there's a racer
 					if(waitArray[i] != null){
+						//set start time
 						waitArray[i].setStartTime(groupStart);
-//						if(!chronotimer.isSensorTypeConnected(i))
-//							waitArray[i].setDnf();
+						//if the sensor is not null at the channel (i+1)
+						if(!chronotimer.isSensorTypeConnected(i+1)){
+							Printer.printMessage("Set dnf");
+							waitArray[i].setDnf();
+							endQueue.add(waitArray[i]);
+							waitArray[i] = null;
+						}
 						runningArray[i] = waitArray[i];
+						if(runningArray[i] != null)
+							runningArray[i].onBeginRacing();
 						waitArray[i] = null;
 					}
 				}
+				raiseQueueUpdatedEvent(RunQueueUpdatedEventType.WaitQueue);
+				raiseQueueUpdatedEvent(RunQueueUpdatedEventType.RunningQueue);
+				raiseQueueUpdatedEvent(RunQueueUpdatedEventType.FinishedQueue);
 				raceStarted = true;
 			}
 			else{
@@ -176,8 +194,10 @@ public class ParGrpRun extends Run {
 		else{
 			if(runningArray[channelNumber-1] != null){
 				runningArray[channelNumber-1].setEndTime();
+				runningArray[channelNumber-1].onFinishRacing();
 				endQueue.add(runningArray[channelNumber-1]);
 				runningArray[channelNumber-1] = null;
+				raiseQueueUpdatedEvent(RunQueueUpdatedEventType.FinishedQueue);
 			}
 			else{
 				Printer.printMessage("No active running racer");
