@@ -30,7 +30,7 @@ public class Chronotimer {
 		currentRun = null;
 		channels = new Channel[8];
 		for(int i = 0; i < 8; i++)
-			channels[i] = new Channel();
+			channels[i] = new Channel(i+1);
 		ourTimer = new Timer();
 		raceType = RaceType.IND;
 		runNumber = 0;
@@ -50,7 +50,7 @@ public class Chronotimer {
 		
 		currentRun = null;
 		for(int i = 0; i < 8; i++)
-			channels[i] = new Channel();
+			channels[i] = new Channel(i+1);
 		ourTimer = new Timer();
 		raceType = RaceType.IND;
 		//runNumber = 0;

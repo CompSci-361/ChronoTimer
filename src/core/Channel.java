@@ -3,10 +3,12 @@ package core;
 public class Channel {
 	private boolean state;
 	private SensorType sensorType;
+	private int channelNumber;
 	
-	public Channel() {
+	public Channel(int channelNumber) {
 		state = false;
 		sensorType = null;
+		this.channelNumber = channelNumber;
 	}
 	
 	/**
@@ -43,5 +45,9 @@ public class Channel {
 	 */
 	public SensorType getSensorType(){
 		return sensorType;
+	}
+	
+	public int getChannelNumber() {
+		return channelNumber;
 	}
 }
