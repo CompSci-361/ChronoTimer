@@ -158,10 +158,10 @@ public class Chronotimer {
 		return false;
 	}
 	
-	public boolean isSensorTypeConnected(int channelNumber) {
+	public boolean isSensorTypeConnected(int channelNumber, SensorType sensorType) {
 		if (isSensorConnected(channelNumber)) {
 			Sensor sensor = getSensorByChannelNumber(channelNumber);
-			return sensor.getSensorType() != SensorType.NONE;
+			return sensor.getSensorType() == sensorType;
 		}
 		
 		return false;
