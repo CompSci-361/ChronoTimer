@@ -170,7 +170,7 @@ public class ParGrpRun extends Run {
 						//set start time
 						waitArray[i].setStartTime(groupStart);
 						//if the sensor is not null at the channel (i+1)
-						if(!chronotimer.isSensorTypeConnected(i+1)){
+						if(!chronotimer.isSensorConnected(i+1)){
 							Printer.printMessage("Set dnf");
 							waitArray[i].setDnf();
 							endQueue.add(waitArray[i]);
