@@ -8,11 +8,13 @@ public class IndRun extends Run {
 	protected Deque<Racer> waitQueue;
 	protected Deque<Racer> runningQueue;
 	
-	public IndRun(){
+	public IndRun(Chronotimer timer){
+		super(timer);
 		this.waitQueue = new ArrayDeque<Racer>();
 		this.runningQueue = new ArrayDeque<Racer>();
 	}
-	public IndRun(int runNum){
+	public IndRun(Chronotimer timer,int runNum){
+		super(timer);
 		this.waitQueue = new ArrayDeque<Racer>();
 		this.runningQueue = new ArrayDeque<Racer>();
 		this.runNumber = runNum;

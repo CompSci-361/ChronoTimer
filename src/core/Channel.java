@@ -3,10 +3,13 @@ package core;
 public class Channel {
 	private boolean state;
 	private SensorType sensorType;
+	private int channelNumber;
 	
-	public Channel() {
+	public Channel(int channelNumber) {
+		if (channelNumber > 8 || channelNumber < 1) throw new IllegalArgumentException("channelNumber");
 		state = false;
 		sensorType = null;
+		this.channelNumber = channelNumber;
 	}
 	
 	/**
@@ -43,5 +46,9 @@ public class Channel {
 	 */
 	public SensorType getSensorType(){
 		return sensorType;
+	}
+	
+	public int getChannelNumber() {
+		return channelNumber;
 	}
 }
