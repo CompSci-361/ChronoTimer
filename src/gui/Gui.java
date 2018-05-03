@@ -846,6 +846,14 @@ public class Gui extends JPanel implements ActionListener{
 				btnPargrpRun.setEnabled(true);
 				btnGrpRun.setEnabled(true);
 				//window2.exit();
+				tog1.isEnabled(false);
+				tog2.isEnabled(false);
+				tog3.isEnabled(false);
+				tog4.isEnabled(false);
+				tog5.isEnabled(false);
+				tog6.isEnabled(false);
+				tog7.isEnabled(false);
+				tog8.isEnabled(false);
 				window2 = new GuiSensors();
 				window2.getFrame().setVisible(true);
 			}
@@ -861,6 +869,14 @@ public class Gui extends JPanel implements ActionListener{
 				btnPargrpRun.setEnabled(false);
 				btnGrpRun.setEnabled(false);
 				btnEndRun.setEnabled(true);
+				tog1.isEnabled(true);
+				tog2.isEnabled(true);
+				tog3.isEnabled(true);
+				tog4.isEnabled(true);
+				tog5.isEnabled(true);
+				tog6.isEnabled(true);
+				tog7.isEnabled(true);
+				tog8.isEnabled(true);
 			}
 		});
 		
