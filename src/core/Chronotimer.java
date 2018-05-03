@@ -345,16 +345,16 @@ public class Chronotimer {
 			Printer.printMessage("A race type must be selected first!");
 			return;
 		case IND:
-			currentRun = new IndRun(runNumber);
+			currentRun = new IndRun(this, runNumber);
 			break;
 		case PARIND:
-			currentRun = new ParIndRun(runNumber);
+			currentRun = new ParIndRun(this, runNumber);
 			break;
 		case GRP:
-			currentRun = new GrpRun(runNumber);
+			currentRun = new GrpRun(this, runNumber);
 			break;
 		case PARGRP:
-			currentRun = new ParGrpRun(runNumber);
+			currentRun = new ParGrpRun(this, runNumber);
 			break;
 		}
 	}

@@ -5,13 +5,15 @@ public class ParIndRun extends Run {
 	private IndRun run1;
 	private IndRun run2;
 	
-	public ParIndRun(){
-		run1 = new IndRun();
-		run2 = new IndRun();
+	public ParIndRun(Chronotimer timer){
+		super(timer);
+		run1 = new IndRun(timer);
+		run2 = new IndRun(timer);
 	}
-	public ParIndRun(int runNum){
-		run1 = new IndRun();
-		run2 = new IndRun();
+	public ParIndRun(Chronotimer timer,int runNum){
+		super(timer);
+		run1 = new IndRun(timer);
+		run2 = new IndRun(timer);
 		this.runNumber = runNum;
 	}
 	/**

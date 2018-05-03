@@ -17,7 +17,8 @@ public class GrpRun extends Run {
 	protected Deque<Racer> runningQueue;
 	protected Deque<Double> timeQueue;
 	
-	public GrpRun(int runNum) {
+	public GrpRun(Chronotimer timer,int runNum) {
+		super(timer);
 		this.runNumber = runNum;
 		this.placeholder = 1;
 		this.firstTrigger = true;

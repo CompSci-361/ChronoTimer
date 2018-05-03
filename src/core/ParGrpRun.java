@@ -13,7 +13,8 @@ public class ParGrpRun extends Run {
 	protected Racer[] runningArray;
 	boolean raceStarted;
 	
-	public ParGrpRun(int runNum) {
+	public ParGrpRun(Chronotimer timer,int runNum) {
+		super(timer);
 		this.runNumber = runNum;
 		this.groupStart = -1;
 		this.runningArray = new Racer[8];
