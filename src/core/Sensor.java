@@ -6,13 +6,21 @@ import java.util.ArrayList;
 
 public class Sensor {
 	private SensorType sensorType;
+	private Channel channel;
 	private int channelNumber;
 	private Thread sensorThread = null;
 	private volatile boolean isListening = false;
 	private ArrayList<ActionListener> sensorListeners = null;
-	Sensor(SensorType type, int channelNumber) {
+	Sensor(SensorType type, Channel channel, int channelNum) throws Throwable {
+		if (type == SensorType.NONE) throw new IllegalArgumentException("type");
+		if (channel == null) throw new IllegalArgumentException("channel");
+		if (channelNum > 8 || channelNum < 1) throw new IllegalArgumentException("channelNum");
+		if (channel.getChannelNumber() != channelNum) throw new Exception("Channel and channel number mismatch.");
+		
 		sensorType = type;
-		this.channelNumber = channelNumber;
+		this.channel = channel;
+		channelNumber = channelNum;
+		channel.setConnect(type);
 		sensorListeners = new ArrayList<ActionListener>();
 		isListening = true;
 		sensorThread = new Thread(new SensorThread());
@@ -58,6 +66,7 @@ public class Sensor {
 	 * Stops the sensor from listening by killing the thread and removing all listeners.
 	 */
 	public void close() {
+		channel.setDisconnect();
 		sensorListeners.clear();
 		
 		isListening = false;
