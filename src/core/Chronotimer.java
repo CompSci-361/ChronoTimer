@@ -30,7 +30,7 @@ public class Chronotimer {
 		currentRun = null;
 		channels = new Channel[8];
 		for(int i = 0; i < 8; i++)
-			channels[i] = new Channel();
+			channels[i] = new Channel(i+1);
 		ourTimer = new Timer();
 		raceType = RaceType.IND;
 		runNumber = 0;
@@ -48,9 +48,11 @@ public class Chronotimer {
 			raiseRaceStatusChangedEvent(RaceStatusChangedEventType.RaceEnd);
 		}
 		
+		disconnectSensors();
+		
 		currentRun = null;
 		for(int i = 0; i < 8; i++)
-			channels[i] = new Channel();
+			channels[i] = new Channel(i+1);
 		ourTimer = new Timer();
 		raceType = RaceType.IND;
 		//runNumber = 0;
@@ -152,13 +154,12 @@ public class Chronotimer {
 		return false;
 	}
 	
-	public boolean isSensorTypeConnected(int channelNumber){
-		for(Sensor sensor : sensors) {
-			if (sensor.getChannelNumber() == channelNumber) {
-				if(sensor.getSensorType() != null && sensor.getSensorType() != SensorType.NONE)
-					return true;
-			}
+	public boolean isSensorTypeConnected(int channelNumber, SensorType sensorType) {
+		if (isSensorConnected(channelNumber)) {
+			Sensor sensor = getSensorByChannelNumber(channelNumber);
+			return sensor.getSensorType() == sensorType;
 		}
+		
 		return false;
 	}
 	
@@ -177,12 +178,22 @@ public class Chronotimer {
 		return null;
 	}
 	
+	public void disconnectSensors() {
+		for(Sensor sensor : sensors) {
+			if (sensor != null) {
+				sensor.close();
+			}
+		}
+		sensors.clear();
+	}
+	
 	/**
 	 * Connects a sensor to a given channel
 	 * @param channelNumber Which channel is being connected to
 	 * @param sensorType <GATE,EYE,TRIP>
+	 * @throws Throwable 
 	 */
-	public boolean setConnect(int channelNumber, SensorType sensorType){
+	public boolean setConnect(int channelNumber, SensorType sensorType) throws Throwable{
 		if(!getIsPoweredOn()){
 			Printer.printMessage("Power must be enabled connect sensor");
 			return false;
@@ -196,21 +207,27 @@ public class Chronotimer {
 			Printer.printMessage("Can't connect NONE type sensor");
 			return false;
 		}
-		Printer.printMessage(sensorType + " connected to channel " + channelNumber);
-		//channels[channelNumber-1].setConnect(sensorType);
-		//TODO
+
+		Channel theChannel = channels[channelNumber-1];		
+		
 		//Check that channel is enabled and return true or false if it connects
-		Sensor sensor = new Sensor(sensorType, channelNumber);
-		sensor.addSensorFiredActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				//simulate the sensor communicating with the chronotimer.
-				Sensor theSensor = (Sensor)e.getSource();
-				currentRun.triggerChannel(theSensor.getChannelNumber());
-			}	
-		});
-		sensors.add(sensor);
-		return true;
+		if (theChannel.isEnabled()) {
+			Sensor sensor = new Sensor(sensorType, theChannel, channelNumber);
+			sensor.addSensorFiredActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					//simulate the sensor communicating with the chronotimer.
+					Sensor theSensor = (Sensor)e.getSource();
+					currentRun.triggerChannel(theSensor.getChannelNumber());
+				}	
+			});
+			sensors.add(sensor);
+			Printer.printMessage(sensorType + " connected to channel " + channelNumber);
+			return true;
+		} else {
+			Printer.printMessage("Channel " + channelNumber + " is not enabled.");
+			return false;
+		}
 	}
 	
 	/**
