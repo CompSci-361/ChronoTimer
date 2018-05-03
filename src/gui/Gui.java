@@ -467,7 +467,7 @@ public class Gui extends JPanel implements ActionListener{
 		JRadioButton tog1 = new JRadioButton("");
 		tog1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				chrono.toggleChannel(1);
+				tog1.setSelected(chrono.toggleChannel(1)&&tog1.isSelected());
 			}
 		});
 		tog1.setBounds(99, 54, 26, 23);
@@ -486,7 +486,8 @@ public class Gui extends JPanel implements ActionListener{
 		JRadioButton tog2 = new JRadioButton("");
 		tog2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				chrono.toggleChannel(2);
+				tog2.setSelected(chrono.toggleChannel(2)&&tog2.isSelected());
+				window2.refreshChannels();
 			}
 		});
 		tog2.setBounds(99, 151, 26, 23);
@@ -505,7 +506,7 @@ public class Gui extends JPanel implements ActionListener{
 		JRadioButton tog3 = new JRadioButton("");
 		tog3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				chrono.toggleChannel(3);
+				tog3.setSelected(chrono.toggleChannel(3)&&tog3.isSelected());
 			}
 		});
 		tog3.setBounds(137, 54, 26, 23);
@@ -524,7 +525,7 @@ public class Gui extends JPanel implements ActionListener{
 		JRadioButton tog4 = new JRadioButton("");
 		tog4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				chrono.toggleChannel(4);
+				tog4.setSelected(chrono.toggleChannel(4)&&tog4.isSelected());
 			}
 		});
 		tog4.setBounds(137, 151, 26, 23);
@@ -543,7 +544,7 @@ public class Gui extends JPanel implements ActionListener{
 		JRadioButton tog5 = new JRadioButton("");
 		tog5.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				chrono.toggleChannel(5);
+				tog5.setSelected(chrono.toggleChannel(5)&&tog5.isSelected());
 			}
 		});
 		tog5.setBounds(175, 54, 26, 23);
@@ -562,7 +563,7 @@ public class Gui extends JPanel implements ActionListener{
 		JRadioButton tog6 = new JRadioButton("");
 		tog6.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				chrono.toggleChannel(6);
+				tog6.setSelected(chrono.toggleChannel(6)&&tog6.isSelected());
 			}
 		});
 		tog6.setBounds(175, 151, 26, 23);
@@ -582,7 +583,7 @@ public class Gui extends JPanel implements ActionListener{
 		JRadioButton tog7 = new JRadioButton("");
 		tog7.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				chrono.toggleChannel(7);
+				tog7.setSelected(chrono.toggleChannel(7)&&tog7.isSelected());
 			}
 		});
 		tog7.setBounds(213, 54, 26, 23);
@@ -601,7 +602,7 @@ public class Gui extends JPanel implements ActionListener{
 		JRadioButton tog8 = new JRadioButton("");
 		tog8.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				chrono.toggleChannel(8);
+				tog8.setSelected(chrono.toggleChannel(8)&&tog8.isSelected());
 			}
 		});
 		tog8.setBounds(213, 151, 26, 23);
@@ -790,11 +791,39 @@ public class Gui extends JPanel implements ActionListener{
 		frame.getContentPane().add(buttonReset);
 		buttonReset.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-
+				for(int i=1; i<9;++i) {
+					chrono.setDisconnect(i);
+				}
+        
 				if (runQueueTimer.isRunning())
 					runQueueTimer.stop(); 
 
 				chrono.reset();
+				if(tog1.isSelected()) {
+					chrono.toggleChannel(1);
+				}
+				if(tog2.isSelected()) {
+					chrono.toggleChannel(2);
+				}
+				if(tog3.isSelected()) {
+					chrono.toggleChannel(3);
+				}
+				if(tog4.isSelected()) {
+					chrono.toggleChannel(4);
+				}
+				if(tog5.isSelected()) {
+					chrono.toggleChannel(5);
+				}
+				if(tog6.isSelected()) {
+					chrono.toggleChannel(6);
+				}
+				if(tog7.isSelected()) {
+					chrono.toggleChannel(7);
+				}
+				if(tog8.isSelected()) {
+					chrono.toggleChannel(8);
+				}
+				
 				tog1.setSelected(false);
 				tog2.setSelected(false);
 				tog3.setSelected(false);
@@ -808,6 +837,7 @@ public class Gui extends JPanel implements ActionListener{
 				stdIn = "";
 				runnerText.setText("");
 				printerText.setText("");
+				textRacer.setText("Racer ###");
 				ourState = state.GETBIB;
 				btnNewRun.setEnabled(false);
 				btnEndRun.setEnabled(false);
@@ -816,6 +846,14 @@ public class Gui extends JPanel implements ActionListener{
 				btnPargrpRun.setEnabled(true);
 				btnGrpRun.setEnabled(true);
 				//window2.exit();
+				tog1.setEnabled(false);
+				tog2.setEnabled(false);
+				tog3.setEnabled(false);
+				tog4.setEnabled(false);
+				tog5.setEnabled(false);
+				tog6.setEnabled(false);
+				tog7.setEnabled(false);
+				tog8.setEnabled(false);
 				window2 = new GuiSensors();
 				window2.getFrame().setVisible(true);
 			}
@@ -823,12 +861,22 @@ public class Gui extends JPanel implements ActionListener{
 		btnNewRun.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				chrono.newRun(selectedRaceType);
+				chrono.setRaceType(selectedRaceType);
+				runnerText.setText("");
 				chrono.getCurrentRun().addQueueUpdateEventListener(runQueueListener);
 				btnIndRun.setEnabled(false);
 				btnParindRun.setEnabled(false);
 				btnPargrpRun.setEnabled(false);
 				btnGrpRun.setEnabled(false);
 				btnEndRun.setEnabled(true);
+				tog1.setEnabled(true);
+				tog2.setEnabled(true);
+				tog3.setEnabled(true);
+				tog4.setEnabled(true);
+				tog5.setEnabled(true);
+				tog6.setEnabled(true);
+				tog7.setEnabled(true);
+				tog8.setEnabled(true);
 			}
 		});
 		
@@ -882,6 +930,14 @@ public class Gui extends JPanel implements ActionListener{
 						((JRadioButton) c).setEnabled(value);
 					}
 				}
+				tog1.setEnabled(false);
+				tog2.setEnabled(false);
+				tog3.setEnabled(false);
+				tog4.setEnabled(false);
+				tog5.setEnabled(false);
+				tog6.setEnabled(false);
+				tog7.setEnabled(false);
+				tog8.setEnabled(false);
 				buttonPower.setEnabled(true);
 			}
 		});
@@ -900,6 +956,48 @@ public class Gui extends JPanel implements ActionListener{
 					btnGrpRun.setEnabled(value);
 					btnNewRun.setEnabled(false);
 					btnEndRun.setEnabled(false);
+					if(tog1.isSelected()) {
+						chrono.toggleChannel(1);
+					}
+					if(tog2.isSelected()) {
+						chrono.toggleChannel(2);
+					}
+					if(tog3.isSelected()) {
+						chrono.toggleChannel(3);
+					}
+					if(tog4.isSelected()) {
+						chrono.toggleChannel(4);
+					}
+					if(tog5.isSelected()) {
+						chrono.toggleChannel(5);
+					}
+					if(tog6.isSelected()) {
+						chrono.toggleChannel(6);
+					}
+					if(tog7.isSelected()) {
+						chrono.toggleChannel(7);
+					}
+					if(tog8.isSelected()) {
+						chrono.toggleChannel(8);
+					}
+					
+					tog1.setSelected(false);
+					tog2.setSelected(false);
+					tog3.setSelected(false);
+					tog4.setSelected(false);
+					tog5.setSelected(false);
+					tog6.setSelected(false);
+					tog7.setSelected(false);
+					tog8.setSelected(false);
+					
+					tog1.setEnabled(false);
+					tog2.setEnabled(false);
+					tog3.setEnabled(false);
+					tog4.setEnabled(false);
+					tog5.setEnabled(false);
+					tog6.setEnabled(false);
+					tog7.setEnabled(false);
+					tog8.setEnabled(false);
 				}
  			}
  		});

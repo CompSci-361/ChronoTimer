@@ -89,16 +89,43 @@ public class Chronotimer {
 	 * Disabled->Enabled
 	 * @param channelNumber Which channel is being changed
 	 */
-	public void toggleChannel(int channelNumber){
+	public boolean toggleChannel(int channelNumber){
 		if(!getIsPoweredOn()){
 			Printer.printMessage("Power must be enabled to toggle channel");
-			return;
+			return false;
+		}
+		switch(raceType){
+			case IND:{
+				if(channelNumber>2) {
+					Printer.printMessage(channelNumber+" is not used for IND race");
+					return false;
+				}
+				break;
+			}
+			case PARIND:{
+				if(channelNumber>4) {
+					Printer.printMessage(channelNumber+" is not used for PARIND race");
+					return false;
+				}
+				break;
+			}
+			case PARGRP:{
+				break;
+			}
+			case GRP:{
+				if(channelNumber>2) {
+					Printer.printMessage(channelNumber+" is not used for GRP race");
+					return false;
+				}
+				break;
+			}
 		}
 		channels[channelNumber-1].toggle();
 		if(channels[channelNumber-1].isEnabled())
 			Printer.printMessage("Channel " + channelNumber + " is enabled");
 		else 
 			Printer.printMessage("Channel " + channelNumber + " is disabled");
+		return true;
 	}
 	
 	/**

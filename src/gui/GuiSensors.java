@@ -24,6 +24,7 @@ public class GuiSensors {
 	private JFrame frame;
 	String [] sensorType = {"NONE", "GATE", "EYE", "TRIP", "PAD"};
 	
+	
 
 	/**
 	 * Launch the application.
@@ -60,6 +61,7 @@ public class GuiSensors {
 		JComboBox comboBox = new JComboBox(sensorType);
 		comboBox.setBounds(139, 22, 106, 27);
 		getFrame().getContentPane().add(comboBox);
+		JRadioButton buttons[] = new JRadioButton[8];
 		
 		class doRadio{
 			public void complete(JRadioButton c, int channelNum) {
@@ -83,18 +85,14 @@ public class GuiSensors {
 					}
 					
 				}else {
-					Gui.chrono.setDisconnect(1);
+					Gui.chrono.setDisconnect(channelNum);
 				}
 			}
 		}
 		JRadioButton radioButton1 = new JRadioButton("");
 		radioButton1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(radioButton1.isSelected()) {
-					new doRadio().complete(radioButton1, 1);
-				}else {
-					Gui.chrono.setDisconnect(1);
-				}
+				new doRadio().complete(radioButton1, 1);
 			}
 		});
 		radioButton1.setBounds(27, 89, 28, 23);
@@ -103,11 +101,7 @@ public class GuiSensors {
 		JRadioButton radioButton3 = new JRadioButton("");
 		radioButton3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(radioButton3.isSelected()) {
-					new doRadio().complete(radioButton3, 3);
-				}else {
-					Gui.chrono.setDisconnect(3);
-				}
+				new doRadio().complete(radioButton3, 3);
 			}
 		});
 		radioButton3.setBounds(89, 89, 28, 23);
@@ -117,11 +111,7 @@ public class GuiSensors {
 		JRadioButton radioButton4 = new JRadioButton("");
 		radioButton4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(radioButton4.isSelected()) {
-					new doRadio().complete(radioButton4, 4);
-				}else {
-					Gui.chrono.setDisconnect(4);
-				}
+				new doRadio().complete(radioButton4, 4);
 			}
 		});
 		radioButton4.setBounds(89, 173, 28, 23);
@@ -131,11 +121,7 @@ public class GuiSensors {
 		JRadioButton radioButton5 = new JRadioButton("");
 		radioButton5.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(radioButton5.isSelected()) {	
-					new doRadio().complete(radioButton5, 5);
-				}else {
-					Gui.chrono.setDisconnect(5);
-				}
+				new doRadio().complete(radioButton5, 5);
 			}
 		});
 		radioButton5.setBounds(151, 89, 28, 23);
@@ -145,11 +131,8 @@ public class GuiSensors {
 		JRadioButton radioButton2 = new JRadioButton("");
 		radioButton2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(radioButton2.isSelected()) {
-					new doRadio().complete(radioButton2, 2);
-				}else {
-					Gui.chrono.setDisconnect(2);
-				}
+				new doRadio().complete(radioButton2, 2);
+				
 			}
 		});
 		radioButton2.setBounds(27, 173, 28, 23);
@@ -159,11 +142,7 @@ public class GuiSensors {
 		JRadioButton radioButton7 = new JRadioButton("");
 		radioButton7.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(radioButton7.isSelected()) {
-					new doRadio().complete(radioButton7, 7);
-				}else {
-					Gui.chrono.setDisconnect(7);
-				}
+				new doRadio().complete(radioButton7, 7);
 			}
 		});
 		radioButton7.setBounds(213, 89, 28, 23);
@@ -173,11 +152,7 @@ public class GuiSensors {
 		JRadioButton radioButton6 = new JRadioButton("");
 		radioButton6.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(radioButton6.isSelected()) {
-					new doRadio().complete(radioButton6, 6);
-				}else {
-					Gui.chrono.setDisconnect(6);
-				}
+				new doRadio().complete(radioButton6, 6);
 			}
 		});
 		radioButton6.setBounds(150, 173, 28, 23);
@@ -187,11 +162,7 @@ public class GuiSensors {
 		JRadioButton radioButton8 = new JRadioButton("");
 		radioButton8.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(radioButton8.isSelected()) {
-					new doRadio().complete(radioButton8, 8);
-				}else {
-					Gui.chrono.setDisconnect(8);
-				}
+				new doRadio().complete(radioButton8, 8);
 			}
 		});
 		radioButton8.setBounds(217, 173, 28, 23);
@@ -246,6 +217,14 @@ public class GuiSensors {
 		JLabel label_7 = new JLabel("8");
 		label_7.setBounds(221, 134, 19, 27);
 		getFrame().getContentPane().add(label_7);
+		buttons[0] = radioButton1;
+		buttons[1] = radioButton2;
+		buttons[2] = radioButton3;
+		buttons[3] = radioButton4;
+		buttons[4] = radioButton5;
+		buttons[5] = radioButton6;
+		buttons[6] = radioButton7;
+		buttons[7] = radioButton8;
 	}
 
 	public JFrame getFrame() {
@@ -257,5 +236,9 @@ public class GuiSensors {
 	}
 	public void exit() {
 		frame.dispose();
+	}
+	public void refreshChannels() {
+		//Printer.printMessage(Gui.chrono.getChannelIsEnabled(1)+"");
+		//buttons[0].setSelected(Gui.chrono.getChannelIsEnabled(1));
 	}
 }
