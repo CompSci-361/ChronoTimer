@@ -846,14 +846,14 @@ public class Gui extends JPanel implements ActionListener{
 				btnPargrpRun.setEnabled(true);
 				btnGrpRun.setEnabled(true);
 				//window2.exit();
-				tog1.isEnabled(false);
-				tog2.isEnabled(false);
-				tog3.isEnabled(false);
-				tog4.isEnabled(false);
-				tog5.isEnabled(false);
-				tog6.isEnabled(false);
-				tog7.isEnabled(false);
-				tog8.isEnabled(false);
+				tog1.setEnabled(false);
+				tog2.setEnabled(false);
+				tog3.setEnabled(false);
+				tog4.setEnabled(false);
+				tog5.setEnabled(false);
+				tog6.setEnabled(false);
+				tog7.setEnabled(false);
+				tog8.setEnabled(false);
 				window2 = new GuiSensors();
 				window2.getFrame().setVisible(true);
 			}
@@ -869,14 +869,14 @@ public class Gui extends JPanel implements ActionListener{
 				btnPargrpRun.setEnabled(false);
 				btnGrpRun.setEnabled(false);
 				btnEndRun.setEnabled(true);
-				tog1.isEnabled(true);
-				tog2.isEnabled(true);
-				tog3.isEnabled(true);
-				tog4.isEnabled(true);
-				tog5.isEnabled(true);
-				tog6.isEnabled(true);
-				tog7.isEnabled(true);
-				tog8.isEnabled(true);
+				tog1.setEnabled(true);
+				tog2.setEnabled(true);
+				tog3.setEnabled(true);
+				tog4.setEnabled(true);
+				tog5.setEnabled(true);
+				tog6.setEnabled(true);
+				tog7.setEnabled(true);
+				tog8.setEnabled(true);
 			}
 		});
 		
@@ -930,6 +930,14 @@ public class Gui extends JPanel implements ActionListener{
 						((JRadioButton) c).setEnabled(value);
 					}
 				}
+				tog1.setEnabled(false);
+				tog2.setEnabled(false);
+				tog3.setEnabled(false);
+				tog4.setEnabled(false);
+				tog5.setEnabled(false);
+				tog6.setEnabled(false);
+				tog7.setEnabled(false);
+				tog8.setEnabled(false);
 				buttonPower.setEnabled(true);
 			}
 		});
@@ -981,6 +989,15 @@ public class Gui extends JPanel implements ActionListener{
 					tog6.setSelected(false);
 					tog7.setSelected(false);
 					tog8.setSelected(false);
+					
+					tog1.setEnabled(false);
+					tog2.setEnabled(false);
+					tog3.setEnabled(false);
+					tog4.setEnabled(false);
+					tog5.setEnabled(false);
+					tog6.setEnabled(false);
+					tog7.setEnabled(false);
+					tog8.setEnabled(false);
 				}
  			}
  		});
