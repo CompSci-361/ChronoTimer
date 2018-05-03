@@ -791,10 +791,6 @@ public class Gui extends JPanel implements ActionListener{
 		buttonReset.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 
-				if(!chrono.getIsPoweredOn()){
-					Printer.printMessage("Power must be enabled to reset timer");
-					return;
-				}
 				if (runQueueTimer.isRunning())
 					runQueueTimer.stop(); 
 
@@ -988,8 +984,10 @@ public class Gui extends JPanel implements ActionListener{
 			
 			if (runQueueListener.waitQueue.length > 0) {
 				for(Racer racer : runQueueListener.waitQueue) {
-					String msg = MessageFormat.format("Racer {0}\r\n", racer.getBibNumber());
-					builder.append(msg);
+					if(racer != null){
+						String msg = MessageFormat.format("Racer {0}\r\n", racer.getBibNumber());
+						builder.append(msg);
+					}
 				}
 			} else {
 				builder.append("No one is waiting.\r\n");
@@ -1005,12 +1003,14 @@ public class Gui extends JPanel implements ActionListener{
 					runQueueTimer.start();
 				
 				for(Racer racer : runQueueListener.runningQueue) {
- 					String msg = MessageFormat.format("Racer {0} | Start Time: {1}\r\n    -Time: +{2}\r\n",  
-						racer.getBibNumber(),
-						Chronotimer.ourTimer.formatTime(racer.getStartTime()),
-						Chronotimer.ourTimer.formatTime(racer.getCurrentRaceTime()));
- 					
-					builder.append(msg);
+					if(racer!= null){
+	 					String msg = MessageFormat.format("Racer {0} | Start Time: {1}\r\n    -Time: +{2}\r\n",  
+							racer.getBibNumber(),
+							Chronotimer.ourTimer.formatTime(racer.getStartTime()),
+							Chronotimer.ourTimer.formatTime(racer.getCurrentRaceTime()));
+	 					
+						builder.append(msg);
+					}
 				}
 			} else {
 				if (runQueueTimer.isRunning())

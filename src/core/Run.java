@@ -11,10 +11,10 @@ public abstract class Run {
 	protected int runNumber;
 	private ArrayList<IRunQueueUpdatedListener> queueListeners;
 	
-	public Run(){
+	public Run(Chronotimer chronotimer){
 		this.endQueue = new ArrayDeque<Racer>();
 		this.queueListeners = new ArrayList<IRunQueueUpdatedListener>();
-		chronotimer = new Chronotimer();
+		this.chronotimer = chronotimer;
 	}
 	
 	public void setRunNumber(int number) {
