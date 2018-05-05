@@ -50,6 +50,8 @@ public class ChronoTimerWebServer {
     	}
     	
         public void handle(HttpExchange t) throws IOException {
+        	System.out.println("Received GET request from a browser.");
+        	
             // write out the response
         	String header = "<html><head><title>ChronoTimer</title></head><body>";
         	String footer =	"</body></html>";
@@ -102,6 +104,9 @@ public class ChronoTimerWebServer {
     			
     			//deserialize response (assuming it is json) into an object using the Gson lib.
     			Racer[] racers = (Racer[])g.fromJson(response, Racer[].class);
+    			
+    			//todo null check
+    			System.out.println("Received POST from ChronoTimer with " + racers.length + " racers.");
     			
     			lastRacerUpdate = racers;
     			
