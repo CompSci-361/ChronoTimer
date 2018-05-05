@@ -19,22 +19,20 @@ public class ChronoTimerWebServer {
 	private boolean isInitialized = false;
 	private HttpServer httpServer = null;
 	private HttpServer chronoServer = null;
-	private IChronoTimerWebServerResolveRacer resolveRacerFunc = null;
+	private static Racer[] lastRacerUpdate = null;
 	
 	
 	public void initialize(IChronoTimerWebServerResolveRacer resolveRacer) throws IOException {
 		if (isInitialized) return;
 		
-		resolveRacerFunc = resolveRacer;
-		
 		//create a http server for browsers.
 		httpServer = HttpServer.create(new InetSocketAddress(8000), 0);
-		httpServer.createContext("/", new IndexHandler());
+		httpServer.createContext("/", new IndexHandler(resolveRacer));
 		httpServer.start();
 		
 		//create a http server specifically for the chronotimer to connect to.
 		chronoServer = HttpServer.create(new InetSocketAddress(8080), 0);
-		chronoServer.createContext("/display", new ChronoTimerPostHandler());
+		chronoServer.createContext("/display", new ChronoTimerPostHandler(resolveRacer));
 		chronoServer.start();
 		
 		isInitialized = true;
@@ -45,12 +43,42 @@ public class ChronoTimerWebServer {
 	}
 	
     static class IndexHandler implements HttpHandler {
+    	private IChronoTimerWebServerResolveRacer resolveRacerFunc = null;
+    	
+    	public IndexHandler(IChronoTimerWebServerResolveRacer resolveRacer) {
+    		resolveRacerFunc = resolveRacer;
+    	}
+    	
         public void handle(HttpExchange t) throws IOException {
             // write out the response
-        	String html = "<html><head><title>ChronoTimer</title></head><body><p>Index page.</p></body></html>";
-
+        	String header = "<html><head><title>ChronoTimer</title></head><body>";
+        	String footer =	"</body></html>";
+        	String body = "";
+        	
+        	if (lastRacerUpdate == null) {
+        		body = "<p>No race times available.</p>";
+        	} else {
+        		body = "<table class=\"racer-table\"><tr><th>Place</th><th>Number</th><th>Name</th><th>Time</th></tr>";
+        		
+        		for(Racer racer : lastRacerUpdate) {
+        			//magic
+        			ServerSideRunner runner = this.resolveRacerFunc.resolve(racer);
+        			body += "<tr>";
+        			
+        			body += "<td>" + "place here" + "</td>";
+        			body += "<td>" + runner.getBibNumber() + "</td>";
+        			body += "<td>" + runner.getName() + "</td>";
+        			body += "<td>" + "N/A" + "</td>";
+        			
+        			body += "</tr>";
+        		}
+        		
+        		body += "</table>";
+        	}
+        	
+        	//ugly code, i know.
+        	String html = header + body + footer;
             t.sendResponseHeaders(200, html.length());
-
             OutputStream os = t.getResponseBody();
             os.write(html.getBytes());
             os.close();
@@ -58,6 +86,12 @@ public class ChronoTimerWebServer {
     }
     
     static class ChronoTimerPostHandler implements HttpHandler {
+    	private IChronoTimerWebServerResolveRacer resolveRacerFunc = null;
+    	
+    	public ChronoTimerPostHandler(IChronoTimerWebServerResolveRacer resolveRacer) {
+    		resolveRacerFunc = resolveRacer;
+    	}
+    	
     	public void handle(HttpExchange t) throws IOException {
     		if (t.getRequestMethod() == "POST" || t.getRequestMethod() == "PUT") {
     			//handle the post.
@@ -68,7 +102,7 @@ public class ChronoTimerWebServer {
     			//deserialize response (assuming it is json) into an object using the Gson lib.
     			Racer[] racers = (Racer[])g.fromJson(response, Racer[].class);
     			
-    			//todo correlate bib numbers with "names"
+    			lastRacerUpdate = racers;
     			
     			//http status code 201 "created"
     			t.sendResponseHeaders(201, -1);
