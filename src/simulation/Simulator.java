@@ -10,9 +10,11 @@ import core.Chronotimer;
 import core.Printer;
 import core.RaceType;
 import core.SensorType;
+import server.ChronoTimerWebClient;
 
 public class Simulator {
 	static Chronotimer chrono = new Chronotimer();
+	static ChronoTimerWebClient webclient = new ChronoTimerWebClient(chrono); //"It Just Works™"
 
 	public static void main(String[] args) {
 		@SuppressWarnings("resource")

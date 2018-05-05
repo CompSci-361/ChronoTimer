@@ -2,6 +2,11 @@ package server;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.DataOutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
+import com.google.gson.Gson;
 
 import core.Chronotimer;
 import core.Chronotimer.RaceStatusChangedEventType;
@@ -28,10 +33,30 @@ public class ChronoTimerWebClient {
 					//grab the current race so that we can get the results (finished racers).
 					Run currentRun = timer.getCurrentRun();
 					if (currentRun != null) {
-						//get the finished racers
-						Racer[] raceResults = currentRun.getFinishedRacers();
-						
-						//todo prepare to send it to the server.
+						try {
+							//get the finished racers
+							Racer[] raceResults = currentRun.getFinishedRacers();
+							
+							//prepare to send it to the server.
+							Gson g = new Gson();
+							String json = g.toJson(raceResults);
+							
+							URL site = new URL("http://localhost:8080/display");
+	
+							HttpURLConnection conn = (HttpURLConnection) site.openConnection();
+							// now create a POST request
+							conn.setRequestMethod("POST");
+							conn.setDoOutput(true);
+							conn.setDoInput(true);
+	
+							DataOutputStream out = new DataOutputStream(conn.getOutputStream());
+	
+							out.writeBytes(json);
+							out.flush();
+							out.close();
+						} catch (Exception ex) {
+							//sprint 4 doc says to ignore and continue.
+						}
 					}
 				}
 			}

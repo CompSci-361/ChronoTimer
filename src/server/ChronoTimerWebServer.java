@@ -11,6 +11,7 @@ import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 
 import core.Chronotimer;
+import core.Racer;
 
 public class ChronoTimerWebServer {
 	private static boolean isInitialized = false;
@@ -61,6 +62,9 @@ public class ChronoTimerWebServer {
     			String response = readResponseAsString(t);
     			
     			//deserialize response (assuming it is json) into an object using the Gson lib.
+    			Racer[] racers = (Racer[])g.fromJson(response, Racer[].class);
+    			
+    			//todo correlate bib numbers with "names"
     			
     			//http status code 201 "created"
     			t.sendResponseHeaders(201, -1);
