@@ -4,8 +4,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
+import java.util.concurrent.Callable;
 
 import com.google.gson.Gson;
+import com.sun.corba.se.spi.orbutil.fsm.Action;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
@@ -14,18 +16,16 @@ import core.Chronotimer;
 import core.Racer;
 
 public class ChronoTimerWebServer {
-	private static boolean isInitialized = false;
-	private static HttpServer httpServer = null;
-	private static HttpServer chronoServer = null;
+	private boolean isInitialized = false;
+	private HttpServer httpServer = null;
+	private HttpServer chronoServer = null;
+	private IChronoTimerWebServerResolveRacer resolveRacerFunc = null;
 	
-	public static void main(String[] args) throws IOException {
-		System.out.print("Initializing server... ");
-		initialize();
-		System.out.println("Done");
-	}
 	
-	public static void initialize() throws IOException {
+	public void initialize(IChronoTimerWebServerResolveRacer resolveRacer) throws IOException {
 		if (isInitialized) return;
+		
+		resolveRacerFunc = resolveRacer;
 		
 		//create a http server for browsers.
 		httpServer = HttpServer.create(new InetSocketAddress(8000), 0);
@@ -38,6 +38,10 @@ public class ChronoTimerWebServer {
 		chronoServer.start();
 		
 		isInitialized = true;
+	}
+	
+	public interface IChronoTimerWebServerResolveRacer {
+		ServerSideRunner resolve(Racer racer);
 	}
 	
     static class IndexHandler implements HttpHandler {
