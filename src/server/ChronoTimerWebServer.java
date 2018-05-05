@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.concurrent.Callable;
 
 import com.google.gson.Gson;
@@ -28,6 +30,7 @@ public class ChronoTimerWebServer {
 		//create a http server for browsers.
 		httpServer = HttpServer.create(new InetSocketAddress(8000), 0);
 		httpServer.createContext("/", new IndexHandler(resolveRacer));
+		httpServer.createContext("/style.css", new StyleHandler());
 		httpServer.start();
 		
 		//create a http server specifically for the chronotimer to connect to.
@@ -45,6 +48,19 @@ public class ChronoTimerWebServer {
 		Racer[] sortRacers(Racer[] racers);
 	}
 	
+	static class StyleHandler implements HttpHandler {
+
+        public void handle(HttpExchange t) throws IOException {
+        	System.out.println("Received GET request from a browser.");
+        	byte[] css = Files.readAllBytes(Paths.get("src/server/style.css"));
+
+            t.sendResponseHeaders(200, css.length);
+            OutputStream os = t.getResponseBody();
+            os.write(css);
+            os.close();
+        }
+	}
+	
     static class IndexHandler implements HttpHandler {
     	private IChronoTimerWebServerResolveRacer resolveRacerFunc = null;
     	
@@ -56,7 +72,7 @@ public class ChronoTimerWebServer {
         	System.out.println("Received GET request from a browser.");
         	
             // write out the response
-        	String header = "<html><head><title>ChronoTimer</title></head><body>";
+        	String header = "<html><head><title>ChronoTimer</title><link href=\"style.css\" rel=\"stylesheet\" type=\"text/css\"/></head><body>";
         	String footer =	"</body></html>";
         	String body = "";
         	
