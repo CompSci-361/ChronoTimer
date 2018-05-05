@@ -1,11 +1,10 @@
 package server;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.concurrent.Callable;
 
 import core.Racer;
 import server.ChronoTimerWebServer.IChronoTimerWebServerResolveRacer;
+import server.ChronoTimerWebServer.IChronoTimerWebServerSortRacers;
 
 public class ServerApplication {
 	static ChronoTimerWebServer server = new ChronoTimerWebServer();
@@ -30,6 +29,13 @@ public class ServerApplication {
 						runner.setRacer(racer);
 						return runner;
 					}
+				}
+			},
+			new IChronoTimerWebServerSortRacers() {
+				@Override
+				public Racer[] sortRacers(Racer[] racers) {
+					//TODO return racers in ascending order based on "place time" or whatever.
+					return racers;
 				}
 			});
 			System.out.println("Done");

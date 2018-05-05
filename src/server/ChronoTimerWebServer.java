@@ -22,7 +22,7 @@ public class ChronoTimerWebServer {
 	private static Racer[] lastRacerUpdate = null;
 	
 	
-	public void initialize(IChronoTimerWebServerResolveRacer resolveRacer) throws IOException {
+	public void initialize(IChronoTimerWebServerResolveRacer resolveRacer, IChronoTimerWebServerSortRacers sortRacer) throws IOException {
 		if (isInitialized) return;
 		
 		//create a http server for browsers.
@@ -32,7 +32,7 @@ public class ChronoTimerWebServer {
 		
 		//create a http server specifically for the chronotimer to connect to.
 		chronoServer = HttpServer.create(new InetSocketAddress(8080), 0);
-		chronoServer.createContext("/", new ChronoTimerPostHandler(resolveRacer));
+		chronoServer.createContext("/", new ChronoTimerPostHandler(resolveRacer, sortRacer));
 		chronoServer.start();
 		
 		isInitialized = true;
@@ -40,6 +40,9 @@ public class ChronoTimerWebServer {
 	
 	public interface IChronoTimerWebServerResolveRacer {
 		ServerSideRunner resolve(Racer racer);
+	}
+	public interface IChronoTimerWebServerSortRacers {
+		Racer[] sortRacers(Racer[] racers);
 	}
 	
     static class IndexHandler implements HttpHandler {
@@ -62,17 +65,27 @@ public class ChronoTimerWebServer {
         	} else {
         		body = "<table class=\"racer-table\"><tr><th>Place</th><th>Number</th><th>Name</th><th>Time</th></tr>";
         		
+        		int place = 1;
         		for(Racer racer : lastRacerUpdate) {
         			//magic
         			ServerSideRunner runner = this.resolveRacerFunc.resolve(racer);
         			body += "<tr>";
         			
-        			body += "<td>" + "place here" + "</td>";
+        			body += "<td>" + place + "</td>";
         			body += "<td>" + runner.getBibNumber() + "</td>";
         			body += "<td>" + runner.getName() + "</td>";
-        			body += "<td>" + "N/A" + "</td>";
+        			
+        			String time = "";
+        			if (runner.getRacer() == null) {
+        				time = "N/A";
+        			} else {
+        				time = String.valueOf(runner.getRacer().getTotalTime());
+        			}
+        			
+        			body += "<td>" + time + "</td>";
         			
         			body += "</tr>";
+        			place++;
         		}
         		
         		body += "</table>";
@@ -89,9 +102,11 @@ public class ChronoTimerWebServer {
     
     static class ChronoTimerPostHandler implements HttpHandler {
     	private IChronoTimerWebServerResolveRacer resolveRacerFunc = null;
+    	private IChronoTimerWebServerSortRacers sortRacersFunc = null;
     	
-    	public ChronoTimerPostHandler(IChronoTimerWebServerResolveRacer resolveRacer) {
+    	public ChronoTimerPostHandler(IChronoTimerWebServerResolveRacer resolveRacer, IChronoTimerWebServerSortRacers sortRacers) {
     		resolveRacerFunc = resolveRacer;
+    		sortRacersFunc = sortRacers;
     	}
     	
     	public void handle(HttpExchange t) throws IOException {
@@ -108,6 +123,7 @@ public class ChronoTimerWebServer {
     			//todo null check
     			System.out.println("Received POST from ChronoTimer with " + racers.length + " racers.");
     			
+    			racers = sortRacersFunc.sortRacers(racers);
     			lastRacerUpdate = racers;
     			
     			//http status code 201 "created"
