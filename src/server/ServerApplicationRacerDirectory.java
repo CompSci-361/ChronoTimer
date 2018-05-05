@@ -18,8 +18,12 @@ class ServerApplicationRacerDirectory {
 	}
 
 	public void loadSampleData() {
+		runners.clear();
 		
-		
+		runners.add(new ServerSideRunner(367, "Bob Smith"));
+		runners.add(new ServerSideRunner(226, "Ted Snowden"));
+		runners.add(new ServerSideRunner(217, "Tom Brookes"));
+		runners.add(new ServerSideRunner(101, "Mary Smith"));
 	}
 
 	public boolean containsBibNumber(int bibNumber) {
