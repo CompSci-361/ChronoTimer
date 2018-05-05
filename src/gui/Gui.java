@@ -40,6 +40,8 @@ import core.RaceType;
 import core.Racer;
 import core.Run;
 import core.Run.RunQueueUpdatedEventArgs;
+import server.ChronoTimerWebClient;
+
 import java.awt.Component;
 
 import javax.swing.JTextField;
@@ -49,6 +51,7 @@ import javax.swing.Icon;
 public class Gui extends JPanel implements ActionListener{
 	
 	static Chronotimer chrono = new Chronotimer();
+	static ChronoTimerWebClient webClient = new ChronoTimerWebClient(chrono);
 	private ChronoTimerRunQueueUpdateListener runQueueListener;
 	private Timer runQueueTimer;
 

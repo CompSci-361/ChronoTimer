@@ -32,7 +32,7 @@ public class ChronoTimerWebServer {
 		
 		//create a http server specifically for the chronotimer to connect to.
 		chronoServer = HttpServer.create(new InetSocketAddress(8080), 0);
-		chronoServer.createContext("/display", new ChronoTimerPostHandler(resolveRacer));
+		chronoServer.createContext("/", new ChronoTimerPostHandler(resolveRacer));
 		chronoServer.start();
 		
 		isInitialized = true;
@@ -93,7 +93,8 @@ public class ChronoTimerWebServer {
     	}
     	
     	public void handle(HttpExchange t) throws IOException {
-    		if (t.getRequestMethod() == "POST" || t.getRequestMethod() == "PUT") {
+    		String method = t.getRequestMethod();
+    		if (method.equals("POST")) {
     			//handle the post.
     			Gson g = new Gson();
     			//grab the response string from the request

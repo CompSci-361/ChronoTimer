@@ -41,7 +41,7 @@ public class ChronoTimerWebClient {
 							Gson g = new Gson();
 							String json = g.toJson(raceResults);
 							
-							URL site = new URL("http://localhost:8080/display");
+							URL site = new URL("http://localhost:8080/");
 	
 							HttpURLConnection conn = (HttpURLConnection) site.openConnection();
 							// now create a POST request
@@ -54,8 +54,11 @@ public class ChronoTimerWebClient {
 							out.writeBytes(json);
 							out.flush();
 							out.close();
+							
+							conn.getResponseCode(); //IMPORTANT: this actually sends the http request
 						} catch (Exception ex) {
 							//sprint 4 doc says to ignore and continue.
+							System.out.print("Error posting results to server: " + ex.toString());
 						}
 					}
 				}
