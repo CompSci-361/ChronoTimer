@@ -1,6 +1,7 @@
 package server;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 import core.Racer;
 import server.ChronoTimerWebServer.IChronoTimerWebServerResolveRacer;
@@ -34,8 +35,27 @@ public class ServerApplication {
 			new IChronoTimerWebServerSortRacers() {
 				@Override
 				public Racer[] sortRacers(Racer[] racers) {
-					//TODO return racers in ascending order based on "place time" or whatever.
-					return racers;
+					//return racers in ascending order based on "place time" or whatever.
+					
+					//sorts the plays who actually have a time.
+					Object[] sortedTimedRacers = Arrays.stream(racers).filter(x -> !x.hasDnf()).sorted((x,y) -> Double.compare(x.getEndTime(), y.getEndTime())).toArray();
+					//arranges dnf racers by bib number.
+					Object[] sortedDnfRacers = Arrays.stream(racers).filter(x -> x.hasDnf()).sorted((x,y) -> Integer.compare(x.getBibNumber(), y.getBibNumber())).toArray();
+					
+					//merge the two arrays
+					Racer[] finalArray = new Racer[sortedTimedRacers.length + sortedDnfRacers.length];
+					int index = 0;
+					for(Object r : sortedTimedRacers) {
+						finalArray[index] = (Racer) r;
+						index++;
+					}
+					for(Object r : sortedDnfRacers) {
+						finalArray[index] = (Racer) r;
+						index++;
+					}
+					
+					return finalArray;
+					
 				}
 			});
 			System.out.println("Done");
