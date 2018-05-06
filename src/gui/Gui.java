@@ -854,6 +854,7 @@ public class Gui extends JPanel implements ActionListener{
 				tog6.setEnabled(false);
 				tog7.setEnabled(false);
 				tog8.setEnabled(false);
+				textField.setEnabled(true);
 				window2 = new GuiSensors();
 				window2.getFrame().setVisible(true);
 			}
@@ -877,6 +878,7 @@ public class Gui extends JPanel implements ActionListener{
 				tog6.setEnabled(true);
 				tog7.setEnabled(true);
 				tog8.setEnabled(true);
+				textField.setEnabled(false);
 			}
 		});
 		
@@ -998,6 +1000,7 @@ public class Gui extends JPanel implements ActionListener{
 					tog6.setEnabled(false);
 					tog7.setEnabled(false);
 					tog8.setEnabled(false);
+					textField.setEnabled(true);
 				}
  			}
  		});
