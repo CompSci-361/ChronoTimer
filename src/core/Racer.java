@@ -52,6 +52,10 @@ public class Racer {
 		this.endTime = time;
 	}
 	
+	public boolean hasDnf() {
+		return this.endTime <= -1;
+	}
+	
 	/**
 	 * This is for giving a racer a DNF end time represented by -1
 	 */
