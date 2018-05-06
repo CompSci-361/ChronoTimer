@@ -29,6 +29,10 @@ public class ParGrpRun extends Run {
 	 */
 	@Override
 	public void addRacer(int bibNumber){
+		if(containsRacerBibNumberInWaitQueue(bibNumber)){
+			Printer.printMessage("Cannot add duplicate racer");
+			return;
+		}
 		Racer racer = new Racer(bibNumber);
 		if(waitSize() < 8){
 			waitArray[waitSize()] = racer;
@@ -116,7 +120,7 @@ public class ParGrpRun extends Run {
 	}
 	@Override
 	public boolean containsRacerBibNumberInWaitQueue(int bibNumber) {
-		for(int i = 0; i < waitArray.length; i++){
+		for(int i = 0; i < waitSize(); i++){
 			if(waitArray[i].getBibNumber() == bibNumber)
 				return true;
 		}
@@ -124,7 +128,7 @@ public class ParGrpRun extends Run {
 	}
 	@Override
 	public boolean containsRacerBibNumberInRunningQueue(int bibNumber) {
-		for(int i = 0; i < runningArray.length; i++){
+		for(int i = 0; i < runSize(); i++){
 			if(runningArray[i].getBibNumber() == bibNumber)
 				return true;
 		}

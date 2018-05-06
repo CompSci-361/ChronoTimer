@@ -24,9 +24,17 @@ public class ParIndRun extends Run {
 	@Override
 	public void addRacer(int bibNumber){
 		if(run1.waitQueue.size() < run2.waitQueue.size()){
+			if(run2.containsRacerBibNumberInWaitQueue(bibNumber) || run1.containsRacerBibNumberInWaitQueue(bibNumber)){
+				Printer.printMessage("Cannot have more than one racer with the same bib number");
+				return;
+			}
 			run1.addRacer(bibNumber);
 		}
 		else{
+			if(run1.containsRacerBibNumberInWaitQueue(bibNumber) || run2.containsRacerBibNumberInWaitQueue(bibNumber)){
+				Printer.printMessage("Cannot have more than one racer with the same bib number");
+				return;
+			}
 			run2.addRacer(bibNumber);
 		}
 		raiseQueueUpdatedEvent(RunQueueUpdatedEventType.WaitQueue);
