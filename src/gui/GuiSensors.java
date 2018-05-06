@@ -54,6 +54,7 @@ public class GuiSensors {
 	 */
 	private void initialize() {
 		setFrame(new JFrame());
+		getFrame().setTitle("Sensors");
 		getFrame().setBounds(900, 100, 432, 245);
 		getFrame().setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getFrame().getContentPane().setLayout(null);
