@@ -883,6 +883,7 @@ public class Gui extends JPanel implements ActionListener{
 				tog7.setEnabled(true);
 				tog8.setEnabled(true);
 				textField.setEnabled(false);
+				btnTime.setEnabled(false);
 			}
 		});
 		
@@ -1005,6 +1006,7 @@ public class Gui extends JPanel implements ActionListener{
 					tog7.setEnabled(false);
 					tog8.setEnabled(false);
 					textField.setEnabled(true);
+					btnTime.setEnabled(true);
 				}
  			}
  		});
