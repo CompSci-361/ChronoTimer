@@ -58,7 +58,7 @@ public class ChronoTimerWebClient {
 							conn.getResponseCode(); //IMPORTANT: this actually sends the http request
 						} catch (Exception ex) {
 							//sprint 4 doc says to ignore and continue.
-							System.out.print("Error posting results to server: " + ex.toString());
+							System.out.println("Error posting results to server: " + ex.toString());
 						}
 					}
 				}
