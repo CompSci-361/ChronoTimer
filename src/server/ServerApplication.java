@@ -23,8 +23,12 @@ public class ServerApplication {
 				@Override
 				public ServerSideRunner resolve(Racer racer) {
 					if (directory.containsBibNumber(racer.getBibNumber())) {
+						//make a copy of whats in the directory
 						ServerSideRunner runner = directory.getRunnerWithBibNumber(racer.getBibNumber());
-						return runner;
+						ServerSideRunner runnerClone = new ServerSideRunner(runner.getBibNumber(), runner.getName()); 
+						//if only i implemented the interface for creating clones...
+						runnerClone.setRacer(racer);
+						return runnerClone;
 					} else {
 						ServerSideRunner runner = new ServerSideRunner(racer.getBibNumber(), "");
 						runner.setRacer(racer);

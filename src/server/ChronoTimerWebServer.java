@@ -69,50 +69,67 @@ public class ChronoTimerWebServer {
     	}
     	
         public void handle(HttpExchange t) throws IOException {
-        	System.out.println("Received GET request from a browser.");
-        	
-            // write out the response
-        	String header = "<html><head><title>ChronoTimer</title><link href=\"style.css\" rel=\"stylesheet\" type=\"text/css\"/></head><body>";
-        	String footer =	"</body></html>";
-        	String body = "";
-        	
-        	if (lastRacerUpdate == null) {
-        		body = "<p>No race times available.</p>";
+        	String path = t.getRequestURI().getPath();
+        	System.out.println("Received GET request from a browser for: " + path);
+
+        	if (path.equals("/")) {
+	            // write out the response
+	        	String header = "<html><head><title>ChronoTimer</title><link href=\"style.css\" rel=\"stylesheet\" type=\"text/css\"/></head><body>";
+	        	String footer =	"</body></html>";
+	        	String body = "";
+	        	
+	        	if (lastRacerUpdate == null) {
+	        		body = "<p>No race times available.</p>";
+	        	} else {
+	        		body = "<table class=\"racer-table\"><tr><th>Place</th><th>Number</th><th>Name</th><th>Time</th></tr>";
+	        		
+	        		try {
+		        		int place = 1;
+		        		core.Timer internalTimer = new core.Timer();
+		        		for(Racer racer : lastRacerUpdate) {
+		        			if (racer == null) break;
+		        			//magic
+		        			ServerSideRunner runner = this.resolveRacerFunc.resolve(racer);
+		        			body += "<tr>";
+		        			
+		        			body += "<td>" + place + "</td>";
+		        			body += "<td>" + runner.getBibNumber() + "</td>";
+		        			body += "<td>" + runner.getName() + "</td>";
+		        			
+		        			String time = "";
+		        			if (runner.getRacer().equals(null)) {
+		        				time = "N/A";
+		        			} else {
+		        				if (racer.hasDnf()) {
+		        					time = "DNF";
+		        				} else {
+			        				double result = internalTimer.calculateTime(racer.getStartTime(), racer.getEndTime());
+			        				time = String.valueOf(internalTimer.formatTime(result));
+		        				}
+		        			}
+		        			
+		        			body += "<td>" + time + "</td>";
+		        			
+		        			body += "</tr>";
+		        			place++;
+		        		}
+	        		} catch (Exception ex) {
+	        			body += "<p>Error while generating table: " + ex.toString() + "</p>";
+	        			System.out.println("Error while generating table: " + ex.toString());
+	        		}
+	        		
+	        		body += "</table>";
+	        	}
+	        	
+	        	//ugly code, i know.
+	        	String html = header + body + footer;
+	            t.sendResponseHeaders(200, html.length());
+	            OutputStream os = t.getResponseBody();
+	            os.write(html.getBytes());
+	            os.close();
         	} else {
-        		body = "<table class=\"racer-table\"><tr><th>Place</th><th>Number</th><th>Name</th><th>Time</th></tr>";
-        		
-        		int place = 1;
-        		for(Racer racer : lastRacerUpdate) {
-        			//magic
-        			ServerSideRunner runner = this.resolveRacerFunc.resolve(racer);
-        			body += "<tr>";
-        			
-        			body += "<td>" + place + "</td>";
-        			body += "<td>" + runner.getBibNumber() + "</td>";
-        			body += "<td>" + runner.getName() + "</td>";
-        			
-        			String time = "";
-        			if (runner.getRacer() == null) {
-        				time = "N/A";
-        			} else {
-        				time = String.valueOf(runner.getRacer().getTotalTime());
-        			}
-        			
-        			body += "<td>" + time + "</td>";
-        			
-        			body += "</tr>";
-        			place++;
-        		}
-        		
-        		body += "</table>";
+        		t.sendResponseHeaders(404, 0); //404 - not found
         	}
-        	
-        	//ugly code, i know.
-        	String html = header + body + footer;
-            t.sendResponseHeaders(200, html.length());
-            OutputStream os = t.getResponseBody();
-            os.write(html.getBytes());
-            os.close();
         }
     }
     
