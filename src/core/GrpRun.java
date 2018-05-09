@@ -54,10 +54,6 @@ public class GrpRun extends Run {
 			}
 			else{
 				Racer racerCheck = endQueue.peek();
-				if(endQueue.contains(racerCheck)){
-					Printer.printMessage("Cannot add duplicate racer");
-					return;
-				}
 				Racer racer = endQueue.poll();
 				racer.setBibNumber(bibNumber);
 				endQueue.add(racer);
