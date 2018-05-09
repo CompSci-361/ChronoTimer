@@ -43,6 +43,7 @@ public class GrpRun extends Run {
 				for(Racer racer : runningQueue.toArray(new Racer[0])) {
 					if (racer.getBibNumber() == bibNumber){
 						if(!timeQueue.isEmpty()){
+							racer.setStartTime(groupStart);
 							racer.setEndTime(timeQueue.poll());
 							endQueue.add(racer);
 							runningQueue.remove(racer);
