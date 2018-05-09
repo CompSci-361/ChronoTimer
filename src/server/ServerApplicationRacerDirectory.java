@@ -20,10 +20,14 @@ class ServerApplicationRacerDirectory {
 	public void loadSampleData() {
 		runners.clear();
 		
-		runners.add(new ServerSideRunner(367, "Bob Smith"));
-		runners.add(new ServerSideRunner(226, "Ted Snowden"));
-		runners.add(new ServerSideRunner(217, "Tom Brookes"));
-		runners.add(new ServerSideRunner(101, "Mary Smith"));
+		runners.add(new ServerSideRunner(55, "Bob Smith"));
+		runners.add(new ServerSideRunner(66, "Ted Snowden"));
+		runners.add(new ServerSideRunner(77, "Tom Brookes"));
+		runners.add(new ServerSideRunner(88, "Mary Smith"));
+		runners.add(new ServerSideRunner(11, "Alex Mitchell"));
+		runners.add(new ServerSideRunner(22, "Catelyn Scholl"));
+		runners.add(new ServerSideRunner(33, "Keira Skenandore"));
+		runners.add(new ServerSideRunner(44, "Adam Dunn"));
 	}
 
 	public boolean containsBibNumber(int bibNumber) {
