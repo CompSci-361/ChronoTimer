@@ -227,7 +227,7 @@ public class GrpRun extends Run {
 				racer.onFinishRacing();
 				
 				//add the racer to the finish queue
-				endQueue.add(racer);
+				endQueue.addFirst(racer);
 				
 				//increment placeholder for next runner
 				++placeholder;
